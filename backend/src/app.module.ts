@@ -11,7 +11,7 @@ import { User } from './user/user.entity';
       host: "localhost",
       port: 3306,
       username: 'root',
-      password: 'aleksA04',
+      password: 'root',
       database: 'first_db',
       entities: [User, Match, Queue, Report],
       synchronize: false,
