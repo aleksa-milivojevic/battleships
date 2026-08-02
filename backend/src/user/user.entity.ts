@@ -1,6 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Check, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
+@Check("length(email) >= 5")
+@Check("length(username) >= 3")
+@Check("length(password) >= 5")
 export class User {
     @PrimaryGeneratedColumn()
     id: number;
