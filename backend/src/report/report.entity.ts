@@ -6,7 +6,7 @@ import { Check, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeor
 @Check("'type' IN ('messages', 'cheating')")
 export class Report {
     @PrimaryGeneratedColumn()
-    id: number;
+    id: string;
 
     @Column({
         type: "int",

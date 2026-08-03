@@ -4,7 +4,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 @Entity("Matches")
 export class Match {
     @PrimaryGeneratedColumn()
-    id: number;
+    id: string;
 
     @Column({
         type: "int"

@@ -14,11 +14,11 @@ export class MatchService {
         return this.matchRepository.find();
     }
 
-    findOne(id: number): Promise<Match | null> {
+    findOne(id: string): Promise<Match | null> {
         return this.matchRepository.findOneBy({ id });
     }
 
-    async removeOne(id: number): Promise<void> {
+    async removeOne(id: string): Promise<void> {
         await this.matchRepository.delete({ id });
     }
 }

@@ -14,11 +14,11 @@ export class QueueService {
         return this.queueRepository.find();
     }
 
-    findOne(id: number): Promise<Queue | null> {
+    findOne(id: string): Promise<Queue | null> {
         return this.queueRepository.findOneBy({ id });
     }
 
-    async removeOne(id: number): Promise<void> {
+    async removeOne(id: string): Promise<void> {
         await this.queueRepository.delete({ id });
     }
 }

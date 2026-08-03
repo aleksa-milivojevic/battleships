@@ -4,7 +4,7 @@ import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 @Entity("Queue")
 export class Queue {
     @PrimaryGeneratedColumn()
-    id: number;
+    id: string;
 
     @Column({
         type: "int",

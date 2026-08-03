@@ -14,11 +14,11 @@ export class ReportService {
         return this.reportRepository.find();
     }
 
-    findOne(id: number): Promise<Report | null> {
+    findOne(id: string): Promise<Report | null> {
         return this.reportRepository.findOneBy({ id });
     }
 
-    async removeOne(id: number): Promise<void> {
+    async removeOne(id: string): Promise<void> {
         await this.reportRepository.delete({ id });
     }
 }
