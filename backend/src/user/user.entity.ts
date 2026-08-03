@@ -6,7 +6,7 @@ import { Check, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 @Check("length(password) >= 5")
 export class User {
     @PrimaryGeneratedColumn()
-    id: number;
+    id: string;
 
     @Column({
         type: "varchar",
