@@ -9,12 +9,12 @@ export class UserController {
         private readonly service: UserService
     ) {}
 
-    @Get("user/getall")
+    @Get("getall")
     findAll(): Promise<User[]> {
         return this.service.findAll();
     }
 
-    @Post()
+    @Post('add')
     addUser(@Body() userDto: UserDto): Promise<User> {
         return this.service.addOne(userDto);
     }

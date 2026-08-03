@@ -2,7 +2,7 @@ import { User } from "src/user/user.entity";
 import { text } from "stream/consumers";
 import { Check, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity("Reports")
 @Check("'type' IN ('messages', 'cheating')")
 export class Report {
     @PrimaryGeneratedColumn()

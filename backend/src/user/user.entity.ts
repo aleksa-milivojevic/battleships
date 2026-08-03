@@ -1,6 +1,6 @@
 import { Check, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity("Users")
 @Check("length(email) >= 5")
 @Check("length(username) >= 3")
 @Check("length(password) >= 5")

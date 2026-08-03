@@ -8,6 +8,10 @@ import { Queue } from './queue/queue.entity';
 import { Report } from './report/report.entity';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
+import { RouterModule } from '@nestjs/core';
+import { MatchModule } from './match/match.module';
+import { QueueModule } from './queue/queue.module';
+import { ReportModule } from './report/report.module';
 
 @Module({
   imports: [
@@ -25,6 +29,27 @@ import { UserModule } from './user/user.module';
       synchronize: false,
     }),
     UserModule,
+    MatchModule,
+    QueueModule,
+    ReportModule,
+    RouterModule.register([
+      {
+        path: 'user',
+        module: UserModule,
+      },
+      {
+        path: 'match',
+        module: MatchModule,
+      },
+      {
+        path: 'queue',
+        module: QueueModule,
+      },
+      {
+        path: 'report',
+        module: ReportModule
+      }
+    ])
   ],
   controllers: [AppController],
   providers: [AppService],

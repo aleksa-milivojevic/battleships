@@ -1,7 +1,7 @@
 import { User } from "src/user/user.entity";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity("Matches")
 export class Match {
     @PrimaryGeneratedColumn()
     id: number;
