@@ -1,0 +1,15 @@
+<form (ngSubmit)="onLogin()">
+    <div class="container">
+        <label for="username"><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="username" required>
+
+        <label for="password"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="password" required>
+
+        <div class="btns">
+            <button routerLink="/home" type="button" class="cancelbtn">Cancel</button>
+            <button type="submit" class="submitbtn">Log in</button>
+        </div>
+        <span class="psw"><a routerLink="/home">Forgot password?</a></span>
+    </div>
+</form>
