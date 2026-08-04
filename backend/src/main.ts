@@ -10,6 +10,6 @@ async function bootstrap() {
   const port = configService.get<number>('PORT') || 3000;
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   await app.listen(port);
-  console.log('Application running on: http://localhost:3000/');
+  console.log(`Application running on: http://localhost:${port}/`);
 }
 bootstrap();

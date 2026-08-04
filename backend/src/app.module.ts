@@ -11,6 +11,7 @@ import { UserModule } from './user/user.module';
 import { MatchModule } from './match/match.module';
 import { QueueModule } from './queue/queue.module';
 import { ReportModule } from './report/report.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ReportModule } from './report/report.module';
     MatchModule,
     QueueModule,
     ReportModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
