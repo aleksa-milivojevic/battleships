@@ -20,7 +20,7 @@ export class AuthService {
         return this.signIn(user);
     }
 
-    private async validate(input: AuthInput): Promise<SignInData | null> {
+    async validate(input: AuthInput): Promise<SignInData | null> {
         const user = await this.userService.findOneByEmail(input.email);
 
         if (user && user.password === input.password) {
@@ -32,7 +32,7 @@ export class AuthService {
         return null;
     }
 
-    private async signIn(user: SignInData): Promise<AuthResult> {
+    async signIn(user: SignInData): Promise<AuthResult> {
         const tokenPayload = {
             sub: user.userId,
             username: user.username
