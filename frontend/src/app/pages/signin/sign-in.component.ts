@@ -52,6 +52,7 @@ export class SigninComponent {
                 this.isLoading.set(false);
                 this.errorMessage.set(err);
                 this.form.get('password')?.setValue('');
+                this.form.get('password2')?.setValue('');
             }
         });
     }

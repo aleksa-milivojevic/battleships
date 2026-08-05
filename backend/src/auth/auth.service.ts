@@ -63,7 +63,7 @@ export class AuthService {
         if (existing) {
             throw new ConflictException();
         }
-        const saltRounds = this.configService.get<number>("SALT_ROUNDS") || 10;
+        const saltRounds = Number(process.env.SALT_ROUNDS) || 10;
 
         const salt = await bcrypt.genSalt(saltRounds);
 
