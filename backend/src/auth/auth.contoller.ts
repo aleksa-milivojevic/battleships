@@ -4,6 +4,7 @@ import { AuthGuard } from "./guards/auth.guard";
 import { PassportLocalGuard } from "./guards/passport-local.guard";
 import { PassportJwtAuthGuard } from "./guards/passport-jwt.guard";
 import { RawSqlResultsToEntityTransformer } from "typeorm/query-builder/transformer/RawSqlResultsToEntityTransformer.js";
+import { SignInInput } from "./auth.dto";
 
 @Controller('auth')
 export class AuthController {
@@ -24,15 +25,20 @@ export class AuthController {
     // }
 
     @HttpCode(HttpStatus.OK)
-    @Post('login2')
+    @Post('login')
     @UseGuards(PassportLocalGuard)
-    login2(@Request() request) {
-        return this.authService.signIn(request.user);
+    login(@Request() request) {
+        return this.authService.sign(request.user);
     }
 
     @UseGuards(PassportJwtAuthGuard)
-    @Get('me2')
-    getUserInfo2(@Request() request) {
+    @Get('me')
+    getUserInfo(@Request() request) {
         return request.user;
+    }
+
+    @Post('signin')
+    signin(@Body() input: {email: string, username: string, password: string}) {
+        return this.authService.signIn(input);
     }
 }

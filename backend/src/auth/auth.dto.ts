@@ -13,3 +13,9 @@ export type AuthResult = {
     userId: string,
     username: string
 }
+
+export type SignInInput = {
+    email: string,
+    username: string,
+    password: string,
+}
