@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { UserService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-log-in',
@@ -12,7 +12,8 @@ import { UserService } from '../../services/user.service';
 })
 export class LoginComponent {
     private fb = inject(FormBuilder);
-    private userService = inject(UserService);
+    private authService = inject(AuthService);
+    private router = inject(Router);
 
     form: FormGroup;
     isLoading = signal(false);
@@ -26,15 +27,20 @@ export class LoginComponent {
     }
 
     onLogin(): void {
-        if (this.form.invalid) return;
+        console.log("onlogin");
+        console.log(this.form.value);
+        if (this.form.invalid)  {
+            this.errorMessage.set("invalid credentials");
+            return;
+        }
 
         this.isLoading.set(true);
         this.errorMessage.set("");
 
-        this.userService.login(this.form.value).subscribe({
+        this.authService.login(this.form.value).subscribe({
             next: () => {
                 this.isLoading.set(false);
-                //navigacija
+                this.router.navigate(['/main']);
             },
             error: (err) => {
                 this.isLoading.set(false);

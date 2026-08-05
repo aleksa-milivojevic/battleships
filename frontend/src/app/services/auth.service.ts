@@ -33,15 +33,18 @@ export class AuthService {
     private _accessToken = signal<string>("");
 
     private handleAuthResponse(response: AuthResponse): void {
+        console.log(`auth response: ${response}`);
+        
         this._user.set(response.user);
 
         this._accessToken.set(response.accessToken);
     }
     
     login(credentials: LoginRequest): Observable<AuthResponse> {
+        console.log("ulazi u login");
         return this.http.post<AuthResponse>(
             `${this.apiUrl}/login`,
-            { credentials },
+            { email: credentials.email, password: credentials.password },
             { withCredentials: true }
         ).pipe(
             tap(res => this.handleAuthResponse(res))
@@ -51,7 +54,7 @@ export class AuthService {
     signin(credentials: SigninRequest): Observable<{user: User}> {
         return this.http.post<{user: User}>(
             `${this.apiUrl}/signin`,
-            { credentials },
+            { email: credentials.email, username: credentials.username, password: credentials.password },
             { withCredentials: true }
         )
     }
