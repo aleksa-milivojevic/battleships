@@ -4,13 +4,13 @@ import { AuthService } from '../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-log-in',
+  selector: 'app-sign-in',
   standalone: true,
   imports: [ReactiveFormsModule, RouterLink],
-  templateUrl: './log-in.component.html',
-  styleUrl: './log-in.component.scss',
+  templateUrl: './sign-in.component.html',
+  styleUrl: './sign-in.component.scss',
 })
-export class LoginComponent {
+export class SigninComponent {
     private fb = inject(FormBuilder);
     private authService = inject(AuthService);
     private router = inject(Router);
@@ -22,21 +22,28 @@ export class LoginComponent {
     constructor() {
         this.form = this.fb.group({
             email: ['', [Validators.required, Validators.email]],
-            password: ['', [Validators.required, Validators.minLength(5)]]
+            username: ['', [Validators.required, Validators.minLength(3)]],
+            password: ['', [Validators.required, Validators.minLength(5)]],
+            password2: ['', [Validators.required, Validators.minLength(5)]]
         });
     }
 
-    onLogin(): void {
+    onSignin(): void {
         console.log(this.form.value);
         if (this.form.invalid)  {
             this.errorMessage.set("invalid credentials");
             return;
         }
 
+        if (this.form.get('password')?.value !== this.form.get('password2')?.value) {
+            this.errorMessage.set("passwords must match");
+            return;
+        }
+
         this.isLoading.set(true);
         this.errorMessage.set("");
 
-        this.authService.login(this.form.value).subscribe({
+        this.authService.signin(this.form.value).subscribe({
             next: () => {
                 this.isLoading.set(false);
                 this.router.navigate(['/main']);
