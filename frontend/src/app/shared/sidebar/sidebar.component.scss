@@ -1,0 +1,35 @@
+.sidebar {
+    width: 20%;
+    min-height: 100%;
+    margin: 0;
+    padding: 10px;
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.top-options, .bottom-options {
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.bottom-options {
+    margin-top: auto;
+}
+
+.option {
+    margin: 0;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.192);
+}
+
+.option-name {
+    font-size: 120%;
+    color: white;
+}
