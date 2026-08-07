@@ -47,7 +47,6 @@ export class MainComponent implements OnInit {
     if (this.loading() || !this.more()) return;
 
     this.loading.set(true);
-    console.log(`search: ${this.search()}`);
 
     this.userService.getAllUsers(this.round(), this.count,  this.search()).subscribe({
       next: (res) => {
@@ -55,7 +54,6 @@ export class MainComponent implements OnInit {
         this.users.update(current => [...current, ...res.users]);
         this.more.set(res.more);
         this.loading.set(false);
-        console.log(res.users);
       },
       error: (err) => {
         this.loading.set(false);
@@ -66,12 +64,14 @@ export class MainComponent implements OnInit {
   }
 
   @HostListener("window:scroll", [])
-  onWindowScroll() {
+  onScroll() {
+    console.log("scroll");
     const threshold = 150;
     const currentPosition = window.innerHeight + window.scrollY;
     const scrollHeight = document.documentElement.scrollHeight;
 
     if (currentPosition >= scrollHeight - threshold) {
+      console.log('load');
       this.loadUsers();
     }
   }

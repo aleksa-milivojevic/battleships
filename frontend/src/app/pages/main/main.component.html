@@ -28,14 +28,18 @@
                     placeholder="username"
                 >
             </form>
-            <div class="user-list">
+            <div class="user-list" (scroll)="onScroll()">
                 @for(user of users(); track user.id) {
                     <div class="user">
-                        <label class="username">{{ user.username }}</label>
-                        @if(user.online) {
-                            <label class="online" style="color: greenyellow;">o</label>
-                        }
-                        <label class="score">{{ user.score }}</label>
+                        <div class="username-score">
+                            <div class="username-div">
+                                <label class="username">{{ user.username }}</label>
+                                @if(user.online) {
+                                    <label class="online" style="color: greenyellow;">o</label>
+                                }
+                            </div>
+                            <label class="score">{{ user.score }}</label>
+                        </div>
                         <button class="challange-btn" [disabled]="!user.online">chall</button>
                     </div>
                 }

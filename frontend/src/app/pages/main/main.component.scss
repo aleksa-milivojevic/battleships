@@ -55,6 +55,8 @@ app-sidebar {
 .search-div {
     margin: 0;
     padding: 15px;
+    padding-top: 50px;
+    padding-bottom: 30px;
     border: 1px solid white;
     border-radius: 20px;
     display: flex;
@@ -62,7 +64,53 @@ app-sidebar {
     justify-content: center;
     align-items: center;
     background-color: rgb(47, 47, 212);
-    width: 35%;
-    height: 80%;
+    width: 30%;
+    height: 70%;
 }
 
+form {
+    width: 80%;
+}
+
+.search {
+    width: 100%;
+    font-size: 120%;
+    border-radius: 10px;
+    padding-left: 7px;
+    padding-right: 5px;
+}
+
+.user-list {
+    margin: 10px;
+    padding: 10px;
+    padding-top: 2px;
+    background-color: rgb(15, 15, 117);
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 100%;
+    min-width: fit-content;
+    overflow-y: scroll;
+    border-top: 10px solid rgb(15, 15, 117);
+    border-bottom: 10px solid rgb(15, 15, 117);
+    border-radius: 20px;
+}
+
+.user {
+    width: 95%;
+    margin: 5px;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: rgb(47, 47, 212);
+    border: 0px solid white;
+    border-radius: 10px;
+}
+
+.challange-btn {
+    margin-left: auto;
+    height: fit-content;
+}
