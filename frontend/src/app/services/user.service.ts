@@ -37,7 +37,7 @@ export class UserService {
             .set('round', round.toString())
             .set('count', count.toString())
             .set('search', search);
-        
+
         return this.http.get<{ users: User[], more: boolean }>(
             `${this.apiUrl}/getall`,
             { params: params, withCredentials: true }

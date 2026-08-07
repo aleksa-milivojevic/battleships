@@ -14,7 +14,7 @@ export class UserService {
     async findAll(params: FindAllParams): Promise<FindAllResponse> {
         let users = await this.userRepository.find({
             where: {
-                username: Like(params.search)
+                username: Like(`%${params.search}%`)
             }
         });
 

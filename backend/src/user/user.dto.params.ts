@@ -1,6 +1,7 @@
 import { IsEmail, IsNotEmpty, IsNumber, IsNumberString, IsString } from "class-validator";
 import e from "express";
 import { User } from "./user.entity";
+import { Transform } from "class-transformer";
 
 export class CreateUserDto {
     @IsEmail()
@@ -15,13 +16,13 @@ export class CreateUserDto {
 
 export class FindAllParams {
     @IsNumber()
-    readonly round: number = 1;
+    round: number;
 
     @IsNumber()
-    readonly count: number = 10;
+    count: number;
 
     @IsString()
-    readonly search: string = '';
+    search: string;
 }
 
 export class FindOneParams {

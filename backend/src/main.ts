@@ -13,8 +13,17 @@ async function bootstrap() {
   })
 
   const port = configService.get<number>('PORT') || 3000;
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+
+  app.useGlobalPipes(new ValidationPipe({ 
+    transform: true,
+    whitelist: true,
+    transformOptions: {
+      enableImplicitConversion: true
+    }
+  }));
+  
   await app.listen(port);
+  
   console.log(`Application running on: http://localhost:${port}/`);
 }
 bootstrap();

@@ -9,9 +9,37 @@
             <label class="pvp-title">PvP</label>
             <label class="bot-desc">Play against a random person</label>
         </div>
-        <div class="challange">
+        <div class="challange" (click)="toggleOverlay()">
             <label class="challange-title">Challange a friend!</label>
             <label class="bot-desc">If they are online, challange them to a battle</label>
         </div>
     </div>
 </div>
+
+@if (overlay()) {
+    <div class="overlay" (click)="toggleOverlay()">
+        <div class="search-div" (click)="$event.stopPropagation()">
+            <form>
+                <input
+                    name="search"
+                    [ngModel]="search()"
+                    (ngModelChange)="search.set($event)"
+                    class="search"
+                    placeholder="username"
+                >
+            </form>
+            <div class="user-list">
+                @for(user of users(); track user.id) {
+                    <div class="user">
+                        <label class="username">{{ user.username }}</label>
+                        @if(user.online) {
+                            <label class="online" style="color: greenyellow;">o</label>
+                        }
+                        <label class="score">{{ user.score }}</label>
+                        <button class="challange-btn" [disabled]="!user.online">chall</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

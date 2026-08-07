@@ -3,14 +3,17 @@
     min-height: 100vh;
     display: flex;
     flex-direction: row;
+    z-index: 0;
 }
 
 .container {
     display: flex;
+    flex: 1;
     flex-direction: column;
     margin: 0;
     padding: 5px;
     justify-content: center;
+    align-items: center;
 }
 
 .bot, .pvp, .challange {
@@ -21,6 +24,7 @@
     border: 2px solid white;
     border-radius: 20px;
     background-color: rgb(47, 47, 212);
+    width: 60%;
 }
 
 .bot-title, .pvp-title, .challange-title {
@@ -32,3 +36,33 @@
 app-sidebar {
     width: 15%;
 }
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    z-index: 10;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(13, 13, 13, 0.318);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-div {
+    margin: 0;
+    padding: 15px;
+    border: 1px solid white;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(47, 47, 212);
+    width: 35%;
+    height: 80%;
+}
+
