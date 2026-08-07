@@ -63,14 +63,15 @@ export class MainComponent implements OnInit {
     })
   }
 
-  @HostListener("window:scroll", [])
-  onScroll() {
-    console.log("scroll");
-    const threshold = 150;
-    const currentPosition = window.innerHeight + window.scrollY;
-    const scrollHeight = document.documentElement.scrollHeight;
+  onScroll(event: Event) {
+    if (this.loading()) return;
 
-    if (currentPosition >= scrollHeight - threshold) {
+    const element = event.target as HTMLElement;
+    const threshold = 10;
+    const load = element.scrollHeight - element.scrollTop - element.clientHeight <= threshold;
+
+    if (load) {
+      this.loading.set(true);
       console.log('load');
       this.loadUsers();
     }

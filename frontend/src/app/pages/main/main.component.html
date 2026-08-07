@@ -28,7 +28,7 @@
                     placeholder="username"
                 >
             </form>
-            <div class="user-list" (scroll)="onScroll()">
+            <div class="user-list" (scroll)="onScroll($event)">
                 @for(user of users(); track user.id) {
                     <div class="user">
                         <div class="username-score">
