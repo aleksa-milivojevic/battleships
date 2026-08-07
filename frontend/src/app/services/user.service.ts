@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from "@angular/core";
 import { environment } from "../../environments/environment.development";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable, tap } from "rxjs";
 
 export interface User {
@@ -32,10 +32,15 @@ export class UserService {
         }
     }
 
-    getAllUsers(): Observable<{ users: User[] }> {
-        return this.http.get<{ users: User[] }>(
+    getAllUsers(round: number = 1, count: number = 10, search: string = ''): Observable<{ users: User[], more: boolean }> {
+        const params = new HttpParams()
+            .set('round', round.toString())
+            .set('count', count.toString())
+            .set('search', search);
+        
+        return this.http.get<{ users: User[], more: boolean }>(
             `${this.apiUrl}/getall`,
-            { withCredentials: true }
+            { params: params, withCredentials: true }
         ).pipe(
             tap(res => this._users.set(res.users || []))
         );

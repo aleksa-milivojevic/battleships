@@ -1,8 +1,7 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { User } from "./user.entity";
-import { CreateUserDto } from "./user.dto";
-import { FindOneParams } from "./user.params";
+import { CreateUserDto, FindAllParams, FindAllResponse, FindOneParams } from "./user.dto.params";
 
 @Controller('user')
 export class UserController {
@@ -11,8 +10,8 @@ export class UserController {
     ) {}
 
     @Get("getall")
-    findAll(): Promise<User[]> {
-        return this.service.findAll();
+    findAll(@Param() params: FindAllParams): Promise<FindAllResponse> {
+        return this.service.findAll(params);
     }
 
     @Get('getone/:id')
