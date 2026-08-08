@@ -1,0 +1,72 @@
+.content {
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row;
+    z-index: 0;
+}
+
+app-sidebar {
+    width: 15%;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    margin: 0;
+    padding: 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+.list-container {
+    margin: 10px;
+    padding: 10px;
+    padding-top: 2px;
+    padding-right: 5px;
+    background-color: rgb(15, 15, 117);
+    display: flex;
+    flex-direction: column;
+    width: 65%;
+    height: 80%;
+    min-width: fit-content;
+    overflow-y: scroll;
+    border-top: 10px solid rgb(15, 15, 117);
+    border-bottom: 10px solid rgb(15, 15, 117);
+    border-radius: 20px;
+}
+
+.user {
+    width: 98%;
+    margin: 5px;
+    padding: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: rgb(47, 47, 212);
+    border: 0px solid white;
+    border-radius: 10px;
+    font-size: 150%;
+}
+.score {
+    margin-left: auto;
+}
+
+.rank {
+    margin-right: 10px;
+}
+
+.rank-1 {
+    color: rgb(255, 218, 34);
+}
+
+.rank-2 {
+    color: rgb(187, 187, 187);
+}
+
+.rank-3 {
+    color: rgb(205, 127, 50);
+}

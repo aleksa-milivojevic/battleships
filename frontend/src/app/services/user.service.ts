@@ -42,7 +42,13 @@ export class UserService {
             `${this.apiUrl}/getall`,
             { params: params, withCredentials: true }
         ).pipe(
-            tap(res => this._users.set(res.users || []))
+            tap(res => {
+                if (round == 1) {
+                    this._users.set(res.users || [])
+                } else {
+                    this._users.update(current => [...current, ...res.users || []])
+                }
+            })
         );
     }
 }

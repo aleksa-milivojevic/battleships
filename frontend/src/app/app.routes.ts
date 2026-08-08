@@ -3,6 +3,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/log-in/log-in.component';
 import { MainComponent } from './pages/main/main.component';
 import { SigninComponent } from './pages/signin/sign-in.component';
+import { LeaderboardComponent } from './pages/leaderboard/leaderboard.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -10,5 +11,6 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'signin', component: SigninComponent },
     { path: 'main', component: MainComponent },
+    { path: 'leaderboard', component: LeaderboardComponent },
     { path: '**', redirectTo: 'home' }
 ];
