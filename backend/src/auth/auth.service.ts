@@ -1,5 +1,5 @@
 import { ConflictException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from "@nestjs/common";
-import { AuthInput, AuthResult, SignInData, SignInInput } from "./auth.dto";
+import { AuthInput, AuthResult, SafeUserDto, SignInData, SignInInput } from "./auth.dto";
 import { UserService } from "src/user/user.service";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcrypt";
@@ -15,15 +15,15 @@ export class AuthService {
 
     //ne koristi se fja, preslo se na passport
 
-    async authenticate(input: AuthInput): Promise<AuthResult> {
-        const user = await this.validate(input);
+    // async authenticate(input: AuthInput): Promise<AuthResult> {
+    //     const user = await this.validate(input);
 
-        if (!user) {
-            throw new UnauthorizedException();
-        }
+    //     if (!user) {
+    //         throw new UnauthorizedException();
+    //     }
 
-        return this.sign(user);
-    }
+    //     return this.sign(user);
+    // }
 
     async validate(input: AuthInput): Promise<SignInData | null> {
         const user = await this.userService.findOneByEmail(input.email);
@@ -36,8 +36,8 @@ export class AuthService {
 
         if (matching) {
             return {
-                userId: user.id,
-                username: user.username
+               userId: user.id,
+               username: user.username
             }
         }
         return null;
@@ -51,10 +51,24 @@ export class AuthService {
 
         const accessToken = await this.jwtService.signAsync(tokenPayload);
 
+        const db_user = await this.userService.findOne(user.userId);
+
+        if (!db_user) throw new NotFoundException('user not found in sign');
+
+        const safeUser: SafeUserDto = {
+            id: db_user.id,
+            email: db_user.email,
+            username: db_user.username,
+            admin: db_user.admin,
+            score: db_user.score,
+            banned: db_user.banned,
+            timeout: db_user.timeout,
+            createdAt: db_user.createdAt
+        }
+
         return {
             accessToken: accessToken,
-            userId: user.userId,
-            username: user.username
+            user: safeUser
         };
     }
 

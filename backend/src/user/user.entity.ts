@@ -54,6 +54,20 @@ export class User {
     online: boolean;
 
     @Column({
+        type: "boolean",
+        nullable: false,
+        default: false
+    })
+    banned: boolean;
+
+    @Column({
+        type: "int",
+        nullable: false,
+        default: 0
+    })
+    timeout: number;
+
+    @Column({
         type: "timestamp",
         default: () => "CURRENT_TIMESTAMP"
     })

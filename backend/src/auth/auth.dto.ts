@@ -8,10 +8,20 @@ export type SignInData = {
     username: string
 }
 
+export type SafeUserDto = {
+    id: string,
+    email: string,
+    username: string,
+    score: number,
+    admin: boolean,
+    banned: boolean,
+    timeout: number,
+    createdAt: Date
+}
+
 export type AuthResult = {
     accessToken: string,
-    userId: string,
-    username: string
+    user: SafeUserDto
 }
 
 export type SignInInput = {
