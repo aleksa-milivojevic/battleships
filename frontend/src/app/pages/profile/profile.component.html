@@ -7,7 +7,7 @@
         </div>
         <div class="email-created-div">
             <label class="email">Connected to: {{ self()?.email || "not found" }}</label>
-            <label class="email">Date created: {{ self()?.createdAt || "not found" }}</label>
+            <label class="email">Date created: {{ self()?.createdAt?.toString()?.slice(0,10) || "not found" }}</label>
         </div>
         <div class="score-div">
             <h1 class="score-title">YOUR SCORE</h1>
