@@ -3,7 +3,7 @@
     <div class="user">
         <div class="username-div">
             <h1 class="username">{{ self()?.username || "not found" }}</h1>
-            <button class="username-btn">✎</button>
+            <button class="username-btn" (click)="toggleChNameScreen()">✎</button>
         </div>
         <div class="email-created-div">
             <label class="email">Connected to: {{ self()?.email || "not found" }}</label>
@@ -19,3 +19,20 @@
         </div>
     </div>
 </div>
+
+@if (showChNameScreen()) {
+    <div class="overlay" (click)="toggleChNameScreen()">
+        <div class="overlay-div" (click)="$event.stopPropagation()">
+            <input name="username" type="text" class="new-username" placeholder="New Username" [(ngModel)]="newUsername">
+            @if (!validUsername() && newUsername().length > 0) {
+                <label class="error-msg">Username must be at least 3 characters</label>
+            } @else {
+                <label class="fill"></label>
+            }
+            <div class="overlay-btns">
+                <button class="cancel" [disabled]="loading()" (click)="toggleChNameScreen()">Cancel</button>
+                <button class="confirm" [disabled]="!validUsername() || loading()" (click)="onChName()">Confirm</button>
+            </div>
+        </div>
+    </div>
+}

@@ -69,3 +69,49 @@ app-sidebar {
     margin-left: 10px;
     margin-right: 10px;
 }
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    z-index: 10;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(13, 13, 13, 0.318);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay-div {
+    margin: 0;
+    padding: 15px;
+    padding-top: 30px;
+    border: 1px solid white;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(47, 47, 212);
+    width: 350px;
+}
+
+.overlay-btns {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    padding: 0;
+}
+
+.new-username {
+    margin: 5px;
+    font-size: 95%;
+    width: 95%;
+}
+
+.fill {
+    min-height: 21px;
+}
