@@ -34,3 +34,8 @@ export class FindAllResponse {
     users: User[];
     more: boolean;
 }
+
+export class ChangeUsernameDto {
+    id: string
+    username: string
+}
