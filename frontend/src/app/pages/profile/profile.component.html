@@ -1,0 +1,21 @@
+<div class="content">
+    <app-sidebar></app-sidebar>
+    <div class="user">
+        <div class="username-div">
+            <h1 class="username">{{ self()?.username || "not found" }}</h1>
+            <button class="username-btn">✎</button>
+        </div>
+        <div class="email-created-div">
+            <label class="email">Connected to: {{ self()?.email || "not found" }}</label>
+            <label class="email">Date created: {{ self()?.createdAt || "not found" }}</label>
+        </div>
+        <div class="score-div">
+            <h1 class="score-title">YOUR SCORE</h1>
+            <h1 class="score">{{ self()?.score || "not found" }}</h1> 
+        </div>
+        <div class="btns">
+            <button class="password-btn">Change password</button>
+            <button class="delete-btn">Delete account</button>
+        </div>
+    </div>
+</div>

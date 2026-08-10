@@ -1,0 +1,71 @@
+.content {
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row;
+    z-index: 0;
+}
+
+.user {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    margin: 0;
+    margin-left: 100px;
+    padding: 5px;
+    justify-content: center;
+    font-size: 130%;
+}
+
+app-sidebar {
+    width: 15%;
+}
+
+.username-div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.username {
+    margin: 10px;
+}
+
+.username-btn {
+    height: fit-content;
+    width: fit-content;
+    font-size: 130%;
+    padding: 0;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 30px;
+}
+
+.email-created-div {
+    display: flex;
+    flex-direction: column;
+    font-size: 80%;
+}
+
+.score-div {
+    width: fit-content;
+    padding: 20px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.score, .score-title {
+    margin: 10px;
+}
+
+.btns {
+    margin-top: 50px;
+}
+
+.password-btn, .delete-btn {
+    margin: 0;
+    margin-left: 10px;
+    margin-right: 10px;
+}
