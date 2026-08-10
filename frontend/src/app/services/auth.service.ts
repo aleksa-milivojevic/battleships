@@ -3,6 +3,7 @@ import { environment } from "../../environments/environment.development";
 import { HttpClient } from "@angular/common/http";
 import { User } from "./user.service";
 import { Observable, tap } from "rxjs";
+import { StorageService } from "./storage.service";
 
 interface LoginRequest {
     email: string,
@@ -26,11 +27,17 @@ interface AuthResponse {
 export class AuthService {
     private apiUrl = `${environment.apiUrl}/auth`
     private http = inject(HttpClient);
+    private storage = inject(StorageService);
     
-    private _user = signal<User | null>(null);
+    private _user = signal<User | null>(this.storage.getItem<User>('SELF'));
     readonly user = this._user.asReadonly();
 
-    private _accessToken = signal<string>("");
+    private _accessToken = signal<string | null>(this.storage.getItem<string>('ACCESS_TOKEN'));
+
+    constructor() {
+        this.storage.setItem('SELF', this._user);
+        this.storage.setItem('ACCESS_TOKEN', this._accessToken);
+    }
 
     private handleAuthResponse(response: AuthResponse): void {
         console.log(`auth response: ${response}`);
@@ -38,6 +45,9 @@ export class AuthService {
         this._user.set(response.user);
 
         this._accessToken.set(response.accessToken);
+
+        this.storage.setItem('SELF', this._user());
+        this.storage.setItem('ACCESS_TOKEN', this._accessToken());
     }
     
     login(credentials: LoginRequest): Observable<AuthResponse> {

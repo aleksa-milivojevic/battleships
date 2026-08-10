@@ -5,11 +5,28 @@ import { Injectable } from "@angular/core";
 })
 export class StorageService {
     setItem(key: string, value: any): void {
-        localStorage.setItem(key, JSON.stringify(value));
+        try {
+            localStorage.setItem(key, JSON.stringify(value));
+        }
+        catch (err) {
+            console.log("Error seting into local storage");
+        }
     }
 
     getItem<T>(key: string): T | null {
-        const data = localStorage.getItem(key);
-        return data ? JSON.parse(data) as T : null;
+        try {
+            const data = localStorage.getItem(key);
+            if (!data || data === 'undefined') {
+                return null;
+            }
+            else {
+                return JSON.parse(data) as T;
+            }
+        }
+        catch (err) {
+            console.log("Error extracting from local storage");
+            console.error(err);
+            return null;
+        }
     }
 }
