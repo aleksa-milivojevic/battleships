@@ -2,6 +2,7 @@ import { Injectable, inject, signal } from "@angular/core";
 import { environment } from "../../environments/environment.development";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable, tap } from "rxjs";
+import { AuthService } from "./auth.service";
 
 export interface User {
     id: string,
@@ -19,6 +20,7 @@ export interface User {
 export class UserService {
     private apiUrl = `${environment.apiUrl}/user`;
     private http = inject(HttpClient);
+    private authService = inject(AuthService);
     
     private _users = signal<User[]>([]);
     readonly users = this._users.asReadonly();
@@ -50,5 +52,17 @@ export class UserService {
                 }
             })
         );
+    }
+
+    changeUsername(id: string, username: string): Observable<{ user: User }> {
+        return this.http.post<{user: User}>(
+            `${this.apiUrl}/chname`,
+            { id: id, username: username },
+            { withCredentials: true }
+        ).pipe(
+            tap(res => this.updateList(res.user))
+        ).pipe(
+            tap(res => this.authService.updateSelf(res.user))
+        )
     }
 }

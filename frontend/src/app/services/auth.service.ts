@@ -68,4 +68,9 @@ export class AuthService {
             { withCredentials: true }
         )
     }
+
+    updateSelf(updatedSelf: User) {
+        this._user.set(updatedSelf);
+        this.storage.setItem('SELF', updatedSelf);
+    }
 }
