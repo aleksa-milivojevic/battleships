@@ -1,10 +1,11 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, NotImplementedException, Post, Request, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, HttpStatus, NotImplementedException, Post, Req, Request, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { AuthGuard } from "./guards/auth.guard";
 import { PassportLocalGuard } from "./guards/passport-local.guard";
 import { PassportJwtAuthGuard } from "./guards/passport-jwt.guard";
 import { RawSqlResultsToEntityTransformer } from "typeorm/query-builder/transformer/RawSqlResultsToEntityTransformer.js";
 import { SignInInput } from "./auth.dto";
+import { RefreshAuthGuard } from "./guards/refresh-jwt.guard";
 
 @Controller('auth')
 export class AuthController {
@@ -40,5 +41,11 @@ export class AuthController {
     @Post('signin')
     signin(@Body() input: {email: string, username: string, password: string}) {
         return this.authService.signIn(input);
+    }
+
+    @UseGuards(RefreshAuthGuard)
+    @Get('refresh')
+    refreshToken(@Req() req) {
+        return this.authService.refreshToken(req.user);
     }
 }

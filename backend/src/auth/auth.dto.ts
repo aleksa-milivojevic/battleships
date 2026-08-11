@@ -21,6 +21,7 @@ export type SafeUserDto = {
 
 export type AuthResult = {
     accessToken: string,
+    refreshToken: string,
     user: SafeUserDto
 }
 
@@ -28,4 +29,8 @@ export type SignInInput = {
     email: string,
     username: string,
     password: string,
+}
+
+export type RefreshResponse = {
+    accessToken: string
 }

@@ -1,16 +1,19 @@
-import { ConflictException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from "@nestjs/common";
-import { AuthInput, AuthResult, SafeUserDto, SignInData, SignInInput } from "./auth.dto";
+import { ConflictException, Inject, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { AuthInput, AuthResult, RefreshResponse, SafeUserDto, SignInData, SignInInput } from "./auth.dto";
 import { UserService } from "src/user/user.service";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcrypt";
 import { ConfigService } from "@nestjs/config";
+import type { ConfigType } from "@nestjs/config";
+import refreshJwtConfig from "./config/refresh-jwt.config";
 
 @Injectable()
 export class AuthService {
     constructor(
         private userService: UserService,
         private jwtService: JwtService,
-        private configService: ConfigService
+        private configService: ConfigService,
+        @Inject(refreshJwtConfig.KEY) private refreshTokenConfig: ConfigType<typeof refreshJwtConfig>
     ) {}
 
     //ne koristi se fja, preslo se na passport
@@ -51,6 +54,8 @@ export class AuthService {
 
         const accessToken = await this.jwtService.signAsync(tokenPayload);
 
+        const refreshToken = await this.jwtService.signAsync(tokenPayload, this.refreshTokenConfig);
+
         const db_res = await this.userService.findOne(user.userId);
 
         if (!db_res.user) throw new NotFoundException('user not found in sign');
@@ -68,6 +73,7 @@ export class AuthService {
 
         return {
             accessToken: accessToken,
+            refreshToken: refreshToken,
             user: safeUser
         };
     }
@@ -103,5 +109,16 @@ export class AuthService {
             userId: res.user.id,
             username: res.user.username
         });
+    }
+
+    async refreshToken(user: SignInData): Promise<RefreshResponse> {
+        const tokenPayload = {
+            sub: user.userId,
+            username: user.username
+        }
+
+        const accessToken = await this.jwtService.signAsync(tokenPayload);
+
+        return { accessToken: accessToken };
     }
 }
