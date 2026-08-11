@@ -14,7 +14,7 @@
             <h1 class="score">{{ self()?.score || 0 }}</h1> 
         </div>
         <div class="btns">
-            <button class="password-btn">Change password</button>
+            <button class="password-btn" (click)="toggleChPassScreen()">Change password</button>
             <button class="delete-btn">Delete account</button>
         </div>
     </div>
@@ -32,6 +32,27 @@
             <div class="overlay-btns">
                 <button class="cancel" [disabled]="loading()" (click)="toggleChNameScreen()">Cancel</button>
                 <button class="confirm" [disabled]="!validUsername() || loading()" (click)="onChName()">Confirm</button>
+            </div>
+        </div>
+    </div>
+}
+
+@if (showChPassScreen()) {
+    <div class="overlay" (click)="toggleChPassScreen()">
+        <div class="overlay-div" (click)="$event.stopPropagation()">
+            <input name="password" type="password" class="password" placeholder="current password" [(ngModel)]="password">
+            <input name="newPassword" type="password" class="new-password" placeholder="new password" [(ngModel)]="newPassword">
+            <input name="newPassword2" type="password" class="new-password" placeholder="confirm password" [(ngModel)]="newPassword2">
+            @if (!validPass() && password().length > 0 && newPassword().length > 0 && newPassword() === newPassword2()) {
+                <label class="error-msg">Passwords must be at least 5 characters</label>
+            } @else if (!validPass()) {
+                <label class="error-msg">New passwords must match</label>
+            } @else {
+                <label class="fill"></label>
+            }
+            <div class="overlay-btns">
+                <button class="cancel" [disabled]="loading()" (click)="toggleChPassScreen()">Cancel</button>
+                <button class="confirm" [disabled]="!validPass() || loading()" (click)="onChPass()">Confirm</button>
             </div>
         </div>
     </div>

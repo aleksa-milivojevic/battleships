@@ -86,7 +86,13 @@ export class UserService {
             throw new UnauthorizedException('passwords not matching');
         }
 
-        user.password = changePassword.newPassword;
+        const saltRounds = Number(process.env.SALT_ROUNDS) || 10;
+
+        const salt = await bcrypt.genSalt(saltRounds);
+
+        var hashed = await bcrypt.hash(changePassword.newPassword, salt);
+
+        user.password = hashed;
 
         await this.userRepository.save(user);
 

@@ -21,9 +21,20 @@ export class ProfileComponent implements OnInit {
     loading = signal(false);
     errorMessage = signal('');
     showChNameScreen = signal(false);
+    password = signal('');
+    newPassword = signal('');
+    newPassword2 = signal('');
+    showChPassScreen = signal(false);
 
     validUsername = computed(() => {
         return this.newUsername().length >= 3
+    })
+
+    validPass = computed(() => {
+        return this.password().length >= 5 && 
+        this.newPassword().length >= 5 && 
+        this.newPassword2().length >= 5 &&
+        this.newPassword() === this.newPassword2();
     })
 
     ngOnInit(): void {}
@@ -49,5 +60,28 @@ export class ProfileComponent implements OnInit {
 
     toggleChNameScreen() {
         this.showChNameScreen.update(v => !v);
+    }
+
+    onChPass(): void {
+        if (!this.validPass) return;
+
+        this.loading.set(true);
+
+        this.userService.changePassword(this.self()?.id!, this.password(), this.newPassword()).subscribe({
+            next: (res) => {
+                console.log(res.user);
+                this.loading.set(false);
+                this.toggleChPassScreen();
+            },
+            error: (err) => {
+                console.error(err);
+                this.loading.set(false);
+                this.errorMessage.set('serverska greska');
+            }
+        })
+    }
+
+    toggleChPassScreen() {
+        this.showChPassScreen.update(o => !o);
     }
 }

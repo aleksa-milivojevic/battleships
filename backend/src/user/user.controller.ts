@@ -30,7 +30,6 @@ export class UserController {
         return this.service.changeUsername(usernameDto);
     }
 
-    @UseGuards(PassportJwtAuthGuard)
     @Post('chpass')
     changePassword(@Body() passwordDto: ChangePasswordDto): Promise<SingleUserResponse> {
         return this.service.changePassword(passwordDto);
