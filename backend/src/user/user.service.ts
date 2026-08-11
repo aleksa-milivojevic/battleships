@@ -27,18 +27,32 @@ export class UserService {
         }
     }
 
-    findOne(id: string): Promise<User | null> {
-        return this.userRepository.findOneBy({ id });
+    async findOne(id: string): Promise<SingleUserResponse> {
+        const user = await this.userRepository.findOneBy({ id });
+        
+        if (!user) {
+            throw new NotFoundException('user not found');
+        }
+
+        return { user: user };
     }
 
-    findOneByEmail(email: string): Promise<User | null> {
-        return this.userRepository.findOneBy({ email: email });
+    async findOneByEmail(email: string): Promise<SingleUserResponse> {
+        const user = await this.userRepository.findOneBy({ email: email });
+
+        if (!user) {
+            throw new NotFoundException('user not found');
+        }
+
+        return { user: user };
     }
 
-    addOne(userDto: CreateUserDto): Promise<User> {
+    async addOne(userDto: CreateUserDto): Promise<SingleUserResponse> {
         const user = this.userRepository.create(userDto);
 
-        return this.userRepository.save(user);
+        await this.userRepository.save(user);
+
+        return { user: user };
     }
 
     async removeOne(id: string): Promise<void> {

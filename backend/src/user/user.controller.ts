@@ -15,12 +15,12 @@ export class UserController {
     }
 
     @Get('getone/:id')
-    findOne(@Param() params: FindOneParams): Promise<User | null> {
+    findOne(@Param() params: FindOneParams): Promise<SingleUserResponse> {
         return this.service.findOne(params.id);
     }
 
     @Post('add')
-    addUser(@Body() userDto: CreateUserDto): Promise<User> {
+    addUser(@Body() userDto: CreateUserDto): Promise<SingleUserResponse> {
         return this.service.addOne(userDto);
     }
 
