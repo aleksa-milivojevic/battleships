@@ -1,7 +1,8 @@
-import { Body, Controller, Get, NotImplementedException, Param, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, NotImplementedException, Param, Post, Query, UseGuards } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { User } from "./user.entity";
-import { CreateUserDto, FindAllParams, FindAllResponse, FindOneParams, ChangeUsernameDto, SingleUserResponse } from "./user.dto.params";
+import { CreateUserDto, FindAllParams, FindAllResponse, FindOneParams, ChangeUsernameDto, SingleUserResponse, ChangePasswordDto } from "./user.dto.params";
+import { PassportJwtAuthGuard } from "src/auth/guards/passport-jwt.guard";
 
 @Controller('user')
 export class UserController {
@@ -27,5 +28,11 @@ export class UserController {
     @Post('chname')
     changeUsername(@Body() usernameDto: ChangeUsernameDto): Promise<SingleUserResponse> {
         return this.service.changeUsername(usernameDto);
+    }
+
+    @UseGuards(PassportJwtAuthGuard)
+    @Post('chpass')
+    changePassword(@Body() passwordDto: ChangePasswordDto): Promise<SingleUserResponse> {
+        return this.service.changePassword(passwordDto);
     }
 }

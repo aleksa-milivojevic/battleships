@@ -1,9 +1,10 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./user.entity";
 import { Like, Repository } from "typeorm";
-import { ChangeUsernameDto, CreateUserDto, FindAllParams, FindAllResponse, SingleUserResponse } from "./user.dto.params";
+import { ChangePasswordDto, ChangeUsernameDto, CreateUserDto, FindAllParams, FindAllResponse, SingleUserResponse } from "./user.dto.params";
 import { NotFoundError } from "rxjs";
+import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class UserService {
@@ -67,6 +68,26 @@ export class UserService {
         }
         user.username = changeUsername.username;
         
+        await this.userRepository.save(user);
+
+        return { user: user };
+    }
+
+    async changePassword(changePassword: ChangePasswordDto): Promise<SingleUserResponse> {
+        let user = await this.userRepository.findOneBy({ id: changePassword.id })
+
+        if (!user) {
+            throw new NotFoundException('user not found');
+        }
+
+        const matching = await bcrypt.compare(changePassword.password, user.password);
+
+        if (!matching) {
+            throw new UnauthorizedException('passwords not matching');
+        }
+
+        user.password = changePassword.newPassword;
+
         await this.userRepository.save(user);
 
         return { user: user };

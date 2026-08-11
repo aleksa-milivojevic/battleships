@@ -26,18 +26,18 @@ export class AuthService {
     // }
 
     async validate(input: AuthInput): Promise<SignInData | null> {
-        const user = await this.userService.findOneByEmail(input.email);
+        const res = await this.userService.findOneByEmail(input.email);
 
-        if (!user) {
+        if (!res.user) {
             throw new NotFoundException('user not found');
         }
 
-        const matching = await bcrypt.compare(input.password, user.password)
+        const matching = await bcrypt.compare(input.password, res.user.password)
 
         if (matching) {
             return {
-               userId: user.id,
-               username: user.username
+               userId: res.user.id,
+               username: res.user.username
             }
         }
         return null;
@@ -51,19 +51,19 @@ export class AuthService {
 
         const accessToken = await this.jwtService.signAsync(tokenPayload);
 
-        const db_user = await this.userService.findOne(user.userId);
+        const db_res = await this.userService.findOne(user.userId);
 
-        if (!db_user) throw new NotFoundException('user not found in sign');
+        if (!db_res.user) throw new NotFoundException('user not found in sign');
 
         const safeUser: SafeUserDto = {
-            id: db_user.id,
-            email: db_user.email,
-            username: db_user.username,
-            admin: db_user.admin,
-            score: db_user.score,
-            banned: db_user.banned,
-            timeout: db_user.timeout,
-            createdAt: db_user.createdAt
+            id: db_res.user.id,
+            email: db_res.user.email,
+            username: db_res.user.username,
+            admin: db_res.user.admin,
+            score: db_res.user.score,
+            banned: db_res.user.banned,
+            timeout: db_res.user.timeout,
+            createdAt: db_res.user.createdAt
         }
 
         return {
@@ -89,19 +89,19 @@ export class AuthService {
             throw new InternalServerErrorException('bcrypt failed');
         }
 
-        const newUser = await this.userService.addOne({
+        const res = await this.userService.addOne({
             email: user.email,
             username: user.username,
             password: hashed
         })
 
-        if (!newUser) {
+        if (!res.user) {
             throw new InternalServerErrorException('creating user failed');
         }
 
         return await this.sign({
-            userId: newUser.id,
-            username: newUser.username
+            userId: res.user.id,
+            username: res.user.username
         });
     }
 }

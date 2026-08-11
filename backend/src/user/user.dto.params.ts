@@ -36,13 +36,24 @@ export class FindAllResponse {
 }
 
 export class ChangeUsernameDto {
-    @IsString()
+    @IsNumberString()
     id: string;
 
-    @IsString()
+    @IsNotEmpty()
     username: string;
 }
 
 export class SingleUserResponse {
     user: User
+}
+
+export class ChangePasswordDto {
+    @IsNumberString()
+    readonly id: string;
+
+    @IsNotEmpty()
+    readonly password: string;
+
+    @IsNotEmpty()
+    readonly newPassword: string;
 }
