@@ -1,8 +1,7 @@
 import { Body, Controller, Get, NotImplementedException, Param, Post, Query } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { User } from "./user.entity";
-import { CreateUserDto, FindAllParams, FindAllResponse, FindOneParams } from "./user.dto.params";
-import type { ChangeUsernameDto } from "./user.dto.params";
+import { CreateUserDto, FindAllParams, FindAllResponse, FindOneParams, ChangeUsernameDto, SingleUserResponse } from "./user.dto.params";
 
 @Controller('user')
 export class UserController {
@@ -26,7 +25,7 @@ export class UserController {
     }
 
     @Post('chname')
-    changeUsername(@Body() usernameDto: ChangeUsernameDto): Promise<User> {
+    changeUsername(@Body() usernameDto: ChangeUsernameDto): Promise<SingleUserResponse> {
         return this.service.changeUsername(usernameDto);
     }
 }

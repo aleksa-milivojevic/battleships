@@ -42,3 +42,7 @@ export class ChangeUsernameDto {
     @IsString()
     username: string;
 }
+
+export class SingleUserResponse {
+    user: User
+}

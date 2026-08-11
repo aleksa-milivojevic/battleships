@@ -28,6 +28,7 @@ export class UserService {
     selectedUser = signal<User | null>(null);
 
     private updateList(updatedUser: User) {
+        console.log(updatedUser);
         this._users.update(users => users.map(u => u.id === updatedUser.id ? updatedUser : u));
         if (this.selectedUser()?.id === updatedUser.id) {
             this.selectedUser.set(updatedUser);
