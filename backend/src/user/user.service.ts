@@ -48,6 +48,10 @@ export class UserService {
         return { user: user };
     }
 
+    async checkExisting(email: string): Promise<boolean> {
+        return (await this.userRepository.findOneBy({ email: email })) !== null;
+    }
+
     async addOne(userDto: CreateUserDto): Promise<SingleUserResponse> {
         const user = this.userRepository.create(userDto);
 

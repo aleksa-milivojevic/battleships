@@ -73,9 +73,9 @@ export class AuthService {
     }
 
     async signIn(user: SignInInput): Promise<AuthResult> {
-        const existing = await this.userService.findOneByEmail(user.email);
+        const existing = await this.userService.checkExisting(user.email);
         if (existing) {
-            throw new ConflictException();
+            throw new ConflictException('email in use');
         }
         const saltRounds = Number(process.env.SALT_ROUNDS) || 10;
 
