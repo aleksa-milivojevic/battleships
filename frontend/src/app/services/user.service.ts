@@ -66,4 +66,16 @@ export class UserService {
             tap(res => this.authService.updateSelf(res.user))
         )
     }
+
+    changePassword(id: string, password: string, newPassword: string): Observable<{ user: User }> {
+        return this.http.post<{ user: User }>(
+            `${this.apiUrl}/chpass`,
+            { id: id, password: password, newPassword: newPassword },
+            { withCredentials: true }
+        ).pipe(
+            tap(res => this.updateList(res.user))
+        ).pipe(
+            tap(res => this.authService.updateSelf(res.user))
+        )
+    }
 }
