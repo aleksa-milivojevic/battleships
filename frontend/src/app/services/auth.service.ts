@@ -40,7 +40,7 @@ export class AuthService {
     }
 
     private handleAuthResponse(response: AuthResponse): void {
-        console.log(`auth response: ${response}`);
+        console.log(`auth response: ${response.user.score}`);
         
         this._user.set(response.user);
 

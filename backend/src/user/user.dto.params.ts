@@ -36,6 +36,9 @@ export class FindAllResponse {
 }
 
 export class ChangeUsernameDto {
-    id: string
-    username: string
+    @IsString()
+    id: string;
+
+    @IsString()
+    username: string;
 }
