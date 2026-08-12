@@ -95,7 +95,7 @@ export class AuthController {
             sameSite: 'lax'
         });
 
-        return;
+        return { message: "Tokens refreshed" };
     }
 
     @UseGuards(PassportJwtAuthGuard)

@@ -10,26 +10,31 @@ export class UserController {
         private readonly service: UserService
     ) {}
 
+    @UseGuards(PassportJwtAuthGuard)
     @Get("getall")
     findAll(@Query() params: FindAllParams): Promise<FindAllResponse> {
         return this.service.findAll(params);
     }
 
+    @UseGuards(PassportJwtAuthGuard)
     @Get('getone/:id')
     findOne(@Param() params: FindOneParams): Promise<SingleUserResponse> {
         return this.service.findOne(params.id);
     }
 
+    @UseGuards(PassportJwtAuthGuard)
     @Post('add')
     addUser(@Body() userDto: CreateUserDto): Promise<SingleUserResponse> {
         return this.service.addOne(userDto);
     }
 
+    @UseGuards(PassportJwtAuthGuard)
     @Post('chname')
     changeUsername(@Body() usernameDto: ChangeUsernameDto): Promise<SingleUserResponse> {
         return this.service.changeUsername(usernameDto);
     }
 
+    @UseGuards(PassportJwtAuthGuard)
     @Post('chpass')
     changePassword(@Body() passwordDto: ChangePasswordDto): Promise<SingleUserResponse> {
         return this.service.changePassword(passwordDto);
