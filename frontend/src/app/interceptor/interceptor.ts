@@ -14,7 +14,8 @@ export class Interceptor implements HttpInterceptor {
     counter = 0;
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        throw next.handle(req).pipe(catchError(x => this.handleAuthError(x)));
+        const authReq = req.clone({ withCredentials: true });
+        throw next.handle(authReq).pipe(catchError(x => this.handleAuthError(x)));
     }
 
     private handleAuthError(err: HttpErrorResponse): Observable<any> {
@@ -35,6 +36,7 @@ export class Interceptor implements HttpInterceptor {
                     })
                 }
             })
+            return of("attempting to refresh tokens");
         }
         else {
             this.counter = 0;

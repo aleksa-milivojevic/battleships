@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, NotImplementedException, Post, Req, Request, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, HttpStatus, NotImplementedException, Post, Req, Request, Res, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { AuthGuard } from "./guards/auth.guard";
 import { PassportLocalGuard } from "./guards/passport-local.guard";
@@ -6,6 +6,7 @@ import { PassportJwtAuthGuard } from "./guards/passport-jwt.guard";
 import { RawSqlResultsToEntityTransformer } from "typeorm/query-builder/transformer/RawSqlResultsToEntityTransformer.js";
 import { SignInInput } from "./auth.dto";
 import { RefreshAuthGuard } from "./guards/refresh-jwt.guard";
+import type { Response } from "express";
 
 @Controller('auth')
 export class AuthController {
@@ -28,8 +29,25 @@ export class AuthController {
     @HttpCode(HttpStatus.OK)
     @Post('login')
     @UseGuards(PassportLocalGuard)
-    login(@Request() request) {
-        return this.authService.sign(request.user);
+    async login(
+        @Request() request,
+        @Res({ passthrough: true }) response: Response
+    ) {
+        const result = await this.authService.sign(request.user);
+
+        response.cookie("accessToken", result.accessToken, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'lax'
+        });
+
+        response.cookie("refreshToken", result.refreshToken, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'lax'
+        });
+
+        return { user: result.user };
     }
 
     @UseGuards(PassportJwtAuthGuard)
@@ -39,14 +57,45 @@ export class AuthController {
     }
 
     @Post('signin')
-    signin(@Body() input: {email: string, username: string, password: string}) {
-        return this.authService.signIn(input);
+    async signin(
+        @Body() input: {email: string, username: string, password: string},
+        @Res({ passthrough: true }) response: Response
+    ) {
+        const result = await this.authService.signIn(input);
+        
+        response.cookie("accessToken", result.accessToken, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'lax'
+        });
+
+        response.cookie("refreshToken", result.refreshToken, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'lax'
+        });
+
+        return { user: result.user };
     }
 
     @UseGuards(RefreshAuthGuard)
     @Get('refresh')
-    refreshToken(@Req() req) {
-        return this.authService.refreshToken(req.user);
+    async refreshToken(@Req() req, @Res() response: Response) {
+        const result = await this.authService.refreshToken(req.user);
+
+        response.cookie("accessToken", result.accessToken, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'lax'
+        });
+
+        response.cookie("refreshToken", result.refreshToken, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'lax'
+        });
+
+        return;
     }
 
     @UseGuards(PassportJwtAuthGuard)
