@@ -32,5 +32,6 @@ export type SignInInput = {
 }
 
 export type RefreshResponse = {
-    accessToken: string
+    accessToken: string,
+    refreshToken: string
 }

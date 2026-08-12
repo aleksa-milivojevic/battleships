@@ -3,8 +3,8 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./user.entity";
 import { Like, Repository } from "typeorm";
 import { ChangePasswordDto, ChangeUsernameDto, CreateUserDto, FindAllParams, FindAllResponse, SingleUserResponse } from "./user.dto.params";
-import { NotFoundError } from "rxjs";
 import * as bcrypt from "bcrypt";
+import * as argon from "argon2";
 
 @Injectable()
 export class UserService {
@@ -101,5 +101,15 @@ export class UserService {
         await this.userRepository.save(user);
 
         return { user: user };
+    }
+
+    async updateRefreshToken(id: string, token: string | null) {
+        if (token) {
+            const hashed = await argon.hash(token);
+            return await this.userRepository.update({ id: id }, { refreshToken: hashed });
+        }
+        else {
+            return await this.userRepository.update({ id: id }, { refreshToken: token });
+        }
     }
 }

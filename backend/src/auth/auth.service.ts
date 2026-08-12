@@ -3,6 +3,7 @@ import { AuthInput, AuthResult, RefreshResponse, SafeUserDto, SignInData, SignIn
 import { UserService } from "src/user/user.service";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcrypt";
+import * as argon from "argon2";
 import { ConfigService } from "@nestjs/config";
 import type { ConfigType } from "@nestjs/config";
 import refreshJwtConfig from "./config/refresh-jwt.config";
@@ -53,11 +54,11 @@ export class AuthService {
         }
 
         const accessToken = await this.jwtService.signAsync(tokenPayload);
-
         const refreshToken = await this.jwtService.signAsync(tokenPayload, this.refreshTokenConfig);
 
-        const db_res = await this.userService.findOne(user.userId);
+        await this.userService.updateRefreshToken(user.userId, refreshToken);
 
+        const db_res = await this.userService.findOne(user.userId);
         if (!db_res.user) throw new NotFoundException('user not found in sign');
 
         const safeUser: SafeUserDto = {
@@ -118,7 +119,33 @@ export class AuthService {
         }
 
         const accessToken = await this.jwtService.signAsync(tokenPayload);
+        const refreshToken = await this.jwtService.signAsync(tokenPayload, this.refreshTokenConfig);
 
-        return { accessToken: accessToken };
+        await this.userService.updateRefreshToken(user.userId, refreshToken);
+
+        return { 
+            accessToken: accessToken,
+            refreshToken: refreshToken
+        };
+    }
+
+    async validateRefreshToken(id: string, refreshToken: string) {
+        const user = (await this.userService.findOne(id)).user;
+        if (!user || !user.refreshToken) {
+            throw new UnauthorizedException('invalid refresh token');
+        }
+        
+        const matching = await argon.verify(user.refreshToken, refreshToken);
+        console.log(matching);
+
+        if (!matching) {
+            throw new UnauthorizedException('invalid refresh token');
+        }
+
+        return true;
+    }
+
+    async logout(id: string) {
+        await this.userService.updateRefreshToken(id, null);
     }
 }

@@ -72,4 +72,10 @@ export class User {
         default: () => "CURRENT_TIMESTAMP"
     })
     createdAt: Date;
+
+    @Column({
+        type: "varchar",
+        nullable: true
+    })
+    refreshToken: string | null;
 }

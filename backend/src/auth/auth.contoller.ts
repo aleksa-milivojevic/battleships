@@ -48,4 +48,11 @@ export class AuthController {
     refreshToken(@Req() req) {
         return this.authService.refreshToken(req.user);
     }
+
+    @UseGuards(PassportJwtAuthGuard)
+    @Post('logout')
+    logout(@Req() req) {
+        this.authService.logout(req.user.id);
+        
+    }
 }
