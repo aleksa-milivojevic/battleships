@@ -5,6 +5,7 @@ import { User } from "./user.service";
 import { Observable, tap } from "rxjs";
 import { StorageService } from "./storage.service";
 import { withIncrementalHydration } from "@angular/platform-browser";
+import { CookieService } from "ngx-cookie-service";
 
 interface LoginRequest {
     email: string,
@@ -30,28 +31,31 @@ export class AuthService {
     private apiUrl = `${environment.apiUrl}/auth`
     private http = inject(HttpClient);
     private storage = inject(StorageService);
+    private cookies = inject(CookieService);    
     
     private _user = signal<User | null>(this.storage.getItem<User>('SELF'));
     readonly user = this._user.asReadonly();
 
-    private _accessToken = signal<string | null>(this.storage.getItem<string>('ACCESS_TOKEN'));
-    private _refreshToken = signal<string | null>(this.storage.getItem<string>('REFRESH_TOKEN'));
+    // private _accessToken = signal<string | null>(this.storage.getItem<string>('ACCESS_TOKEN'));
+    // private _refreshToken = signal<string | null>(this.storage.getItem<string>('REFRESH_TOKEN'));
 
     constructor() {
-        this.storage.setItem('SELF', this._user);
-        this.storage.setItem('ACCESS_TOKEN', this._accessToken);
+        // this.storage.setItem('SELF', this._user);
+        // this.storage.setItem('ACCESS_TOKEN', this._accessToken);
     }
 
     private handleAuthResponse(response: AuthResponse): void {
         this._user.set(response.user);
-
-        this._accessToken.set(response.accessToken);
-
-        this._refreshToken.set(response.refreshToken);
-
         this.storage.setItem('SELF', this._user());
-        this.storage.setItem('ACCESS_TOKEN', this._accessToken());
-        this.storage.setItem('REFRESH_TOKEN', this._refreshToken());
+
+        this.cookies.set("accessToken", response.accessToken);
+        this.cookies.set("refreshToken", response.refreshToken);
+
+        // this._accessToken.set(response.accessToken);
+        // this._refreshToken.set(response.refreshToken);
+
+        // this.storage.setItem('ACCESS_TOKEN', this._accessToken());
+        // this.storage.setItem('REFRESH_TOKEN', this._refreshToken());
     }
     
     login(credentials: LoginRequest): Observable<AuthResponse> {
@@ -78,8 +82,11 @@ export class AuthService {
             `${this.apiUrl}/refresh`,
             { withCredentials: true }
         ).pipe(
-            // dodaj u cookies nove tokene
-        )
+            tap(res => {
+                this.cookies.set("accessToken", res.accessToken);
+                this.cookies.set("refreshToken", res.refreshToken);
+            })
+        );
     }
 
     logout(): Observable<any> {

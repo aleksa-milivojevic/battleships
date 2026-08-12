@@ -7,11 +7,6 @@ import { Interceptor } from './interceptor/interceptor';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet],
-  providers: [{
-    provide: HTTP_INTERCEPTORS,
-    useClass: Interceptor,
-    multi: true
-  }],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
