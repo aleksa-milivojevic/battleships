@@ -18,6 +18,7 @@ interface SigninRequest {
 
 interface AuthResponse {
     accessToken: string,
+    refreshToken: string,
     user: User
 }
 
@@ -33,6 +34,7 @@ export class AuthService {
     readonly user = this._user.asReadonly();
 
     private _accessToken = signal<string | null>(this.storage.getItem<string>('ACCESS_TOKEN'));
+    private _refreshToken = signal<string | null>(this.storage.getItem<string>('REFRESH_TOKEN'));
 
     constructor() {
         this.storage.setItem('SELF', this._user);
@@ -40,14 +42,15 @@ export class AuthService {
     }
 
     private handleAuthResponse(response: AuthResponse): void {
-        console.log(`auth response: ${response.user.score}`);
-        
         this._user.set(response.user);
 
         this._accessToken.set(response.accessToken);
 
+        this._refreshToken.set(response.refreshToken);
+
         this.storage.setItem('SELF', this._user());
         this.storage.setItem('ACCESS_TOKEN', this._accessToken());
+        this.storage.setItem('REFRESH_TOKEN', this._refreshToken());
     }
     
     login(credentials: LoginRequest): Observable<AuthResponse> {
