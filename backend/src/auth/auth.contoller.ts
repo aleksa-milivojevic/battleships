@@ -52,7 +52,6 @@ export class AuthController {
     @UseGuards(PassportJwtAuthGuard)
     @Post('logout')
     logout(@Req() req) {
-        this.authService.logout(req.user.id);
-        
+        this.authService.logout(req.user);
     }
 }

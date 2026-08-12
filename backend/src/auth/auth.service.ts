@@ -134,7 +134,7 @@ export class AuthService {
         if (!user || !user.refreshToken) {
             throw new UnauthorizedException('invalid refresh token');
         }
-        
+
         const matching = await argon.verify(user.refreshToken, refreshToken);
         console.log(matching);
 
@@ -145,7 +145,7 @@ export class AuthService {
         return true;
     }
 
-    async logout(id: string) {
-        await this.userService.updateRefreshToken(id, null);
+    async logout(user: SignInData) {
+        await this.userService.updateRefreshToken(user.userId, null);
     }
 }

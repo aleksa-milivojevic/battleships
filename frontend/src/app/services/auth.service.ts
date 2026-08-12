@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { User } from "./user.service";
 import { Observable, tap } from "rxjs";
 import { StorageService } from "./storage.service";
+import { withIncrementalHydration } from "@angular/platform-browser";
 
 interface LoginRequest {
     email: string,
@@ -70,6 +71,22 @@ export class AuthService {
             { email: credentials.email, username: credentials.username, password: credentials.password },
             { withCredentials: true }
         )
+    }
+
+    refreshToken(): Observable<{ accessToken: string, refreshToken: string}> {
+        return this.http.get<{ accessToken: string, refreshToken: string }>(
+            `${this.apiUrl}/refresh`,
+            { withCredentials: true }
+        ).pipe(
+            // dodaj u cookies nove tokene
+        )
+    }
+
+    logout(): Observable<any> {
+        return this.http.post<any>(
+            `${this.apiUrl}/logout`,
+            { withCredentials: true }
+        ).
     }
 
     updateSelf(updatedSelf: User) {
