@@ -4,7 +4,6 @@ import { HttpClient } from "@angular/common/http";
 import { User } from "./user.service";
 import { Observable, tap } from "rxjs";
 import { StorageService } from "./storage.service";
-import { withIncrementalHydration } from "@angular/platform-browser";
 import { CookieService } from "ngx-cookie-service";
 
 interface LoginRequest {
@@ -93,7 +92,12 @@ export class AuthService {
         return this.http.post<any>(
             `${this.apiUrl}/logout`,
             { withCredentials: true }
-        ).
+        ).pipe(
+            tap(() => {
+                this.cookies.delete("accessToken");
+                this.cookies.delete("refreshToken");
+            })
+        );
     }
 
     updateSelf(updatedSelf: User) {
