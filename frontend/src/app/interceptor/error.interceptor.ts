@@ -1,15 +1,29 @@
 import { HttpErrorResponse, HttpInterceptorFn } from "@angular/common/http";
 import { catchError, retry, tap, throwError } from "rxjs";
+import { AuthService } from "../services/auth.service";
+import { inject } from "@angular/core";
+import { Router } from "@angular/router";
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
-    console.log("error interceptor");
+    const authService = inject(AuthService);
+    const router = inject(Router);
+
+    let shouldKickOut = false;
+    
     return next(req).pipe(
-        retry({ count: 2, delay: 1000 }),
+        // retry({ count: 2, delay: 1000 }),
         tap({
             error: (error: HttpErrorResponse) => {
-                // error side efects
-                if ([500, 404].includes(error.status)) {
-                    //specificno za 500 i 404 ili sa vise interceptora
+                if ([401].includes(error.status)) {
+                    if (shouldKickOut) {
+                        shouldKickOut = false;
+                        authService.clearStorage();
+                        router.navigate(['/login']);
+                        return;
+                    }
+
+                    shouldKickOut = true;
+                    authService.refreshToken();
                 }
             }
         })

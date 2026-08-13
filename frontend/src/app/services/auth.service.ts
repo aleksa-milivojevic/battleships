@@ -85,4 +85,8 @@ export class AuthService {
         this._user.set(updatedSelf);
         this.storage.setItem('SELF', updatedSelf);
     }
+
+    clearStorage() {
+        this.storage.removeItem('SELF');
+    }
 }
