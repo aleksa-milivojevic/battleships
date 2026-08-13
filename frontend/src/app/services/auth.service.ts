@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from "@angular/core";
+import { Injectable, computed, inject, signal } from "@angular/core";
 import { environment } from "../../environments/environment.development";
 import { HttpClient } from "@angular/common/http";
 import { User } from "./user.service";
@@ -28,6 +28,9 @@ export class AuthService {
     
     private _user = signal<User | null>(this.storage.getItem<User>('SELF'));
     readonly user = this._user.asReadonly();
+
+    isAuthenticated = computed(() => !!this._user());
+    isAdmin = computed(() => this._user()?.admin);
 
     constructor() {
         this.storage.setItem('SELF', this._user);
