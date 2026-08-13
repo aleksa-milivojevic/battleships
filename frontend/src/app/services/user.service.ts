@@ -51,6 +51,7 @@ export class UserService {
                 } else {
                     this._users.update(current => [...current, ...res.users || []])
                 }
+                console.log(res);
             })
         );
     }

@@ -29,4 +29,14 @@ export class StorageService {
             return null;
         }
     }
+
+    removeItem(key: string): void {
+        try {
+            localStorage.removeItem(key);
+        }
+        catch (err) {
+            console.log(`Error removing ${key} from storage`);
+            console.error(err);
+        }
+    }
 }

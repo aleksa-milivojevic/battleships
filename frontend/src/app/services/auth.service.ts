@@ -76,6 +76,8 @@ export class AuthService {
         return this.http.post<any>(
             `${this.apiUrl}/logout`,
             { withCredentials: true }
+        ).pipe(
+            tap(() => this.storage.removeItem("SELF"))
         );
     }
 
