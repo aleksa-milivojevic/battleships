@@ -38,6 +38,51 @@ export class UserService {
         return { user: user };
     }
 
+    async findOneWithPassword(id: string): Promise<User> {
+        const user = await this.userRepository
+                                .createQueryBuilder('user')
+                                .addSelect('user.password')
+                                .where('user.id = :id', { id })
+                                .getOne();
+        
+        if (!user) {
+            throw new NotFoundException('user not found');
+        }
+
+
+        return user;
+    }
+
+    async findOneWithToken(id: string): Promise<User> {
+        const user = await this.userRepository
+                                .createQueryBuilder('user')
+                                .addSelect('user.refreshToken')
+                                .where('user.id = :id', { id })
+                                .getOne();
+        
+        if (!user) {
+            throw new NotFoundException('user not found');
+        }
+
+
+        return user;
+    }
+
+    async findOneByEmailWithPassword(email: string): Promise<User> {
+        const user = await this.userRepository
+                                .createQueryBuilder('user')
+                                .addSelect('user.password')
+                                .where('user.email = :email', { email })
+                                .getOne();
+        
+        if (!user) {
+            throw new NotFoundException('user not found');
+        }
+
+
+        return user;
+    }
+
     async findOneByEmail(email: string): Promise<SingleUserResponse> {
         const user = await this.userRepository.findOneBy({ email: email });
 
@@ -48,8 +93,12 @@ export class UserService {
         return { user: user };
     }
 
-    async checkExisting(email: string): Promise<boolean> {
+    async checkExistingEmail(email: string): Promise<boolean> {
         return (await this.userRepository.findOneBy({ email: email })) !== null;
+    }
+
+    async checkExistingUsername(username: string): Promise<boolean> {
+        return (await this.userRepository.findOneBy({ username: username })) !== null;
     }
 
     async addOne(userDto: CreateUserDto): Promise<SingleUserResponse> {
@@ -78,11 +127,7 @@ export class UserService {
     }
 
     async changePassword(changePassword: ChangePasswordDto): Promise<SingleUserResponse> {
-        let user = await this.userRepository.findOneBy({ id: changePassword.id })
-
-        if (!user) {
-            throw new NotFoundException('user not found');
-        }
+        let user = (await this.findOneWithPassword(changePassword.id));
 
         const matching = await bcrypt.compare(changePassword.password, user.password);
 
@@ -96,9 +141,7 @@ export class UserService {
 
         var hashed = await bcrypt.hash(changePassword.newPassword, salt);
 
-        user.password = hashed;
-
-        await this.userRepository.save(user);
+        await this.userRepository.update({ id: user.id }, { password: hashed });
 
         return { user: user };
     }

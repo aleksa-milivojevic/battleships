@@ -24,10 +24,12 @@ export class User {
     })
     username: string;
 
+
     @Column({
         type: "varchar",
         length: 254,
-        nullable: false
+        nullable: false,
+        select: false
     })
     password: string;
 
@@ -75,7 +77,8 @@ export class User {
 
     @Column({
         type: "varchar",
-        nullable: true
+        nullable: true,
+        select: false
     })
     refreshToken: string | null;
 }

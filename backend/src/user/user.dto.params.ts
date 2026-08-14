@@ -2,6 +2,7 @@ import { IsEmail, IsNotEmpty, IsNumber, IsNumberString, IsString } from "class-v
 import e from "express";
 import { User } from "./user.entity";
 import { Transform } from "class-transformer";
+import { SafeUserDto } from "src/auth/auth.dto";
 
 export class CreateUserDto {
     @IsEmail()
@@ -31,7 +32,7 @@ export class FindOneParams {
 }
 
 export class FindAllResponse {
-    users: User[];
+    users: SafeUserDto[];
     more: boolean;
 }
 
@@ -44,7 +45,7 @@ export class ChangeUsernameDto {
 }
 
 export class SingleUserResponse {
-    user: User
+    user: SafeUserDto
 }
 
 export class ChangePasswordDto {

@@ -30,18 +30,18 @@ export class AuthService {
     // }
 
     async validate(input: AuthInput): Promise<SignInData | null> {
-        const res = await this.userService.findOneByEmail(input.email);
+        const user = await this.userService.findOneByEmailWithPassword(input.email);
 
-        if (!res.user) {
+        if (!user) {
             throw new NotFoundException('user not found');
         }
 
-        const matching = await bcrypt.compare(input.password, res.user.password)
+        const matching = await bcrypt.compare(input.password, user.password)
 
         if (matching) {
             return {
-               userId: res.user.id,
-               username: res.user.username
+               userId: user.id,
+               username: user.username
             }
         }
         return null;
@@ -80,9 +80,13 @@ export class AuthService {
     }
 
     async signIn(user: SignInInput): Promise<AuthResult> {
-        const existing = await this.userService.checkExisting(user.email);
-        if (existing) {
-            throw new ConflictException('email in use');
+        const existingEmail = await this.userService.checkExistingEmail(user.email);
+        const existingUsername = await this.userService.checkExistingUsername(user.username);
+        if (existingEmail) {
+            throw new ConflictException('email already in use');
+        }
+        if (existingUsername) {
+            throw new ConflictException('username already in use');
         }
         const saltRounds = Number(process.env.SALT_ROUNDS) || 10;
 
@@ -130,7 +134,7 @@ export class AuthService {
     }
 
     async validateRefreshToken(id: string, refreshToken: string) {
-        const user = (await this.userService.findOne(id)).user;
+        const user = await this.userService.findOneWithToken(id);
         if (!user || !user.refreshToken) {
             throw new UnauthorizedException('invalid refresh token');
         }
