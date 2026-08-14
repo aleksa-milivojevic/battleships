@@ -1,10 +1,11 @@
-import { Injectable, computed, inject, signal } from "@angular/core";
+import { Injectable, OnDestroy, PLATFORM_ID, computed, inject, signal } from "@angular/core";
 import { environment } from "../../environments/environment.development";
 import { HttpClient } from "@angular/common/http";
 import { User } from "./user.service";
 import { Observable, tap } from "rxjs";
 import { StorageService } from "./storage.service";
 import { CookieService } from "ngx-cookie-service";
+import { isPlatformBrowser } from "@angular/common";
 
 interface LoginRequest {
     email: string,
@@ -20,11 +21,15 @@ interface SigninRequest {
 @Injectable({
     providedIn: 'root'
 })
-export class AuthService {
+export class AuthService implements OnDestroy {
     private apiUrl = `${environment.apiUrl}/auth`
     private http = inject(HttpClient);
     private storage = inject(StorageService);
-    private cookies = inject(CookieService);    
+
+    private platformId = inject(PLATFORM_ID);
+    private isBrowser = isPlatformBrowser(this.platformId);
+
+    private refreshTimer?: any;
     
     private _user = signal<User | null>(this.storage.getItem<User>('SELF'));
     readonly user = this._user.asReadonly();
@@ -36,9 +41,14 @@ export class AuthService {
         this.storage.setItem('SELF', this._user);
     }
 
+    ngOnDestroy(): void {
+        this.stopRefreshTimer();
+    }
+
     private handleAuthResponse(user: User): void {
         this._user.set(user);
         this.storage.setItem('SELF', this._user());
+        this.startRefreshTimer();
     }
     
     login(credentials: LoginRequest): Observable<{ user: User }> {
@@ -62,6 +72,7 @@ export class AuthService {
     }
 
     refreshToken(): Observable<{ message: string }> {
+        console.log("refreshing tokens");
         return this.http.get<{ message: string }>(
             `${this.apiUrl}/refresh`,
             { withCredentials: true }
@@ -77,7 +88,7 @@ export class AuthService {
             `${this.apiUrl}/logout`,
             { withCredentials: true }
         ).pipe(
-            tap(() => this.storage.removeItem("SELF"))
+            tap(() => this.clearLocal())
         );
     }
 
@@ -86,7 +97,28 @@ export class AuthService {
         this.storage.setItem('SELF', updatedSelf);
     }
 
-    clearStorage() {
+    clearLocal() {
+        this.stopRefreshTimer();
         this.storage.removeItem('SELF');
+        this._user.set(null);
+    }
+
+    private startRefreshTimer() {
+        this.stopRefreshTimer();
+        if (!this.isBrowser) return;
+
+        const timespan_milis = 60 * 60 * 1000;
+        this.refreshTimer = setInterval(() => {
+            this.refreshToken().subscribe({
+                error: () => this.clearLocal()
+            });
+        }, timespan_milis);
+    }
+
+    private stopRefreshTimer() {
+        if (this.refreshTimer) {
+            clearInterval(this.refreshTimer);
+            this.refreshTimer = undefined;
+        }
     }
 }

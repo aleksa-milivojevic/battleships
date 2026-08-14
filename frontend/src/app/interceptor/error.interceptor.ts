@@ -15,9 +15,10 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         tap({
             error: (error: HttpErrorResponse) => {
                 if ([401].includes(error.status)) {
+                    console.log("401 interceptor");
                     if (shouldKickOut) {
                         shouldKickOut = false;
-                        authService.clearStorage();
+                        authService.clearLocal();
                         router.navigate(['/login']);
                         return;
                     }
