@@ -5,13 +5,13 @@ import { MainComponent } from './pages/main/main.component';
 import { SigninComponent } from './pages/signin/sign-in.component';
 import { LeaderboardComponent } from './pages/leaderboard/leaderboard.component';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { UserGuard } from './guards/auth.guard';
+import { AnonGuard, UserGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
-    { path: 'home', component: HomeComponent },
-    { path: 'login', component: LoginComponent },
-    { path: 'signin', component: SigninComponent },
+    { path: 'home', component: HomeComponent, canActivate: [AnonGuard]},
+    { path: 'login', component: LoginComponent, canActivate: [AnonGuard]},
+    { path: 'signin', component: SigninComponent, canActivate: [AnonGuard]},
     { path: 'main', component: MainComponent, canActivate: [UserGuard]},
     { path: 'leaderboard', component: LeaderboardComponent, canActivate: [UserGuard]},
     { path: 'profile', component: ProfileComponent, canActivate: [UserGuard]},
