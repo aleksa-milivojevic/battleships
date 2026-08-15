@@ -58,3 +58,11 @@ export class ChangePasswordDto {
     @IsNotEmpty()
     readonly newPassword: string;
 }
+
+export class DeleteUserDto {
+    @IsNumberString()
+    readonly id: string;
+
+    @IsNotEmpty()
+    readonly password: string;
+}

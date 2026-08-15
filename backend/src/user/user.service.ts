@@ -1,8 +1,8 @@
-import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./user.entity";
 import { Like, Repository } from "typeorm";
-import { ChangePasswordDto, ChangeUsernameDto, CreateUserDto, FindAllParams, FindAllResponse, SingleUserResponse } from "./user.dto.params";
+import { ChangePasswordDto, ChangeUsernameDto, CreateUserDto, DeleteUserDto, FindAllParams, FindAllResponse, SingleUserResponse } from "./user.dto.params";
 import * as bcrypt from "bcrypt";
 import * as argon from "argon2";
 
@@ -154,5 +154,23 @@ export class UserService {
         else {
             return await this.userRepository.update({ id: id }, { refreshToken: token });
         }
+    }
+
+    async deleteOne(deleteDto: DeleteUserDto) {
+        const user = await this.findOneWithPassword(deleteDto.id);
+
+        const matching = await bcrypt.compare(deleteDto.password, user.password);
+
+        if (!matching) {
+            throw new BadRequestException("password is incorrect");
+        }
+
+        const result = await this.userRepository.delete({ id: user.id });
+
+        if (result.affected === 1) {
+            return { message: 'Deletion succesfull' };
+        }
+
+        throw new InternalServerErrorException(`Server error, rows affected: ${result.affected}`);
     }
 }
