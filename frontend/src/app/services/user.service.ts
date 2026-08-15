@@ -79,4 +79,13 @@ export class UserService {
             tap(res => this.authService.updateSelf(res.user))
         )
     }
+
+    deleteAccount(id: string, password: string): Observable<any> {
+        return this.http.delete<any>(
+            `${this.apiUrl}/delete`,
+            { withCredentials: true, body: { id: id, password: password } }
+        ).pipe(
+            tap(() => this.authService.clearLocal())
+        );
+    }
 }

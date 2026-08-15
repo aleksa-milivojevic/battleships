@@ -15,7 +15,7 @@
         </div>
         <div class="btns">
             <button class="password-btn" (click)="toggleChPassScreen()">Change password</button>
-            <button class="delete-btn">Delete account</button>
+            <button class="delete-btn" (click)="toggleDelScreen()">Delete account</button>
         </div>
     </div>
 </div>
@@ -53,6 +53,23 @@
             <div class="overlay-btns">
                 <button class="cancel" [disabled]="loading()" (click)="toggleChPassScreen()">Cancel</button>
                 <button class="confirm" [disabled]="!validPass() || loading()" (click)="onChPass()">Confirm</button>
+            </div>
+        </div>
+    </div>
+}
+
+@if (showDelScreen()) {
+    <div class="overlay" (click)="toggleDelScreen()">
+        <div class="overlay-div" (click)="$event.stopPropagation()">
+            <input name="password" type="password" class="password" placeholder="password" [(ngModel)]="delPassword">
+            @if (errorMessage() !== '') {
+                <label class="error-msg">{{ errorMessage() }}</label>
+            } @else {
+                <label class="fill"></label>
+            }
+            <div class="overlay-btns">
+                <button class="cancel" [disabled]="loading()" (click)="toggleDelScreen()">Cancel</button>
+                <button class="confirm" [disabled]="!validDel() || loading()" (click)="onDel()">Confirm</button>
             </div>
         </div>
     </div>
