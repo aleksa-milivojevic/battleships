@@ -1,7 +1,4 @@
 import { IsEmail, IsNotEmpty, IsNumber, IsNumberString, IsString } from "class-validator";
-import e from "express";
-import { User } from "./user.entity";
-import { Transform } from "class-transformer";
 import { SafeUserDto } from "src/auth/auth.dto";
 
 export class CreateUserDto {

@@ -1,22 +1,18 @@
 import { User } from "src/user/user.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("Matches")
 export class Match {
     @PrimaryGeneratedColumn()
     id: string;
 
-    @Column({
-        type: "int"
-    })
     @ManyToOne(() => User)
-    winner: number;
+    @JoinColumn({ name: 'winner' })
+    winner: User;
 
-    @Column({
-        type: "int"
-    })
     @ManyToOne(() => User)
-    looser: number;
+    @JoinColumn({ name: 'looser' })
+    looser: User;
 
     @Column({
         type: "int",
