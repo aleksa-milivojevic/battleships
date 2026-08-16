@@ -106,7 +106,7 @@ export class MainComponent implements OnInit {
 
     this.loading.set(true);
 
-    this.matchService.getAllMatches(this.m_round(), this.count).subscribe({
+    this.matchService.getAllMatches(this.m_round(), this.count, this.self()?.id!).subscribe({
       next: (res) => {
         this.m_round.update(r => r + 1);
         this.matches.update(current => [...current, ...res.matches]);

@@ -22,10 +22,11 @@ export class MatchService {
     private _matches = signal<Match[]>([]);
     readonly matches = this._matches.asReadonly();
 
-    getAllMatches(round: number = 1, count: number = 10): Observable<{ matches: Match[], more: boolean }> {
+    getAllMatches(round: number = 1, count: number = 10, userId: string): Observable<{ matches: Match[], more: boolean }> {
         const params = new HttpParams()
             .set('round', round.toString())
             .set('count', count.toString())
+            .set('user', userId);
 
         return this.http.get<{ matches: Match[], more: boolean }>(
             `${this.apiUrl}/getall`,

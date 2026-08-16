@@ -17,6 +17,13 @@ export class MatchService {
                 winner: true,
                 looser: true,
             },
+            where: [
+                { winner: { id: params.user } },
+                { looser: { id: params.user } }
+            ],
+            order: {
+                createdAt: 'ASC'
+            }
         });
 
         list = list.slice((params.round-1)*params.count, params.round*params.count);

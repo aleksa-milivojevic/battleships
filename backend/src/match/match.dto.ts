@@ -1,4 +1,4 @@
-import { IsNumber, IsNumberString, IsString } from "class-validator";
+import { IsNumber, IsNumberString } from "class-validator";
 import { Match } from "./match.entity";
 
 export class FindAllParams {
@@ -7,6 +7,9 @@ export class FindAllParams {
 
     @IsNumber()
     count: number;
+
+    @IsNumberString()
+    user: string
 }
 
 export class FindAllResponse {
