@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./user.entity";
-import { Like, Repository } from "typeorm";
+import { Like, Not, Repository } from "typeorm";
 import { ChangePasswordDto, ChangeUsernameDto, CreateUserDto, DeleteUserDto, FindAllParams, FindAllResponse, SingleUserResponse } from "./user.dto.params";
 import * as bcrypt from "bcrypt";
 import * as argon from "argon2";
@@ -16,7 +16,8 @@ export class UserService {
     async findAll(params: FindAllParams): Promise<FindAllResponse> {
         let users = await this.userRepository.find({
             where: {
-                username: Like(`%${params.search}%`)
+                username: Like(`%${params.search}%`),
+                id: Not(params.id)
             }
         });
 

@@ -61,7 +61,7 @@ export class MainComponent implements OnInit {
 
     this.loading.set(true);
 
-    this.userService.getAllUsers(this.u_round(), this.count,  this.search()).subscribe({
+    this.userService.getAllUsers(this.self()?.id!, this.u_round(), this.count,  this.search()).subscribe({
       next: (res) => {
         this.u_round.update(r => r + 1);
         this.users.update(current => [...current, ...res.users]);

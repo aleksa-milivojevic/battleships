@@ -35,8 +35,9 @@ export class UserService {
         }
     }
 
-    getAllUsers(round: number = 1, count: number = 10, search: string = ''): Observable<{ users: User[], more: boolean }> {
+    getAllUsers(id: string, round: number = 1, count: number = 10, search: string = ''): Observable<{ users: User[], more: boolean }> {
         const params = new HttpParams()
+            .set('id', id)
             .set('round', round.toString())
             .set('count', count.toString())
             .set('search', search);

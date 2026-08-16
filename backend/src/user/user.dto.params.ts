@@ -13,6 +13,9 @@ export class CreateUserDto {
 }
 
 export class FindAllParams {
+    @IsNumberString()
+    id: string;
+
     @IsNumber()
     round: number;
 

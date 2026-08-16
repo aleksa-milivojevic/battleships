@@ -2,6 +2,7 @@ import { Component, inject, signal } from "@angular/core";
 import { SidebarComponent } from "../../shared/sidebar/sidebar.component";
 import { User, UserService } from "../../services/user.service";
 import { NgClass } from "@angular/common";
+import { AuthService } from "../../services/auth.service";
 
 
 @Component({
@@ -13,6 +14,9 @@ import { NgClass } from "@angular/common";
 })
 export class LeaderboardComponent {
   private userService = inject(UserService);
+  private authService = inject(AuthService);
+
+  self = this.authService.user;
 
   readonly count = 10;
 
@@ -38,7 +42,7 @@ export class LeaderboardComponent {
 
     this.loading.set(true);
 
-    this.userService.getAllUsers(this.round(), this.count).subscribe({
+    this.userService.getAllUsers(this.self()?.id!, this.round(), this.count).subscribe({
       next: (res) => {
         this.round.update(r => r + 1);
         this.users.update(current => [...current, ...res.users]);
