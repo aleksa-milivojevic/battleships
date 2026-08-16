@@ -44,7 +44,7 @@ export class UserService {
 
         return this.http.get<{ users: User[], more: boolean }>(
             `${this.apiUrl}/getall`,
-            { params: params, withCredentials: true }
+            { params: params }
         ).pipe(
             tap(res => {
                 if (round == 1) {
@@ -64,7 +64,7 @@ export class UserService {
         
         return this.http.get<{ users: User[], more: boolean }>(
             `${this.apiUrl}/leaderboard`,
-            { params: params, withCredentials: true }
+            { params: params }
         ).pipe(
             tap(res => {
                 if (round == 1) {
@@ -79,8 +79,7 @@ export class UserService {
     changeUsername(id: string, username: string): Observable<{ user: User }> {
         return this.http.post<{user: User}>(
             `${this.apiUrl}/chname`,
-            { id: id, username: username },
-            { withCredentials: true }
+            { id: id, username: username }
         ).pipe(
             tap(res => this.updateList(res.user))
         ).pipe(
@@ -91,8 +90,7 @@ export class UserService {
     changePassword(id: string, password: string, newPassword: string): Observable<{ user: User }> {
         return this.http.post<{ user: User }>(
             `${this.apiUrl}/chpass`,
-            { id: id, password: password, newPassword: newPassword },
-            { withCredentials: true }
+            { id: id, password: password, newPassword: newPassword }
         ).pipe(
             tap(res => this.updateList(res.user))
         ).pipe(
@@ -103,7 +101,7 @@ export class UserService {
     deleteAccount(id: string, password: string): Observable<any> {
         return this.http.delete<any>(
             `${this.apiUrl}/delete`,
-            { withCredentials: true, body: { id: id, password: password } }
+            { body: { id: id, password: password } }
         ).pipe(
             tap(() => this.authService.clearLocal())
         );

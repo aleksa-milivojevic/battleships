@@ -30,7 +30,7 @@ export class MatchService {
 
         return this.http.get<{ matches: Match[], more: boolean }>(
             `${this.apiUrl}/getall`,
-            { params: params, withCredentials: true }
+            { params: params }
         ).pipe(
             tap(res => {
                 if (round == 1) {
@@ -46,8 +46,7 @@ export class MatchService {
     saveMatch(winner: string, looser: string, points: number): Observable<Match> {
         return this.http.post<Match>(
             `${this.apiUrl}/add`,
-            { winner: winner, looser: looser, points: points },
-            { withCredentials: true }
+            { winner: winner, looser: looser, points: points }
         );
     }
 }

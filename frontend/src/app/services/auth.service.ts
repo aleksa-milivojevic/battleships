@@ -54,8 +54,7 @@ export class AuthService implements OnDestroy {
     login(credentials: LoginRequest): Observable<{ user: User }> {
         return this.http.post<{ user: User }>(
             `${this.apiUrl}/login`,
-            { email: credentials.email, password: credentials.password },
-            { withCredentials: true }
+            { email: credentials.email, password: credentials.password }
         ).pipe(
             tap(res => this.handleAuthResponse(res.user))
         );
@@ -64,8 +63,7 @@ export class AuthService implements OnDestroy {
     signin(credentials: SigninRequest): Observable<{user: User}> {
         return this.http.post<{user: User}>(
             `${this.apiUrl}/signin`,
-            { email: credentials.email, username: credentials.username, password: credentials.password },
-            { withCredentials: true }
+            { email: credentials.email, username: credentials.username, password: credentials.password }
         ).pipe(
             tap(res => this.handleAuthResponse(res.user))
         )
@@ -74,8 +72,7 @@ export class AuthService implements OnDestroy {
     refreshToken(): Observable<{ message: string }> {
         console.log("refreshing tokens");
         return this.http.get<{ message: string }>(
-            `${this.apiUrl}/refresh`,
-            { withCredentials: true }
+            `${this.apiUrl}/refresh`
         ).pipe(
             tap(res => {
                 console.log(res.message);
@@ -86,7 +83,7 @@ export class AuthService implements OnDestroy {
     logout(): Observable<any> {
         return this.http.post<any>(
             `${this.apiUrl}/logout`,
-            { withCredentials: true }
+            {}
         ).pipe(
             tap(() => this.clearLocal())
         );
@@ -107,7 +104,7 @@ export class AuthService implements OnDestroy {
         this.stopRefreshTimer();
         if (!this.isBrowser) return;
 
-        const timespan_milis = 60 * 60 * 1000;
+        const timespan_milis = 59 * 60 * 1000;
         this.refreshTimer = setInterval(() => {
             this.refreshToken().subscribe({
                 error: () => this.clearLocal()
