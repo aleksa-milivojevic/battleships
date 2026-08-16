@@ -57,6 +57,25 @@ export class UserService {
         );
     }
 
+    getLeaderboard(round: number = 1, count: number = 10): Observable<{ users: User[], more: boolean }> {
+        const params = new HttpParams()
+            .set('round', round.toString())
+            .set('count', count.toString());
+        
+        return this.http.get<{ users: User[], more: boolean }>(
+            `${this.apiUrl}/leaderboard`,
+            { params: params, withCredentials: true }
+        ).pipe(
+            tap(res => {
+                if (round == 1) {
+                    this._users.set(res.users || [])
+                } else {
+                    this._users.update(current => [...current, ...res.users || []])
+                }
+            })
+        )
+    }
+
     changeUsername(id: string, username: string): Observable<{ user: User }> {
         return this.http.post<{user: User}>(
             `${this.apiUrl}/chname`,

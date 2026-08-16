@@ -42,7 +42,7 @@ export class LeaderboardComponent {
 
     this.loading.set(true);
 
-    this.userService.getAllUsers(this.self()?.id!, this.round(), this.count).subscribe({
+    this.userService.getLeaderboard(this.round(), this.count).subscribe({
       next: (res) => {
         this.round.update(r => r + 1);
         this.users.update(current => [...current, ...res.users]);

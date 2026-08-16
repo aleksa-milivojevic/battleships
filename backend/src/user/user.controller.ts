@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, NotImplementedException, Param, Post, Query, UseGuards } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { User } from "./user.entity";
-import { CreateUserDto, FindAllParams, FindAllResponse, FindOneParams, ChangeUsernameDto, SingleUserResponse, ChangePasswordDto, DeleteUserDto } from "./user.dto.params";
+import { CreateUserDto, FindAllParams, FindAllResponse, FindOneParams, ChangeUsernameDto, SingleUserResponse, ChangePasswordDto, DeleteUserDto, LeaderboardParams } from "./user.dto.params";
 import { PassportJwtAuthGuard } from "src/auth/guards/passport-jwt.guard";
 
 @Controller('user')
@@ -14,6 +14,12 @@ export class UserController {
     @Get("getall")
     findAll(@Query() params: FindAllParams): Promise<FindAllResponse> {
         return this.service.findAll(params);
+    }
+
+    @UseGuards(PassportJwtAuthGuard)
+    @Get('leaderboard')
+    getLeaderboard(@Query() params: LeaderboardParams): Promise<FindAllResponse> {
+        return this.service.getLeaderboard(params);
     }
 
     @UseGuards(PassportJwtAuthGuard)

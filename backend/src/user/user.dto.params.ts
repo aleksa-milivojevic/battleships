@@ -26,6 +26,14 @@ export class FindAllParams {
     search: string;
 }
 
+export class LeaderboardParams {
+    @IsNumber()
+    round: number;
+
+    @IsNumber()
+    count: number;
+}
+
 export class FindOneParams {
     @IsNumberString()
     id: string;

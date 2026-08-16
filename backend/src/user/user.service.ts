@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, InternalServerErrorException, NotFound
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./user.entity";
 import { Like, Not, Repository } from "typeorm";
-import { ChangePasswordDto, ChangeUsernameDto, CreateUserDto, DeleteUserDto, FindAllParams, FindAllResponse, SingleUserResponse } from "./user.dto.params";
+import { ChangePasswordDto, ChangeUsernameDto, CreateUserDto, DeleteUserDto, FindAllParams, FindAllResponse, LeaderboardParams, SingleUserResponse } from "./user.dto.params";
 import * as bcrypt from "bcrypt";
 import * as argon from "argon2";
 
@@ -18,6 +18,21 @@ export class UserService {
             where: {
                 username: Like(`%${params.search}%`),
                 id: Not(params.id)
+            }
+        });
+
+        users = users.slice((params.round-1)*params.count, params.round*params.count);
+
+        return {
+            users: users,
+            more: users.length === params.count
+        }
+    }
+
+    async getLeaderboard(params: LeaderboardParams): Promise<FindAllResponse> {
+        let users = await this.userRepository.find({
+            order: {
+                score: 'DESC'
             }
         });
 
