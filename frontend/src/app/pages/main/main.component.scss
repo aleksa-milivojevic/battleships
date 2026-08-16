@@ -8,7 +8,7 @@
 
 .container {
     display: flex;
-    flex: 1;
+    width: 50%;
     flex-direction: column;
     margin: 0;
     padding: 5px;
@@ -80,7 +80,7 @@ form {
     padding-right: 5px;
 }
 
-.user-list {
+.user-list, .match-list {
     margin: 10px;
     padding: 10px;
     padding-top: 2px;
@@ -96,6 +96,11 @@ form {
     border-radius: 20px;
 }
 
+.match-list {
+    height: 50%;
+    width: 50%;
+}
+
 .user {
     width: 95%;
     margin: 5px;
@@ -104,6 +109,20 @@ form {
     padding-right: 10px;
     display: flex;
     flex-direction: row;
+    align-items: center;
+    background-color: rgb(47, 47, 212);
+    border: 0px solid white;
+    border-radius: 10px;
+}
+
+.match {
+    width: 95%;
+    margin: 5px;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     background-color: rgb(47, 47, 212);
     border: 0px solid white;

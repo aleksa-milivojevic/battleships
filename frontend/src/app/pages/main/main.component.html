@@ -14,6 +14,33 @@
             <label class="bot-desc">If they are online, challange them to a battle</label>
         </div>
     </div>
+    <div class="container">
+        <div class="match-list" (scroll)="onScrollMatches($event)">
+            @for(match of matches(); track match.id) {
+                <div class="match">
+                    @if(match.winner.id === self()?.id) {
+                        <div class="result-div">
+                                <label class="result">WIN</label>
+                                <label class="points">+{{ match.points }}</label>
+                        </div>
+                        <div class="opp-div">
+                            <label class="vs">vs</label>
+                            <label class="opp">{{ match.looser.username }}</label>
+                        </div>
+                    } @else {
+                        <div class="result-div">
+                            <label class="result">LOSS</label>
+                            <label class="points">-{{ match.points }}</label>
+                        </div>
+                        <div class="opp-div">
+                            <label class="vs">vs</label>
+                            <label class="opp">{{ match.winner.username }}</label>
+                        </div>    
+                    }
+                </div>
+            }
+        </div>
+    </div>
 </div>
 
 @if (overlay()) {
@@ -28,7 +55,7 @@
                     placeholder="username"
                 >
             </form>
-            <div class="user-list" (scroll)="onScroll($event)">
+            <div class="user-list" (scroll)="onScrollUsers($event)">
                 @for(user of users(); track user.id) {
                     <div class="user">
                         <div class="username-score">
