@@ -4,7 +4,6 @@ import { HttpClient } from "@angular/common/http";
 import { User } from "./user.service";
 import { Observable, tap } from "rxjs";
 import { StorageService } from "./storage.service";
-import { CookieService } from "ngx-cookie-service";
 import { isPlatformBrowser } from "@angular/common";
 
 interface LoginRequest {
@@ -37,9 +36,7 @@ export class AuthService implements OnDestroy {
     isAuthenticated = computed(() => !!this._user());
     isAdmin = computed(() => this._user()?.admin);
 
-    constructor() {
-        this.storage.setItem('SELF', this._user);
-    }
+    constructor() {}
 
     ngOnDestroy(): void {
         this.stopRefreshTimer();
