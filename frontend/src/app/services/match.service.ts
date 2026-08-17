@@ -6,8 +6,8 @@ import { environment } from "../../environments/environment.development";
 
 export interface Match {
     id: string,
-    winner: User,
-    looser: User,
+    winner: User | null,
+    looser: User | null,
     points: number,
     createdAt: Date
 }

@@ -18,14 +18,14 @@
         <div class="match-list" (scroll)="onScrollMatches($event)">
             @for(match of matches(); track match.id) {
                 <div class="match">
-                    @if(match.winner.id === self()?.id) {
+                    @if(match.winner?.id === self()?.id) {
                         <div class="result-div">
                                 <label class="result">WIN</label>
                                 <label class="points">+{{ match.points }}</label>
                         </div>
                         <div class="opp-div">
-                            <label class="vs">vs</label>
-                            <label class="opp">{{ match.looser.username }}</label>
+                            <label class="vs">vs </label>
+                            <label class="opp">{{ match.looser?.username ??  "deleted" }}</label>
                         </div>
                     } @else {
                         <div class="result-div">
@@ -33,8 +33,8 @@
                             <label class="points">-{{ match.points }}</label>
                         </div>
                         <div class="opp-div">
-                            <label class="vs">vs</label>
-                            <label class="opp">{{ match.winner.username }}</label>
+                            <label class="vs">vs </label>
+                            <label class="opp">{{ match.winner?.username ?? "deleted" }}</label>
                         </div>    
                     }
                 </div>
