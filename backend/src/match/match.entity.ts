@@ -6,11 +6,11 @@ export class Match {
     @PrimaryGeneratedColumn()
     id: string;
 
-    @ManyToOne(() => User)
+    @ManyToOne(() => User, { onDelete: 'SET NULL' })
     @JoinColumn({ name: 'winner' })
     winner: User;
 
-    @ManyToOne(() => User)
+    @ManyToOne(() => User, { onDelete: 'SET NULL' })
     @JoinColumn({ name: 'looser' })
     looser: User;
 
