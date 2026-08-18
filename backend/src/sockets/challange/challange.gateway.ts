@@ -4,7 +4,7 @@ import { ChallangeDto } from "./challange.dto";
 import { NotFoundException } from "@nestjs/common";
 import { delay } from "rxjs";
 
-@WebSocketGateway({ cors: { origin: 'http://localhost:4200' } })
+@WebSocketGateway({ cors: { origin: 'http://localhost:4200', credentials: true } })
 export class ChallangeGateway implements OnGatewayConnection, OnGatewayDisconnect {
     
     @WebSocketServer() server: Server

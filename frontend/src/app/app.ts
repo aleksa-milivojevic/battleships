@@ -1,6 +1,6 @@
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { ChallangeService } from './services/sockets/challange.service';
 
 @Component({
   selector: 'app-root',
@@ -10,5 +10,6 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.scss'
 })
 export class App {
+  private challangeService = inject(ChallangeService);
   protected readonly title = signal('frontend');
 }

@@ -1,6 +1,5 @@
 import { ApplicationRef, Injectable, inject, signal } from "@angular/core";
 import { Socket } from "ngx-socket-io";
-import { AuthService } from "../auth.service";
 
 @Injectable({
     providedIn: 'root'
@@ -8,14 +7,19 @@ import { AuthService } from "../auth.service";
 export class ChallangeService {
     private socket = inject(Socket);
     private appRef = inject(ApplicationRef);
-    private authService = inject(AuthService);
 
-    private self = this.authService.user;
+    private self = signal('');
 
     private _invites = signal<string[]>([]);
     readonly invites = this._invites.asReadonly();
 
-    constructor() {
+    constructor() {}
+
+    connect(id: string) {
+        if (this.socket.connected) return;
+
+        this.self.set(id);
+
         this.socket.connect();
 
         this.socket.fromEvent<void>('id-request').subscribe(
@@ -39,7 +43,7 @@ export class ChallangeService {
             }
         )
 
-        this.socket.fromEvent<{ source: string }>('dissconnection').subscribe(
+        this.socket.fromEvent<{ source: string }>('disconnection').subscribe(
             data => {
                 this.eraseInvite(data.source);
                 this.appRef.tick();
@@ -47,16 +51,20 @@ export class ChallangeService {
         )
     }
 
+    disconnect() {
+        this.socket.disconnect();
+    }
+
     sendId() {
-        this.socket.emit('id-response', { id: this.self()?.id });
+        this.socket.emit('id-response', { id: this.self });
     }
 
     sendInvite(target: string) {
-        this.socket.emit('invite', { source: this.self()?.id, target: target });
+        this.socket.emit('invite', { source: this.self, target: target });
     }
 
     sendAccept(target: string) {
-        this.socket.emit('accept', { source: this.self()?.id, target: target });
+        this.socket.emit('accept', { source: this.self, target: target });
     }
 
     handleInvite(source: string) {

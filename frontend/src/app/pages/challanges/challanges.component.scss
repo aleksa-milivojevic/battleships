@@ -1,0 +1,54 @@
+.content {
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row;
+    z-index: 0;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    margin: 0;
+    padding: 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+app-sidebar {
+    width: 15%;
+}
+
+.invite-list {
+    margin: 10px;
+    padding: 10px;
+    padding-top: 2px;
+    padding-right: 5px;
+    background-color: rgb(15, 15, 117);
+    display: flex;
+    flex-direction: column;
+    width: 65%;
+    height: 80%;
+    min-width: fit-content;
+    overflow-y: scroll;
+    border-top: 10px solid rgb(15, 15, 117);
+    border-bottom: 10px solid rgb(15, 15, 117);
+    border-radius: 20px;
+}
+
+.invite {
+    width: 98%;
+    margin: 5px;
+    padding: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: rgb(47, 47, 212);
+    border: 0px solid white;
+    border-radius: 10px;
+    font-size: 150%;
+}
+

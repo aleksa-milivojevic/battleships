@@ -5,6 +5,7 @@ import { User } from "./user.service";
 import { Observable, tap } from "rxjs";
 import { StorageService } from "./storage.service";
 import { isPlatformBrowser } from "@angular/common";
+import { ChallangeService } from "./sockets/challange.service";
 
 interface LoginRequest {
     email: string,
@@ -24,6 +25,7 @@ export class AuthService implements OnDestroy {
     private apiUrl = `${environment.apiUrl}/auth`
     private http = inject(HttpClient);
     private storage = inject(StorageService);
+    private challangeService = inject(ChallangeService);
 
     private platformId = inject(PLATFORM_ID);
     private isBrowser = isPlatformBrowser(this.platformId);
@@ -54,6 +56,8 @@ export class AuthService implements OnDestroy {
             { email: credentials.email, password: credentials.password }
         ).pipe(
             tap(res => this.handleAuthResponse(res.user))
+        ).pipe(
+            tap(res => this.challangeService.connect(res.user.id))
         );
     }
 
@@ -83,6 +87,8 @@ export class AuthService implements OnDestroy {
             {}
         ).pipe(
             tap(() => this.clearLocal())
+        ).pipe(
+            tap(() => this.challangeService.disconnect())
         );
     }
 
