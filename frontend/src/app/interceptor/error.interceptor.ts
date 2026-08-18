@@ -11,7 +11,6 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     let shouldKickOut = false;
     
     return next(req).pipe(
-        // retry({ count: 2, delay: 1000 }),
         tap({
             error: (error: HttpErrorResponse) => {
                 if ([401].includes(error.status)) {

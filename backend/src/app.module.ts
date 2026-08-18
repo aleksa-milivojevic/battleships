@@ -12,6 +12,7 @@ import { MatchModule } from './match/match.module';
 import { QueueModule } from './queue/queue.module';
 import { ReportModule } from './report/report.module';
 import { AuthModule } from './auth/auth.module';
+import { ChallangeModule } from './sockets/challange.module';
 
 @Module({
   imports: [
@@ -32,7 +33,8 @@ import { AuthModule } from './auth/auth.module';
     MatchModule,
     QueueModule,
     ReportModule,
-    AuthModule
+    AuthModule,
+    ChallangeModule
   ],
   controllers: [AppController],
   providers: [AppService],
