@@ -1,6 +1,6 @@
 import { ConflictException, Inject, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { AuthInput, AuthResult, RefreshResponse, SafeUserDto, SignInData, SignInInput } from "./auth.dto";
-import { UserService } from "src/user/user.service";
+import { UserService } from "src/database/user/user.service";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcrypt";
 import * as argon from "argon2";

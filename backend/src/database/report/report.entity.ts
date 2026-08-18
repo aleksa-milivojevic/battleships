@@ -1,4 +1,4 @@
-import { User } from "src/user/user.entity";
+import { User } from "src/database/user/user.entity";
 import { text } from "stream/consumers";
 import { Check, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 

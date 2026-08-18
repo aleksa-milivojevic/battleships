@@ -2,17 +2,17 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './user/user.entity';
-import { Match } from './match/match.entity';
-import { Queue } from './queue/queue.entity';
-import { Report } from './report/report.entity';
+import { User } from './database/user/user.entity';
+import { Match } from './database/match/match.entity';
+import { Queue } from './database/queue/queue.entity';
+import { Report } from './database/report/report.entity';
 import { ConfigModule } from '@nestjs/config';
-import { UserModule } from './user/user.module';
-import { MatchModule } from './match/match.module';
-import { QueueModule } from './queue/queue.module';
-import { ReportModule } from './report/report.module';
+import { UserModule } from './database/user/user.module';
+import { MatchModule } from './database/match/match.module';
+import { QueueModule } from './database/queue/queue.module';
+import { ReportModule } from './database/report/report.module';
 import { AuthModule } from './auth/auth.module';
-import { ChallangeModule } from './sockets/challange.module';
+import { ChallangeModule } from './sockets/challange/challange.module';
 
 @Module({
   imports: [
