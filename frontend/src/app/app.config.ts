@@ -5,6 +5,7 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors } from '@angular
 import { CookieService } from 'ngx-cookie-service';
 import { authInterceptor } from './interceptor/auth.interceptor';
 import { errorInterceptor } from './interceptor/error.interceptor';
+import { provideSocketIo } from 'ngx-socket-io';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,6 +17,12 @@ export const appConfig: ApplicationConfig = {
         errorInterceptor
       ])
     ),
-    CookieService
+    CookieService,
+    provideSocketIo({
+      url: 'http://localhost:3000/',
+      options: {
+        withCredentials: true
+      }
+    })
   ]
 };
