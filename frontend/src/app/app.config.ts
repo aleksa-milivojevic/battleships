@@ -21,7 +21,8 @@ export const appConfig: ApplicationConfig = {
     provideSocketIo({
       url: 'http://localhost:3000/',
       options: {
-        withCredentials: true
+        withCredentials: true,
+        autoConnect: false
       }
     })
   ]

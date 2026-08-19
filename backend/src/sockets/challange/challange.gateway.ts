@@ -15,7 +15,7 @@ export class ChallangeGateway implements OnGatewayConnection, OnGatewayDisconnec
     
     handleConnection(@ConnectedSocket() client: Socket) {
         console.log("new client ", client.id);
-        setTimeout(() => client.emit('id-request'), 200);
+        client.emit('id-request');
     }
 
     handleDisconnect(@ConnectedSocket() client: any) {
@@ -23,10 +23,12 @@ export class ChallangeGateway implements OnGatewayConnection, OnGatewayDisconnec
 
         const targets = this.interactions.get(id!);
         
-        targets!.forEach(target => {
-            let ctarget = this.utc.get(target);
-            ctarget?.emit('disconnection', { source: id });
-        });
+        if (targets) {
+            targets.forEach(target => {
+                let ctarget = this.utc.get(target);
+                ctarget?.emit('disconnection', { source: id });
+            });
+        }
 
         this.ctu.delete(client.id);
         this.utc.delete(id!);

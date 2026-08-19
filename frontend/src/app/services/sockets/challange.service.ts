@@ -1,5 +1,6 @@
 import { Injectable, inject, signal } from "@angular/core";
 import { Socket } from "ngx-socket-io";
+import { Subscription } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -8,6 +9,8 @@ export class ChallangeService {
     private socket = inject(Socket);
 
     private self = signal('');
+
+    private subscriptions: Subscription[] = [];
 
     private _invites = signal<string[]>([]);
     readonly invites = this._invites.asReadonly();
@@ -19,35 +22,43 @@ export class ChallangeService {
 
         this.self.set(id);
 
-        this.socket.connect();
-
-        this.socket.fromEvent<void>('id-request').subscribe(
-            () => {
-                console.log('id-request heard');
-                this.sendId();
-            }
-        )
+        this.subscriptions.push(
+            this.socket.fromEvent<void>('id-request').subscribe(
+                () => {
+                    console.log('id-request heard');
+                    this.sendId();
+                }
+            )
+        );
         
-        this.socket.fromEvent<{ source: string }>('invite').subscribe(
-            (data) => {
-                console.log('invite heard');
-                this.handleInvite(data.source);
-            }
+        this.subscriptions.push(
+            this.socket.fromEvent<{ source: string }>('invite').subscribe(
+                (data) => {
+                    console.log('invite heard');
+                    this.handleInvite(data.source);
+                }
+            )
         );
 
-        this.socket.fromEvent<{ source: string }>('accept').subscribe(
-            (data) => {
-                console.log('accept heard');
-                this.handleAccept(data.source);
-            }
-        )
+        this.subscriptions.push(
+            this.socket.fromEvent<{ source: string }>('accept').subscribe(
+                (data) => {
+                    console.log('accept heard');
+                    this.handleAccept(data.source);
+                }
+            )
+        );
 
-        this.socket.fromEvent<{ source: string }>('disconnection').subscribe(
-            data => {
-                console.log('disconnection heard');
-                this.eraseInvite(data.source);
-            }
-        )
+        this.subscriptions.push(
+            this.socket.fromEvent<{ source: string }>('disconnection').subscribe(
+                data => {
+                    console.log('disconnection heard');
+                    this.eraseInvite(data.source);
+                }
+            )
+        );
+
+        this.socket.connect();
     }
 
     disconnect() {
@@ -85,6 +96,10 @@ export class ChallangeService {
     }
 
     clear() {
+        this.subscriptions.forEach(sub => {
+            sub.unsubscribe();
+        });
+        this.subscriptions = [];
         this._invites.set([]);
         this.self.set('');
     }
