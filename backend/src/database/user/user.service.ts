@@ -192,7 +192,7 @@ export class UserService {
 
     async setOnline(id: string) {
         const res = await this.userRepository.update({ id: id }, { online: true });
-
+        console.log(res.raw);
         if (res.affected !== 1) {
             throw new InternalServerErrorException(`Rows affected: ${res.affected}`);
         }

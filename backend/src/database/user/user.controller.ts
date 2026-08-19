@@ -59,7 +59,7 @@ export class UserController {
     }
 
     @UseGuards(PassportJwtAuthGuard)
-    @Post('online')
+    @Post('offline')
     setOffline(@Body() input: { id: string }) {
         return this.service.setOffline(input.id);
     }

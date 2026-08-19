@@ -57,7 +57,11 @@ export class AuthService implements OnDestroy {
         ).pipe(
             tap(res => this.handleAuthResponse(res.user))
         ).pipe(
-            tap(res => this.challangeService.connect(res.user.id))
+            tap(res => {
+                    this.challangeService.connect(res.user.id);
+                    this.setOnline().subscribe();
+                }
+            )
         );
     }
 
@@ -88,7 +92,11 @@ export class AuthService implements OnDestroy {
         ).pipe(
             tap(() => this.clearLocal())
         ).pipe(
-            tap(() => this.challangeService.disconnect())
+            tap(() => {
+                    this.challangeService.disconnect();
+                    // this.setOffline().subscribe();
+                }
+            )
         );
     }
 
@@ -121,4 +129,33 @@ export class AuthService implements OnDestroy {
             this.refreshTimer = undefined;
         }
     }
+
+    setOnline(): Observable<any> {
+        console.log(this._user());
+        return this.http.post<any>(
+            `${environment.apiUrl}/user/online`,
+            { id: this._user()?.id }
+        ).pipe(
+            tap(() => {
+                const uu = ({ ...this._user()!, online: true });
+                console.log("NOVI USER");
+                console.log(uu);
+                this.updateSelf(uu);
+            })
+        )
+    }
+
+    // setOffline(): Observable<any> {
+    //     return this.http.post<void>(
+    //         `${environment.apiUrl}/user/offline`,
+    //         { id: this._user()?.id }
+    //     ).pipe(
+    //         tap(() => {
+    //             const uu = ({ ...this._user()!, online: false });
+    //             console.log("NOVI USER");
+    //             console.log(uu);
+    //             this.updateSelf(uu);
+    //         })
+    //     )
+    // }
 }

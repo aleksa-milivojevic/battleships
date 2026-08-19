@@ -69,7 +69,8 @@ export class AuthService {
             score: db_res.user.score,
             banned: db_res.user.banned,
             timeout: db_res.user.timeout,
-            createdAt: db_res.user.createdAt
+            createdAt: db_res.user.createdAt,
+            online: db_res.user.online
         }
 
         return {
@@ -151,5 +152,6 @@ export class AuthService {
 
     async logout(user: SignInData) {
         await this.userService.updateRefreshToken(user.userId, null);
+        await this.userService.setOffline(user.userId);
     }
 }
