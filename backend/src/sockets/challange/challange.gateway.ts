@@ -11,6 +11,7 @@ export class ChallangeGateway implements OnGatewayConnection, OnGatewayDisconnec
 
     private utc = new Map<string, Socket>();
     private ctu = new Map<string, string>();
+    private interactions = new Map<string, string[]>();
     
     handleConnection(@ConnectedSocket() client: Socket) {
         console.log("new client ", client.id);
@@ -19,6 +20,14 @@ export class ChallangeGateway implements OnGatewayConnection, OnGatewayDisconnec
 
     handleDisconnect(@ConnectedSocket() client: any) {
         const id = this.ctu.get(client.id);
+
+        const targets = this.interactions.get(id!);
+        
+        targets!.forEach(target => {
+            let ctarget = this.utc.get(target);
+            ctarget?.emit('disconnection', { source: id });
+        });
+
         this.ctu.delete(client.id);
         this.utc.delete(id!);
     }
@@ -28,7 +37,7 @@ export class ChallangeGateway implements OnGatewayConnection, OnGatewayDisconnec
         console.log("new id: ", id);
         this.utc.set(id, client);
         this.ctu.set(client.id, id);
-        client.emit('ty');
+        this.interactions.set(id, []);
     }
 
     @SubscribeMessage('invite')
@@ -38,6 +47,11 @@ export class ChallangeGateway implements OnGatewayConnection, OnGatewayDisconnec
         if (!target) {
             throw new NotFoundException('user not online');
         }
+
+        this.interactions.get(data.source)?.push(data.target);
+        this.interactions.get(data.target)?.push(data.source);
+
+        console.log(this.interactions);
 
         target.emit('invite', { source: data.source });
     }

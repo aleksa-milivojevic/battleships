@@ -1,4 +1,4 @@
-import { ApplicationRef, Injectable, inject, signal } from "@angular/core";
+import { Injectable, inject, signal } from "@angular/core";
 import { Socket } from "ngx-socket-io";
 
 @Injectable({
@@ -6,7 +6,6 @@ import { Socket } from "ngx-socket-io";
 })
 export class ChallangeService {
     private socket = inject(Socket);
-    private appRef = inject(ApplicationRef);
 
     private self = signal('');
 
@@ -52,6 +51,7 @@ export class ChallangeService {
     }
 
     disconnect() {
+        this.clear();
         this.socket.disconnect();
     }
 
@@ -82,5 +82,10 @@ export class ChallangeService {
 
     eraseInvite(source: string) {
         this._invites.update(list => list.filter(item => item !== source));
+    }
+
+    clear() {
+        this._invites.set([]);
+        this.self.set('');
     }
 }
