@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, NotImplementedException, Param, Post, Query, UseGuards } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { User } from "./user.entity";
-import { CreateUserDto, FindAllParams, FindAllResponse, FindOneParams, ChangeUsernameDto, SingleUserResponse, ChangePasswordDto, DeleteUserDto, LeaderboardParams } from "./user.dto.params";
+import { CreateUserDto, FindAllParams, FindAllResponse, FindOneParams, ChangeUsernameDto, SingleUserResponse, ChangePasswordDto, DeleteUserDto, LeaderboardParams, MultipleUserResponse } from "./user.dto.params";
 import { PassportJwtAuthGuard } from "src/auth/guards/passport-jwt.guard";
 
 @Controller('user')
@@ -62,5 +62,12 @@ export class UserController {
     @Post('offline')
     setOffline(@Body() input: { id: string }) {
         return this.service.setOffline(input.id);
+    }
+
+    @UseGuards(PassportJwtAuthGuard)
+    @Get('list')
+    findList(@Query('ids') ids: string): Promise<MultipleUserResponse> {
+        const array = ids.split(',').map(Number);
+        return this.service.findList(array);
     }
 }

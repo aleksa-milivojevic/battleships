@@ -24,29 +24,29 @@ export class ChallangeService {
 
         this.socket.fromEvent<void>('id-request').subscribe(
             () => {
+                console.log('id-request heard');
                 this.sendId();
-                this.appRef.tick();
             }
         )
         
         this.socket.fromEvent<{ source: string }>('invite').subscribe(
             (data) => {
+                console.log('invite heard');
                 this.handleInvite(data.source);
-                this.appRef.tick();
             }
         );
 
         this.socket.fromEvent<{ source: string }>('accept').subscribe(
             (data) => {
+                console.log('accept heard');
                 this.handleAccept(data.source);
-                this.appRef.tick();
             }
         )
 
         this.socket.fromEvent<{ source: string }>('disconnection').subscribe(
             data => {
+                console.log('disconnection heard');
                 this.eraseInvite(data.source);
-                this.appRef.tick();
             }
         )
     }
@@ -56,19 +56,24 @@ export class ChallangeService {
     }
 
     sendId() {
-        this.socket.emit('id-response', { id: this.self });
+        console.log('id-response sent', this.self());
+        this.socket.emit('id-response', { id: this.self() });
     }
 
     sendInvite(target: string) {
-        this.socket.emit('invite', { source: this.self, target: target });
+        console.log('invite sent');
+        this.socket.emit('invite', { source: this.self(), target: target });
     }
 
     sendAccept(target: string) {
-        this.socket.emit('accept', { source: this.self, target: target });
+        console.log('accept sent');
+        this.socket.emit('accept', { source: this.self(), target: target });
     }
 
     handleInvite(source: string) {
+        console.log('handle invite from: ', source);
         this._invites.update(list => list.concat(source));
+        console.log('new list ', this._invites);
     }
 
     handleAccept(source: string) {

@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./user.entity";
-import { Like, Not, Repository } from "typeorm";
-import { ChangePasswordDto, ChangeUsernameDto, CreateUserDto, DeleteUserDto, FindAllParams, FindAllResponse, LeaderboardParams, SingleUserResponse } from "./user.dto.params";
+import { In, Like, Not, Repository } from "typeorm";
+import { ChangePasswordDto, ChangeUsernameDto, CreateUserDto, DeleteUserDto, FindAllParams, FindAllResponse, LeaderboardParams, MultipleUserResponse, SingleUserResponse } from "./user.dto.params";
 import * as bcrypt from "bcrypt";
 import * as argon from "argon2";
 
@@ -203,6 +203,22 @@ export class UserService {
 
         if (res.affected !== 1) {
             throw new InternalServerErrorException(`Rows affected: ${res.affected}`);
+        }
+    }
+
+    async findList(ids: number[]): Promise<MultipleUserResponse> {
+        const users = await this.userRepository.find({
+            where:{
+                id: In(ids)
+            }
+        });
+
+        if (!users) {
+            throw new BadRequestException('no users found for given ids');
+        }
+
+        return {
+            users: users
         }
     }
 }

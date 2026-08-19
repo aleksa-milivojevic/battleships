@@ -74,3 +74,7 @@ export class DeleteUserDto {
     @IsNotEmpty()
     readonly password: string;
 }
+
+export class MultipleUserResponse {
+    users: SafeUserDto[];
+}

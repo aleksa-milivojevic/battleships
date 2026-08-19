@@ -67,7 +67,7 @@
                             </div>
                             <label class="score">{{ user.score }}</label>
                         </div>
-                        <button class="challange-btn" [disabled]="!user.online">chall</button>
+                        <button class="challange-btn" [disabled]="!user.online" (click)="onChall(user.id)">chall</button>
                     </div>
                 }
             </div>

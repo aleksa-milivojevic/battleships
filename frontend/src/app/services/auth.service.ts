@@ -94,7 +94,6 @@ export class AuthService implements OnDestroy {
         ).pipe(
             tap(() => {
                     this.challangeService.disconnect();
-                    // this.setOffline().subscribe();
                 }
             )
         );
@@ -144,18 +143,4 @@ export class AuthService implements OnDestroy {
             })
         )
     }
-
-    // setOffline(): Observable<any> {
-    //     return this.http.post<void>(
-    //         `${environment.apiUrl}/user/offline`,
-    //         { id: this._user()?.id }
-    //     ).pipe(
-    //         tap(() => {
-    //             const uu = ({ ...this._user()!, online: false });
-    //             console.log("NOVI USER");
-    //             console.log(uu);
-    //             this.updateSelf(uu);
-    //         })
-    //     )
-    // }
 }

@@ -4,6 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { User, UserService } from '../../services/user.service';
 import { Match, MatchService } from '../../services/match.service';
 import { AuthService } from '../../services/auth.service';
+import { ChallangeService } from '../../services/sockets/challange.service';
 
 @Component({
   selector: 'app-main',
@@ -16,6 +17,7 @@ export class MainComponent implements OnInit {
   private userService = inject(UserService);
   private matchService = inject(MatchService);
   private authService = inject(AuthService);
+  private challangeService = inject(ChallangeService);
 
   self = this.authService.user;
   
@@ -131,5 +133,9 @@ export class MainComponent implements OnInit {
       console.log('load');
       this.loadMatches();
     }
+  }
+
+  onChall(id: string) {
+    this.challangeService.sendInvite(id);
   }
 }

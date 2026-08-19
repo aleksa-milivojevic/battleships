@@ -25,6 +25,7 @@ export class ChallangeGateway implements OnGatewayConnection, OnGatewayDisconnec
     
     @SubscribeMessage('id-response')
     handleId(@MessageBody('id') id: string, @ConnectedSocket() client: Socket) {
+        console.log("new id: ", id);
         this.utc.set(id, client);
         this.ctu.set(client.id, id);
         client.emit('ty');

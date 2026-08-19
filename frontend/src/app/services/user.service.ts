@@ -106,4 +106,11 @@ export class UserService {
             tap(() => this.authService.clearLocal())
         );
     }
+
+    getFromList(ids: string[]): Observable<{ users: User[] }> {
+        return this.http.get<{ users: User[] }>(
+            `${this.apiUrl}/list`,
+            { params: { ids: ids.join(',') } }
+        );
+    }
 }
