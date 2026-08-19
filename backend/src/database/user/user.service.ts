@@ -189,4 +189,20 @@ export class UserService {
 
         throw new InternalServerErrorException(`Server error, rows affected: ${result.affected}`);
     }
+
+    async setOnline(id: string) {
+        const res = await this.userRepository.update({ id: id }, { online: true });
+
+        if (res.affected !== 1) {
+            throw new InternalServerErrorException(`Rows affected: ${res.affected}`);
+        }
+    }
+
+    async setOffline(id: string) {
+        const res = await this.userRepository.update({ id: id }, { online: false });
+
+        if (res.affected !== 1) {
+            throw new InternalServerErrorException(`Rows affected: ${res.affected}`);
+        }
+    }
 }

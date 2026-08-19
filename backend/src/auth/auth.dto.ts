@@ -14,6 +14,7 @@ export type SafeUserDto = {
     username: string,
     score: number,
     admin: boolean,
+    online: boolean,
     banned: boolean,
     timeout: number,
     createdAt: Date

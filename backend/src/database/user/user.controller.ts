@@ -51,4 +51,16 @@ export class UserController {
     delete(@Body() deleteDto: DeleteUserDto) {
         return this.service.deleteOne(deleteDto);
     }
+
+    @UseGuards(PassportJwtAuthGuard)
+    @Post('online')
+    setOnline(@Body() input: { id: string }) {
+        return this.service.setOnline(input.id);
+    }
+
+    @UseGuards(PassportJwtAuthGuard)
+    @Post('online')
+    setOffline(@Body() input: { id: string }) {
+        return this.service.setOffline(input.id);
+    }
 }
