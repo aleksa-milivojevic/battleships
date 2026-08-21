@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy, PLATFORM_ID, computed, inject, signal } from "@angular/core";
+import { Injectable, OnDestroy, PLATFORM_ID, computed, effect, inject, signal } from "@angular/core";
 import { environment } from "../../environments/environment.development";
 import { HttpClient } from "@angular/common/http";
 import { User } from "./user.service";
@@ -38,7 +38,14 @@ export class AuthService implements OnDestroy {
     isAuthenticated = computed(() => !!this._user());
     isAdmin = computed(() => this._user()?.admin);
 
-    constructor() {}
+    constructor() {
+        effect(() => {
+            this._user();
+            if (this._user()?.online) {
+                this.challangeService.connect();
+            }
+        })
+    }
 
     ngOnDestroy(): void {
         this.stopRefreshTimer();
@@ -47,7 +54,9 @@ export class AuthService implements OnDestroy {
     private handleAuthResponse(user: User): void {
         this._user.set(user);
         this.storage.setItem('SELF', this._user());
+        this.challangeService.updateSelf(user.id);
         this.startRefreshTimer();
+        console.log(this._user());
     }
     
     login(credentials: LoginRequest): Observable<{ user: User }> {
@@ -58,7 +67,7 @@ export class AuthService implements OnDestroy {
             tap(res => this.handleAuthResponse(res.user))
         ).pipe(
             tap(res => {
-                    this.challangeService.connect(res.user.id);
+                    // this.challangeService.listen();
                     this.setOnline().subscribe();
                 }
             )

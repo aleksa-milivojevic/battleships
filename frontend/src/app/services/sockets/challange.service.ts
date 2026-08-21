@@ -1,28 +1,30 @@
 import { Injectable, inject, signal } from "@angular/core";
 import { Socket } from "ngx-socket-io";
 import { Subscription } from "rxjs";
+import { StorageService } from "../storage.service";
+import { User } from "../user.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class ChallangeService {
     private socket = inject(Socket);
+    private storage = inject(StorageService);
 
-    private self = signal('');
+    private self = signal(this.storage.getItem<User>('SELF')?.id);
 
-    private subscriptions: Subscription[] = [];
+    private subscriptions = signal<Subscription[]>([]);
 
-    private _invites = signal<string[]>([]);
+    private _invites = signal<string[]>(this.storage.getItem<string[]>('INVITES') ?? []);
     readonly invites = this._invites.asReadonly();
 
-    constructor() {}
+    constructor() {
+        
+    }
 
-    connect(id: string) {
-        if (this.socket.connected) return;
-
-        this.self.set(id);
-
-        this.subscriptions.push(
+    listen() {
+        console.log("listen");
+        this.subscriptions().push(
             this.socket.fromEvent<void>('id-request').subscribe(
                 () => {
                     console.log('id-request heard');
@@ -31,7 +33,7 @@ export class ChallangeService {
             )
         );
         
-        this.subscriptions.push(
+        this.subscriptions().push(
             this.socket.fromEvent<{ source: string }>('invite').subscribe(
                 (data) => {
                     console.log('invite heard');
@@ -40,7 +42,7 @@ export class ChallangeService {
             )
         );
 
-        this.subscriptions.push(
+        this.subscriptions().push(
             this.socket.fromEvent<{ source: string }>('accept').subscribe(
                 (data) => {
                     console.log('accept heard');
@@ -49,7 +51,7 @@ export class ChallangeService {
             )
         );
 
-        this.subscriptions.push(
+        this.subscriptions().push(
             this.socket.fromEvent<{ source: string }>('disconnection').subscribe(
                 data => {
                     console.log('disconnection heard');
@@ -57,11 +59,20 @@ export class ChallangeService {
                 }
             )
         );
+    }
 
+    connect() {
+        if (this.socket.connected || !this.self()) return;
+        
+        this.listen();
+        
         this.socket.connect();
+
+        console.log("connection");
     }
 
     disconnect() {
+        console.log('disconnect');
         this.clear();
         this.socket.disconnect();
     }
@@ -85,6 +96,7 @@ export class ChallangeService {
         console.log('handle invite from: ', source);
         this._invites.update(list => list.concat(source));
         console.log('new list ', this._invites);
+        this.storage.setItem('INVITES', this._invites());
     }
 
     handleAccept(source: string) {
@@ -96,11 +108,20 @@ export class ChallangeService {
     }
 
     clear() {
-        this.subscriptions.forEach(sub => {
+        console.log(this.subscriptions());
+        this.subscriptions()?.forEach(sub => {
             sub.unsubscribe();
         });
-        this.subscriptions = [];
+        console.log(this.subscriptions());
+        this.subscriptions.set([]);
         this._invites.set([]);
         this.self.set('');
+        console.log('clear');
+        console.log(this.subscriptions());
+    }
+
+    updateSelf(id: string) {
+        this.self.set(id);
+        console.log('chall service updated to ', this.self());
     }
 }

@@ -32,13 +32,21 @@ export class ChallangeGateway implements OnGatewayConnection, OnGatewayDisconnec
 
         this.ctu.delete(client.id);
         this.utc.delete(id!);
+        this.interactions.delete(id!);
     }
     
     @SubscribeMessage('id-response')
     handleId(@MessageBody('id') id: string, @ConnectedSocket() client: Socket) {
         console.log("new id: ", id);
+
+        const last = this.utc.get(id);
+        if (last !== undefined) {
+            this.ctu.delete(last.id);
+        }
+
         this.utc.set(id, client);
         this.ctu.set(client.id, id);
+        
         this.interactions.set(id, []);
     }
 
