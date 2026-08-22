@@ -1,7 +1,7 @@
 import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway } from "@nestjs/websockets";
 import { Socket } from "socket.io";
 
-@WebSocketGateway(3002, { cors: { origin: 'http://localhost:4200', credentials: true } })
+@WebSocketGateway({ namespace: '/queue', cors: { origin: 'http://localhost:4200', credentials: true } })
 export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
     
     private queue = new Map<string,Socket>();

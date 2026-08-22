@@ -1,11 +1,12 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { authInterceptor } from './interceptor/auth.interceptor';
 import { errorInterceptor } from './interceptor/error.interceptor';
-import { provideSocketIo } from 'ngx-socket-io';
+import { ChallangeService } from './services/sockets/challange.service';
+import { QueueService } from './services/sockets/queue.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,12 +19,7 @@ export const appConfig: ApplicationConfig = {
       ])
     ),
     CookieService,
-    provideSocketIo({
-      url: 'http://localhost:3000/',
-      options: {
-        withCredentials: true,
-        autoConnect: false
-      }
-    })
+    ChallangeService,
+    QueueService
   ]
 };

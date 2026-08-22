@@ -1,19 +1,21 @@
 import { Injectable, inject, signal } from "@angular/core";
-import { Socket } from "ngx-socket-io";
+import {  } from "ngx-socket-io";
 import { Subscription } from "rxjs";
 import { StorageService } from "../storage.service";
 import { User } from "../user.service";
+import { io, Socket } from "socket.io-client";
 
 @Injectable({
     providedIn: 'root'
 })
 export class ChallangeService {
-    private socket = inject(Socket);
+    private socket: Socket = io('http://localhost:3000/challange', {
+        withCredentials: true,
+        autoConnect: false
+    });
     private storage = inject(StorageService);
 
     private self = signal(this.storage.getItem<User>('SELF')?.id);
-
-    private subscriptions = signal<Subscription[]>([]);
 
     private _invites = signal<string[]>(this.storage.getItem<string[]>('INVITES') ?? []);
     readonly invites = this._invites.asReadonly();
@@ -24,41 +26,33 @@ export class ChallangeService {
 
     listen() {
         console.log("listen");
-        this.subscriptions().push(
-            this.socket.fromEvent<void>('id-request').subscribe(
-                () => {
-                    console.log('id-request heard');
-                    this.sendId();
-                }
-            )
-        );
-        
-        this.subscriptions().push(
-            this.socket.fromEvent<{ source: string }>('invite').subscribe(
-                (data) => {
-                    console.log('invite heard');
-                    this.handleInvite(data.source);
-                }
-            )
-        );
+        this.socket.on('id-request',
+            () => {
+                console.log('id-request heard');
+                this.sendId();
+            }
+        )
+    
+        this.socket.on('invite',
+            (data) => {
+                console.log('invite heard');
+                this.handleInvite(data.source);
+            }
+        )
 
-        this.subscriptions().push(
-            this.socket.fromEvent<{ source: string }>('accept').subscribe(
-                (data) => {
-                    console.log('accept heard');
-                    this.handleAccept(data.source);
-                }
-            )
-        );
+        this.socket.on('accept',
+            (data) => {
+                console.log('accept heard');
+                this.handleAccept(data.source);
+            }
+        )
 
-        this.subscriptions().push(
-            this.socket.fromEvent<{ source: string }>('disconnection').subscribe(
-                data => {
-                    console.log('disconnection heard');
-                    this.eraseInvite(data.source);
-                }
-            )
-        );
+        this.socket.on('disconnection',
+            data => {
+                console.log('disconnection heard');
+                this.eraseInvite(data.source);
+            }
+        )
     }
 
     connect() {
@@ -108,17 +102,14 @@ export class ChallangeService {
     }
 
     clear() {
-        console.log(this.subscriptions());
-        this.subscriptions()?.forEach(sub => {
-            sub.unsubscribe();
-        });
-        console.log(this.subscriptions());
-        this.subscriptions.set([]);
+        this.socket.off('id-request');
+        this.socket.off('invite');
+        this.socket.off('accept');
+        this.socket.off('disconnection');
         this._invites.set([]);
         this.self.set('');
         this.storage.removeItem('INVITES');
         console.log('clear');
-        console.log(this.subscriptions());
     }
 
     updateSelf(id: string) {

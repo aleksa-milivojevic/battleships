@@ -5,19 +5,21 @@ import { User, UserService } from '../../services/user.service';
 import { Match, MatchService } from '../../services/match.service';
 import { AuthService } from '../../services/auth.service';
 import { ChallangeService } from '../../services/sockets/challange.service';
+import { QueueService } from '../../services/sockets/queue.service';
 
 @Component({
   selector: 'app-main',
   standalone: true,
   imports: [SidebarComponent, FormsModule],
   templateUrl: './main.component.html',
-  styleUrl: './main.component.scss',
+  styleUrl: './main.component.scss'
 })
 export class MainComponent implements OnInit {
   private userService = inject(UserService);
   private matchService = inject(MatchService);
   private authService = inject(AuthService);
   private challangeService = inject(ChallangeService);
+  private queueService = inject(QueueService);
 
   self = this.authService.user;
   
