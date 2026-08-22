@@ -1,4 +1,4 @@
-import { ConflictException, Inject, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, ConflictException, Inject, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { AuthInput, AuthResult, RefreshResponse, SafeUserDto, SignInData, SignInInput } from "./auth.dto";
 import { UserService } from "src/database/user/user.service";
 import { JwtService } from "@nestjs/jwt";
@@ -118,6 +118,10 @@ export class AuthService {
     }
 
     async refreshToken(user: SignInData): Promise<RefreshResponse> {
+        if (!user) {
+            throw new BadRequestException('no user');
+        }
+
         const tokenPayload = {
             sub: user.userId,
             username: user.username
@@ -141,7 +145,6 @@ export class AuthService {
         }
 
         const matching = await argon.verify(user.refreshToken, refreshToken);
-        console.log(matching);
 
         if (!matching) {
             throw new UnauthorizedException('invalid refresh token');

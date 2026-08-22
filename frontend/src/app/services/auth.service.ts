@@ -85,12 +85,9 @@ export class AuthService implements OnDestroy {
 
     refreshToken(): Observable<{ message: string }> {
         console.log("refreshing tokens");
-        return this.http.get<{ message: string }>(
-            `${this.apiUrl}/refresh`
-        ).pipe(
-            tap(res => {
-                console.log(res.message);
-            })
+        return this.http.post<{ message: string }>(
+            `${this.apiUrl}/refresh`,
+            {}
         );
     }
 

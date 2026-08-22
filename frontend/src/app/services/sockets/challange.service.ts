@@ -116,6 +116,7 @@ export class ChallangeService {
         this.subscriptions.set([]);
         this._invites.set([]);
         this.self.set('');
+        this.storage.removeItem('INVITES');
         console.log('clear');
         console.log(this.subscriptions());
     }
