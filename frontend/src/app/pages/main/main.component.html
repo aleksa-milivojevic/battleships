@@ -5,7 +5,7 @@
             <label class="bot-title">Bot</label>
             <label class="bot-desc">Play against a computer</label>
         </div>
-        <div class="pvp">
+        <div class="pvp" (click)="onPvP()">
             <label class="pvp-title">PvP</label>
             <label class="bot-desc">Play against a random person</label>
         </div>
@@ -71,6 +71,14 @@
                     </div>
                 }
             </div>
+        </div>
+    </div>
+}
+
+@if(showQueueScreen()) {
+    <div class="overlay" (click)="toggleQueue()">
+        <div class="queue-div" (click)="$event.stopPropagation()">
+            <h1 class="queue-title">Waiting for a match...</h1>
         </div>
     </div>
 }

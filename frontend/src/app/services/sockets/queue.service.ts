@@ -15,14 +15,24 @@ export class QueueService {
 
     private storage = inject(StorageService);
 
-    private self = signal(this.storage.getItem<User>('SELF')?.id);
+    private self = signal<string | undefined>(undefined);
 
     constructor() {
         
     }
 
     connect() {
-        if (this.socket.connected || !this.self()) return;
+        if (this.socket.connected) {
+            console.log('already connected');
+            return;
+        }
+
+        this.self.set(this.storage.getItem<User>('SELF')?.id);
+
+        if (this.self() === undefined) {
+            console.log('self undefined');
+            return;
+        }
 
         this.socket.on('id-req',
             () => {
@@ -44,6 +54,7 @@ export class QueueService {
     }
 
     disconnect() {
+        if (!this.socket.connected) return;
         this.socket.off('id-req');
         this.socket.off('match-found');
         console.log('disconnect');

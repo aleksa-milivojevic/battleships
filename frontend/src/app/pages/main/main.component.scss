@@ -133,3 +133,17 @@ form {
     margin-left: auto;
     height: fit-content;
 }
+
+.queue-div {
+    width: 40%;
+    height: 50%;
+    border: 1px solid white;
+    background-color: rgb(47, 47, 212);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.queue-title {
+    color: white;
+}

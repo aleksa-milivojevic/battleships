@@ -39,6 +39,8 @@ export class MainComponent implements OnInit {
 
   matches = signal<Match[]>([]);
 
+  showQueueScreen = signal(false);
+
   constructor() {
     effect(() => {
       this.search();
@@ -139,5 +141,14 @@ export class MainComponent implements OnInit {
 
   onChall(id: string) {
     this.challangeService.sendInvite(id);
+  }
+
+  onPvP() {
+    this.queueService.connect();
+    this.toggleQueue();
+  }
+
+  toggleQueue() {
+    this.showQueueScreen.update(o => !o);
   }
 }
