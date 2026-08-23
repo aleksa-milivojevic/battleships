@@ -1,16 +1,17 @@
 import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WsException } from "@nestjs/websockets";
 import { Socket } from "socket.io";
+import { GameService } from "./game.service";
 
 @WebSocketGateway({ namespace: '/game', cors: { origin: 'http://localhost:4200', credentials: true } })
-export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
+export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
-    readonly fieldDim = 10;
+    private ids = new Map<string, string>();
 
-    private idToOppId = new Map<string, string>();
-    private utc = new Map<string, Socket>();
-    private ctu = new Map<string, string>();
-    private fields = new Map<string, number[][]>();
+    private clients = new Map<string, { opp: string, socket: Socket, field: number[][] }>();
 
+    constructor(
+        private gameService: GameService
+    ) {}
 
     handleConnection(@ConnectedSocket() client: Socket) {
         client.emit('id-req');
@@ -22,42 +23,33 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     @SubscribeMessage('id-res')
     handleIds(@MessageBody('id') id: string, @MessageBody('opp') opp: string, @ConnectedSocket() client: Socket) {
-        this.utc.set(id, client);
-        this.ctu.set(client.id, id);
-        this.idToOppId.set(id, opp);
+        this.clients.set(id, { opp: opp, socket: client, field: [] } )
+        this.ids.set(client.id, id);
     }
 
     @SubscribeMessage('ready')
     ready(@MessageBody('field') field: string, @ConnectedSocket() client: Socket) {
-        const opp = this.getOpp(client.id);
-        const id = this.ctu.get(client.id);
+        const id = this.ids.get(client.id);
+        const opp = this.clients.get(id!)?.opp;
         const fieldMatrix = JSON.parse(field);
-        if (!this.verifyField(fieldMatrix)) {
+        if (!this.gameService.verifyField(fieldMatrix)) {
             throw new WsException('not valid field');
         }
-        this.fields.set(id!, fieldMatrix);
-        opp?.emit('ready');
+        this.clients.get(id!)!.field = fieldMatrix;
+        this.clients.get(opp!)!.socket.emit('ready');
     }
 
     @SubscribeMessage('attack')
     attack(@MessageBody('coords') coords: string, @ConnectedSocket() client: Socket) {
-        const opp = this.getOpp(client.id);
-        const result = this.getAttackResult();
-        opp?.emit('result', { coords });
-        client.emit('result', { coords });
-    }
+        const id = this.ids.get(client.id);
+        const opp = this.clients.get(id!)?.opp;
+        
+        const result = this.gameService.getAttackResult(
+            JSON.parse(coords),
+            this.clients.get(id!)?.field!
+        );
 
-    getOpp(clientId: string) {
-        const id = this.ctu.get(clientId);
-        const oppId = this.idToOppId.get(id!);
-        return this.utc.get(oppId!);
-    }
-
-    getAttackResult() {
-
-    }
-
-    verifyField(field: number[][]): boolean {
-        return true;
+        this.clients.get(opp!)?.socket.emit(result, { coords })
+        client.emit('result', { result, coords });
     }
 }
