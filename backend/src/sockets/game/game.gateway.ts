@@ -18,7 +18,13 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
     
     handleDisconnect(@ConnectedSocket() client: Socket) {
+        const id = this.ids.get(client.id);
+        const opp = this.clients.get(id!)?.opp;
+
+        this.clients.delete(id!);
+        this.ids.delete(client.id);
         
+        this.clients.get(opp!)?.socket.emit('disconnect');
     }
 
     @SubscribeMessage('id-res')
