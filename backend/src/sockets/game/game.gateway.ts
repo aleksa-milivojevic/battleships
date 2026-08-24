@@ -55,7 +55,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
             this.clients.get(id!)?.field!
         );
 
-        this.clients.get(opp!)?.socket.emit(result, { coords })
-        client.emit('result', { result, coords });
+        this.clients.get(opp!)?.socket.emit('attack', { result, coords });
+        client.emit(result, { coords });
     }
 }
