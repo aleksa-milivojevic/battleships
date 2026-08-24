@@ -1,0 +1,27 @@
+<div class="content">
+    <div class="container">
+        @if (setupPhase()) {
+            <div class="setup-table">
+                @for (row of field(); track $index; let i = $index) {
+                    @for (col of row; track $index; let j = $index) {
+                        <div class="square" (click)="toggleSquare(i,j)">
+                            @if (field()[i][j] == 1) {
+                                <div>
+                                    <label class="ship">SHIP</label>
+                                </div>
+                            }
+                            @else if (field()[i][j] == 0) {
+                                <div>
+                                    <label class="ship">ship</label>
+                                </div>
+                            }
+                            @else {
+                                <div></div>
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </div>
+</div>
