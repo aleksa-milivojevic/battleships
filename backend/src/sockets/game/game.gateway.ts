@@ -39,7 +39,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
         const opp = this.clients.get(id!)?.opp;
         const fieldMatrix = JSON.parse(field);
         if (!this.gameService.verifyField(fieldMatrix)) {
-            throw new WsException('not valid field');
+            throw new WsException('Field Not Valid');
         }
         this.clients.get(id!)!.field = fieldMatrix;
         this.clients.get(opp!)!.socket.emit('ready');

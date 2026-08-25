@@ -7,7 +7,7 @@ import { io, Socket } from "socket.io-client";
 @Injectable({
     providedIn: 'root'
 })
-export class QueueService {
+export class GameService {
     private socket: Socket = io('http://localhost:3000/game', {
         withCredentials: true,
         autoConnect: false
@@ -31,6 +31,8 @@ export class QueueService {
 
     oppReady = signal(false);
     imReady = signal(false);
+
+    fieldError = signal('');
 
     constructor() {
         
@@ -84,6 +86,13 @@ export class QueueService {
             }
         )
 
+        this.socket.on('exception',
+            (data) => {
+                console.log('exception heard');
+                this.error(data);
+            }
+        )
+
         this.socket.connect();
 
         console.log("connection");
@@ -104,9 +113,10 @@ export class QueueService {
         this.socket.emit('id-res', { id: this.self(), opp: this.opp()?.id });
     }
 
-    readyUp() {
+    readyUp(field: number[][]) {
         this.imReady.set(true);
-        this.socket.emit('ready');
+        this.socket.emit('ready', { field });
+        this.fieldError.set('');
         if (this.oppReady()) {
             this.setup.set(false);
             this.game.set(true);
@@ -137,6 +147,13 @@ export class QueueService {
         if (data.result === 'game-end') {
             this.gameOver.set(true);
             this.win.set(true);
+        }
+    }
+
+    error(data: { message: string }) {
+        if (data.message.startsWith('Field'))
+        {
+            this.fieldError.set(data.message);
         }
     }
 }

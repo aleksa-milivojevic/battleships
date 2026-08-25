@@ -7,6 +7,7 @@ import { LeaderboardComponent } from './pages/leaderboard/leaderboard.component'
 import { ProfileComponent } from './pages/profile/profile.component';
 import { AnonGuard, UserGuard } from './guards/auth.guard';
 import { ChallangesComponent } from './pages/challanges/challanges.component';
+import { GameComponent } from './pages/game/game.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -17,5 +18,6 @@ export const routes: Routes = [
     { path: 'leaderboard', component: LeaderboardComponent, canActivate: [UserGuard]},
     { path: 'profile', component: ProfileComponent, canActivate: [UserGuard]},
     { path: 'challanges', component: ChallangesComponent, canActivate: [UserGuard] },
+    { path: 'game', component: GameComponent },
     { path: '**', redirectTo: 'home' }
 ];

@@ -1,27 +1,102 @@
 <div class="content">
     <div class="container">
         @if (setupPhase()) {
-            <div class="setup-table">
-                @for (row of field(); track $index; let i = $index) {
-                    @for (col of row; track $index; let j = $index) {
-                        <div class="square" (click)="toggleSquare(i,j)">
-                            @if (field()[i][j] == 1) {
-                                <div>
-                                    <label class="ship">SHIP</label>
-                                </div>
-                            }
-                            @else if (field()[i][j] == 0) {
-                                <div>
-                                    <label class="ship">ship</label>
-                                </div>
-                            }
-                            @else {
-                                <div></div>
-                            }
-                        </div>
+            <div class="table-div">
+                <div class="setup-table">
+                    @for (row of field(); track $index; let i = $index) {
+                        @for (col of row; track $index; let j = $index) {
+                            <div class="square" (click)="toggleSquare(i,j)" [class.disabled]="gameOver()">
+                                @if (field()[i][j] == 1) {
+                                    <div>
+                                        <label class="ship">SHIP</label>
+                                    </div>
+                                }
+                                @else {
+                                    <div></div>
+                                }
+                            </div>
+                        }
                     }
-                }
+                </div>
+            </div>
+            <div class="bottom-text">
+                <div class="rules-div">
+                    <label class="rules">4x 1 block ship</label>
+                    <label class="rules">3x 2 block ship</label>
+                    <label class="rules">2x 3 block ship</label>
+                    <label class="rules">1x 4 block ship</label>
+                </div>
+                <div class="btns">
+                    <button class="ready-btn" [disabled]="gameOver()">Ready Up</button>
+                    <label class="field-err">{{ fieldError() }}</label>
+                    <button class="surrender-btn" [disabled]="gameOver()">Surrender</button>
+                </div>
+            </div>
+        }
+        @if (gamePhase()) {
+            <div class="tables">
+                <div class="my-table" [class.disabled]="htmlMyMove()">
+                    @for (row of field(); track $index; let i = $index) {
+                        @for (col of row; track $index; let j = $index) {
+                            <div class="square-mine">
+                                <div class="ship-div">
+                                    @if (field()[i][j] === 0) {}
+                                    @else {
+                                        <label class="ship" [class.sunk]="field()[i][j] === -1">SHIP</label>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="opp-table" [class.disabled]="!htmlMyMove()">
+                    @for (row of oppField(); track $index; let i = $index) {
+                        @for (col of row; track $index; let j = $index) {
+                            <div class="square" (click)="onAttack(i,j)" [class.disabled]="gameOver() || !htmlMyMove()">
+                                <div class="ship-div">
+                                    @if (oppField()[i][j] === 0) {}
+                                    @else {
+                                        <div class="attacked-div">
+                                        @if (oppField()[i][j] === 1) {
+                                            <label class="ship.sunk">SHIP</label>
+                                        }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="bottom-text">
+                <div class="rules-div">
+                    <label class="rules">4x 1 block ship</label>
+                    <label class="rules">3x 2 block ship</label>
+                    <label class="rules">2x 3 block ship</label>
+                    <label class="rules">1x 4 block ship</label>
+                </div>
+                <div class="btns">
+                    <button class="surrender-btn" [disabled]="gameOver()">Surrender</button>
+                </div>
             </div>
         }
     </div>
 </div>
+
+@if (gameOver()) {
+    <div class="overlay">
+        <div class="title-div">
+            <h2>GAME OVER</h2>
+            @if (win()) {
+                <h1>VICTORY</h1>
+            }
+            @else {
+                <h1>DEFEAT</h1>
+            }
+        </div>
+        <div class="go-btns">
+            <button class="go-btn">Back To Game Screen</button>
+            <button class="go-btn">Back To Main Screen</button>
+        </div>
+    </div>
+}
