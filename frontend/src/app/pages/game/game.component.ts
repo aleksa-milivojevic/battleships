@@ -6,7 +6,7 @@ import { FormsModule } from "@angular/forms";
 @Component({
     selector: 'app-game',
     standalone: true,
-    imports: [NgClass, FormsModule],
+    imports: [FormsModule],
     templateUrl: './game.component.html',
     styleUrl: './game.component.scss'
 })
@@ -23,6 +23,7 @@ export class GameComponent implements OnInit {
     fieldError = this.gameService.fieldError;
     gameOver = this.gameService.gameOver;
     win = this.gameService.win;
+    surrenderMessage = this.gameService.surrenderMessage;
 
     // htmlMyMove = signal(this.gameService.myMove());
     htmlMyMove = signal(true);
@@ -124,5 +125,19 @@ export class GameComponent implements OnInit {
 
     showGameOverScreen() {
         this.gameOverScreen.set(true);
+    }
+
+    onSurrender() {
+        this.htmlMyMove.set(false);
+        this.gameService.surrender();
+    }
+
+    toGameScreen() {
+        this.gameService.disconnect();
+        this.gameOverScreen.set(false);
+    }
+
+    toMainScreen() {
+        this.gameService.disconnect();
     }
 }

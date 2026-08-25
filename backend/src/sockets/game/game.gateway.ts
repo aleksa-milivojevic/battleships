@@ -58,4 +58,12 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
         this.clients.get(opp!)?.socket.emit('attack', { result, coords });
         client.emit(result, { coords });
     }
+
+    @SubscribeMessage('surrender')
+    surrender(@ConnectedSocket() client: Socket) {
+        const id = this.ids.get(client.id);
+        const opp = this.clients.get(id!)?.opp;
+
+        this.clients.get(opp!)?.socket.emit('surrender');
+    }
 }

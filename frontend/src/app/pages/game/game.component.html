@@ -93,10 +93,11 @@
             @else {
                 <h1>DEFEAT</h1>
             }
+            <h3 class="surr-msg">{{ surrenderMessage() }}</h3>
         </div>
         <div class="go-btns">
-            <button class="go-btn">Back To Game Screen</button>
-            <button class="go-btn">Back To Main Screen</button>
+            <button class="go-btn" (click)="toGameScreen()">Back To Game Screen</button>
+            <button class="go-btn" (click)="toMainScreen()">Back To Main Screen</button>
         </div>
     </div>
 }

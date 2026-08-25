@@ -3,6 +3,7 @@ import {  } from "ngx-socket-io";
 import { StorageService } from "../storage.service";
 import { User } from "../user.service";
 import { io, Socket } from "socket.io-client";
+import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: 'root'
@@ -14,6 +15,7 @@ export class QueueService {
     });
 
     private storage = inject(StorageService);
+    private router = inject(Router);
 
     private self = signal<string | undefined>(undefined);
 
@@ -42,9 +44,11 @@ export class QueueService {
         )
 
         this.socket.on('match-found',
-            () => {
+            (data) => {
                 console.log('match-found heard');
                 this.disconnect();
+                this.storage.setItem('OPP', data.oppId);
+                this.router.navigate(['/game']);
             }
         )
 

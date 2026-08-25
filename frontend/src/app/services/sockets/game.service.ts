@@ -34,6 +34,8 @@ export class GameService {
 
     fieldError = signal('');
 
+    surrenderMessage = signal('');
+
     constructor() {
         
     }
@@ -83,6 +85,13 @@ export class GameService {
             (data) => {
                 console.log('report heard');
                 this.report(data);
+            }
+        )
+
+        this.socket.on('surrender',
+            () => {
+                console.log('surrender heard');
+                this.oppSurrender();
             }
         )
 
@@ -148,6 +157,19 @@ export class GameService {
             this.gameOver.set(true);
             this.win.set(true);
         }
+    }
+
+    surrender() {
+        this.myMove.set(false);
+        this.gameOver.set(true);
+        this.surrenderMessage.set('You Have Surrendered');
+        this.socket.emit('surrender');
+    }
+
+    oppSurrender() {
+        this.gameOver.set(true);
+        this.win.set(true);
+        this.surrenderMessage.set('Opponent Surrendered');
     }
 
     error(data: { message: string }) {
