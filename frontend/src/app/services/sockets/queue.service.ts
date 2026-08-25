@@ -48,6 +48,7 @@ export class QueueService {
                 console.log('match-found heard');
                 this.disconnect();
                 this.storage.setItem('OPP', data.oppId);
+                this.storage.setItem('FIRST', data.myMove);
                 this.router.navigate(['/game']);
             }
         )

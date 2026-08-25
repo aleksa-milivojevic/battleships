@@ -60,6 +60,8 @@ export class GameService {
             return;
         }
 
+        this.myMove.set(this.storage.getItem<boolean>('FIRST') ?? false);
+
         this.socket.on('id-req',
             () => {
                 console.log('id-req heard');
