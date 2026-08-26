@@ -141,6 +141,12 @@ export class GameComponent implements OnInit {
 
     toMainScreen() {
         this.gameService.disconnect();
+        this.gameService.back();
         this.router.navigate(['main']);
+    }
+
+    onBack() {
+        this.router.navigate(['/main']);
+        this.gameService.back();
     }
 }

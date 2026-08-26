@@ -29,7 +29,12 @@
                 <div class="btns">
                     <button class="ready-btn" (click)="onReadyUp()" [disabled]="gameOver()">Ready Up</button>
                     <label class="field-err">{{ fieldError() }}</label>
-                    <button class="surrender-btn" (click)="onSurrender()" [disabled]="gameOver()">Surrender</button>
+                    @if (!gameOver()) {
+                        <button class="surrender-btn" (click)="onSurrender()" [disabled]="gameOver()">Surrender</button>
+                    }
+                    @else {
+                        <button class="back-btn" (click)="onBack()" [disabled]="!gameOver()">Back</button>
+                    }
                 </div>
             </div>
         }
@@ -76,14 +81,19 @@
                     <label class="rules">1x 4 block ship</label>
                 </div>
                 <div class="btns">
-                    <button class="surrender-btn" (click)="onSurrender()" [disabled]="gameOver()">Surrender</button>
+                    @if (!gameOver()) {
+                        <button class="surrender-btn" (click)="onSurrender()" [disabled]="gameOver()">Surrender</button>
+                    }
+                    @else {
+                        <button class="back-btn" (click)="onBack()" [disabled]="!gameOver()">Back</button>
+                    }
                 </div>
             </div>
         }
     </div>
 </div>
 
-@if (gameOver()) {
+@if (gameOverScreen()) {
     <div class="overlay">
         <div class="title-div">
             <h2>GAME OVER</h2>

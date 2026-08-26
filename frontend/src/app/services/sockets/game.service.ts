@@ -186,4 +186,17 @@ export class GameService {
         this.storage.removeItem('FIRST');
         this.storage.removeItem('OPP');
     }
+
+    back() {
+        this.gameOver.set(false);
+        this.myMove.set(false);
+        this.setup.set(false);
+        this.game.set(false);
+        this.lastMove.set({ result: '', coords: [] });
+        this.win.set(false);
+        this.oppReady.set(false);
+        this.imReady.set(false);
+        this.fieldError.set('');
+        this.surrenderMessage.set('');
+    }
 }
