@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from "@angular/core";
 import {  } from "ngx-socket-io";
 import { StorageService } from "../storage.service";
-import { User, UserService } from "../user.service";
+import { User } from "../user.service";
 import { io, Socket } from "socket.io-client";
 import { Router } from "@angular/router";
 
@@ -46,6 +46,7 @@ export class QueueService {
         this.socket.on('match-found',
             (data) => {
                 console.log('match-found heard');
+                this.saveLocal(data);
                 this.disconnect();
                 this.router.navigate(['/game']);
             }
@@ -70,7 +71,7 @@ export class QueueService {
     }
 
     saveLocal(data: { oppId: string, myMove: boolean }) {
-        
+        this.storage.setItem('OPP', data.oppId);
         this.storage.setItem('FIRST', data.myMove);
     }
 }
