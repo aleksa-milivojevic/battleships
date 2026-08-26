@@ -17,7 +17,7 @@ export class GameService {
 
     private self = signal<string | undefined>(undefined);
 
-    private opp = signal<User | null>(null);
+    private opp = signal<string | null>(null);
 
     setup = signal(true);
     game = signal(false);
@@ -53,7 +53,7 @@ export class GameService {
             return;
         }
 
-        this.opp.set(this.storage.getItem<User>('OPP'));
+        this.opp.set(this.storage.getItem<string>('OPP'));
 
         if (this.opp() === null) {
             console.log('opp unknown');
@@ -115,13 +115,14 @@ export class GameService {
         this.socket.off('ready');
         this.socket.off('attack');
         this.socket.off('report');
+        this.clear();
         console.log('disconnect');
         this.socket.disconnect();
     }
 
     sendId() {
         console.log('id-res sent');
-        this.socket.emit('id-res', { id: this.self(), opp: this.opp()?.id });
+        this.socket.emit('id-res', { id: this.self(), opp: this.opp() });
     }
 
     readyUp(field: number[][]) {
@@ -179,5 +180,10 @@ export class GameService {
         {
             this.fieldError.set(data.message);
         }
+    }
+
+    clear() {
+        this.storage.removeItem('FIRST');
+        this.storage.removeItem('OPP');
     }
 }

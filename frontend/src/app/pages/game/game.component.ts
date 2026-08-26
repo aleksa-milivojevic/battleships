@@ -1,7 +1,7 @@
 import { Component, OnInit, effect, inject, signal } from "@angular/core";
 import { GameService } from "../../services/sockets/game.service";
-import { NgClass } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-game',
@@ -12,21 +12,22 @@ import { FormsModule } from "@angular/forms";
 })
 export class GameComponent implements OnInit {
     private gameService = inject(GameService);
+    private router = inject(Router);
 
     readonly fieldDim = 10;
     
-    setupPhase = signal(false);
-    gamePhase = signal(true);
-    //setupPhase = this.gameService.setup;
-    //gamePhase = this.gameService.game;
+    // setupPhase = signal(false);
+    // gamePhase = signal(true);
+    setupPhase = this.gameService.setup;
+    gamePhase = this.gameService.game;
     myMove = this.gameService.myMove;
     fieldError = this.gameService.fieldError;
     gameOver = this.gameService.gameOver;
     win = this.gameService.win;
     surrenderMessage = this.gameService.surrenderMessage;
 
-    // htmlMyMove = signal(this.gameService.myMove());
-    htmlMyMove = signal(true);
+    htmlMyMove = signal(this.gameService.myMove());
+    // htmlMyMove = signal(true);
 
     gameOverScreen = signal(false);
 
@@ -36,6 +37,7 @@ export class GameComponent implements OnInit {
     oppField = signal<number[][]>(Array.from({ length: 10 }, () => Array(10).fill(0)));
 
     constructor() {
+        this.gameService.connect();
         effect(() => {
             this.myMove();
             if (!this.myMove()) {
@@ -139,5 +141,6 @@ export class GameComponent implements OnInit {
 
     toMainScreen() {
         this.gameService.disconnect();
+        this.router.navigate(['main']);
     }
 }

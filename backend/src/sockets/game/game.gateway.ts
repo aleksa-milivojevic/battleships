@@ -14,6 +14,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
     ) {}
 
     handleConnection(@ConnectedSocket() client: Socket) {
+        console.log('[connection] new client');
         client.emit('id-req');
     }
     
@@ -24,13 +25,16 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
         this.clients.delete(id!);
         this.ids.delete(client.id);
         
-        this.clients.get(opp!)?.socket.emit('disconnect');
+        if (opp) {
+            this.clients.get(opp)?.socket.emit('surrender');
+        }
     }
 
     @SubscribeMessage('id-res')
     handleIds(@MessageBody('id') id: string, @MessageBody('opp') opp: string, @ConnectedSocket() client: Socket) {
         this.clients.set(id, { opp: opp, socket: client, field: [] } )
         this.ids.set(client.id, id);
+        console.log('[connection] client details: ', this.clients.get(id));
     }
 
     @SubscribeMessage('ready')
@@ -61,8 +65,10 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     @SubscribeMessage('surrender')
     surrender(@ConnectedSocket() client: Socket) {
+        console.log('[surrender]');
         const id = this.ids.get(client.id);
         const opp = this.clients.get(id!)?.opp;
+        console.log(`[surrender] id: ${id}, sending to: ${opp}`);
 
         this.clients.get(opp!)?.socket.emit('surrender');
     }

@@ -7,6 +7,7 @@ import { authInterceptor } from './interceptor/auth.interceptor';
 import { errorInterceptor } from './interceptor/error.interceptor';
 import { ChallangeService } from './services/sockets/challange.service';
 import { QueueService } from './services/sockets/queue.service';
+import { GameService } from './services/sockets/game.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,6 +21,7 @@ export const appConfig: ApplicationConfig = {
     ),
     CookieService,
     ChallangeService,
-    QueueService
+    QueueService,
+    GameService
   ]
 };

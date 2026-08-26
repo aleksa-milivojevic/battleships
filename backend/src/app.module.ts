@@ -12,6 +12,7 @@ import { ReportModule } from './database/report/report.module';
 import { AuthModule } from './auth/auth.module';
 import { ChallangeModule } from './sockets/challange/challange.module';
 import { QueueModule } from './sockets/queue/queue.module';
+import { GameModule } from './sockets/game/game.module';
 
 @Module({
   imports: [
@@ -33,7 +34,8 @@ import { QueueModule } from './sockets/queue/queue.module';
     ReportModule,
     AuthModule,
     ChallangeModule,
-    QueueModule
+    QueueModule,
+    GameModule
   ],
   controllers: [AppController],
   providers: [AppService],

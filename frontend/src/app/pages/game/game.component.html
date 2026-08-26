@@ -27,9 +27,9 @@
                     <label class="rules">1x 4 block ship</label>
                 </div>
                 <div class="btns">
-                    <button class="ready-btn" [disabled]="gameOver()">Ready Up</button>
+                    <button class="ready-btn" (click)="onReadyUp()" [disabled]="gameOver()">Ready Up</button>
                     <label class="field-err">{{ fieldError() }}</label>
-                    <button class="surrender-btn" [disabled]="gameOver()">Surrender</button>
+                    <button class="surrender-btn" (click)="onSurrender()" [disabled]="gameOver()">Surrender</button>
                 </div>
             </div>
         }
@@ -76,7 +76,7 @@
                     <label class="rules">1x 4 block ship</label>
                 </div>
                 <div class="btns">
-                    <button class="surrender-btn" [disabled]="gameOver()">Surrender</button>
+                    <button class="surrender-btn" (click)="onSurrender()" [disabled]="gameOver()">Surrender</button>
                 </div>
             </div>
         }

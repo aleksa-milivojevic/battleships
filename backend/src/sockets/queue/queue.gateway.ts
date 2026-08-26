@@ -31,7 +31,7 @@ export class QueueGateway implements OnGatewayConnection, OnGatewayDisconnect {
             let whoFirst = !!(randomInt(0,2));
 
             oppSocket.emit('match-found', { oppId: id, myMove: whoFirst });
-            client.emit('match-found', { oppId: oppId, myMove: whoFirst });
+            client.emit('match-found', { oppId: oppId, myMove: !whoFirst });
         
             this.queue.delete(oppId);
             this.ctu.delete(oppSocket.id);

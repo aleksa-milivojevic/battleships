@@ -18,6 +18,6 @@ export const routes: Routes = [
     { path: 'leaderboard', component: LeaderboardComponent, canActivate: [UserGuard]},
     { path: 'profile', component: ProfileComponent, canActivate: [UserGuard]},
     { path: 'challanges', component: ChallangesComponent, canActivate: [UserGuard] },
-    { path: 'game', component: GameComponent },
+    { path: 'game', component: GameComponent, canActivate: [UserGuard] },
     { path: '**', redirectTo: 'home' }
 ];
