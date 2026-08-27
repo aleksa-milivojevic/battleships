@@ -80,6 +80,12 @@
     &:hover {
         border: 1px solid white;
     }
+
+    &.disabled {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 .square-mine {
@@ -136,4 +142,11 @@
     &.sunk {
         color: grey;
     }
+}
+
+.ship-div {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }

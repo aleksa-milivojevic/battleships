@@ -45,7 +45,11 @@
                         @for (col of row; track $index; let j = $index) {
                             <div class="square-mine">
                                 <div class="ship-div">
-                                    @if (field()[i][j] === 0) {}
+                                    @if (field()[i][j] === 0) {
+                                    }
+                                    @else if (field()[i][j] === -2) {
+                                        <div class="attacked-div"></div>
+                                    }
                                     @else {
                                         <label class="ship" [class.sunk]="field()[i][j] === -1">SHIP</label>
                                     }

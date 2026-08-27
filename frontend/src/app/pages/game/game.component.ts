@@ -74,19 +74,22 @@ export class GameComponent implements OnInit {
         const x = coords[0], y = coords[1];
 
         if (result === 'hit') {
+            console.log('updating field: ', result, coords);
             this.field.update(f => {
                 f[x][y] = -1;
                 return f;
             });
         }
         else if (result === 'miss') {
-            this.oppField.update(f => {
+            console.log('updating field: ', result, coords);
+            this.field.update(f => {
                 f[x][y] = -2;
                 return f;
             });
         }
         else if (result === 'game-end') {
-            this.oppField.update(f => {
+            console.log('updating field: ', result, coords);
+            this.field.update(f => {
                 f[x][y] = -1;
                 return f;
             });
@@ -100,18 +103,21 @@ export class GameComponent implements OnInit {
         const x = coords[0], y = coords[1];
 
         if (result === 'hit') {
+            console.log('updating opp field: ', result, coords);
             this.oppField.update(f => {
                 f[x][y] = 1;
                 return f;
             });
         }
         else if (result === 'miss') {
+            console.log('updating opp field: ', result, coords);
             this.oppField.update(f => {
                 f[x][y] = -1;
                 return f;
             });
         }
         else if (result === 'game-end') {
+            console.log('updating opp field: ', result, coords);
             this.oppField.update(f => {
                 f[x][y] = 1;
                 return f;

@@ -144,6 +144,7 @@ export class GameService {
     }
 
     oppAttack(data: { result: string, coords: number[] }) {
+        console.log('attack: ', data.result, data.coords);
         this.lastMove.set({ result: data.result, coords: data.coords });
         this.myMove.set(true);
         if (data.result === 'game-end') this.gameOver.set(true);
@@ -154,7 +155,8 @@ export class GameService {
     }
 
     report(data: { result: string, coords: number[] }) {
-        this.lastMove.set({ result: 'hit', coords: data.coords });
+        console.log('report: ', data.result, data.coords);
+        this.lastMove.set({ result: data.result, coords: data.coords });
         this.myMove.set(false);
         if (data.result === 'game-end') {
             this.gameOver.set(true);

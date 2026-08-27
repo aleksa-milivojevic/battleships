@@ -160,7 +160,9 @@ export class GameService {
     }
 
     getAttackResult(coords: number[], field: number[][]): string {
-        if (field[coords[0]][coords[1]]) {
+        console.log(coords);
+        if (field[coords[0]][coords[1]] === 1) {
+            field[coords[0]][coords[1]] = 0;
             if (this.gameOver(field)) return 'game-end';
             return 'hit';
         }

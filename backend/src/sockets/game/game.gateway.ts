@@ -14,7 +14,6 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
     ) {}
 
     handleConnection(@ConnectedSocket() client: Socket) {
-        console.log('[connection] new client');
         client.emit('id-req');
     }
     
@@ -34,33 +33,34 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
     handleIds(@MessageBody('id') id: string, @MessageBody('opp') opp: string, @ConnectedSocket() client: Socket) {
         this.clients.set(id, { opp: opp, socket: client, field: [] } )
         this.ids.set(client.id, id);
-        console.log('[connection] client details: ', this.clients.get(id));
     }
 
     @SubscribeMessage('ready')
-    ready(@MessageBody('field') field: string, @ConnectedSocket() client: Socket) {
+    ready(@MessageBody('field') field: any, @ConnectedSocket() client: Socket) {
+        console.log(typeof field);
+        console.log(field);
         const id = this.ids.get(client.id);
         const opp = this.clients.get(id!)?.opp;
-        const fieldMatrix = JSON.parse(field);
-        if (!this.gameService.verifyField(fieldMatrix)) {
+        if (!this.gameService.verify(field)) {
             throw new WsException('Field Not Valid');
         }
-        this.clients.get(id!)!.field = fieldMatrix;
+        this.clients.get(id!)!.field = field;
         this.clients.get(opp!)!.socket.emit('ready');
     }
 
     @SubscribeMessage('attack')
-    attack(@MessageBody('coords') coords: string, @ConnectedSocket() client: Socket) {
+    attack(@MessageBody('coords') coords: any, @ConnectedSocket() client: Socket) {
         const id = this.ids.get(client.id);
         const opp = this.clients.get(id!)?.opp;
+        console.log('[attack]: ', id, opp);
         
         const result = this.gameService.getAttackResult(
-            JSON.parse(coords),
+            coords,
             this.clients.get(id!)?.field!
         );
 
         this.clients.get(opp!)?.socket.emit('attack', { result, coords });
-        client.emit(result, { coords });
+        client.emit('report', { result, coords });
     }
 
     @SubscribeMessage('surrender')
