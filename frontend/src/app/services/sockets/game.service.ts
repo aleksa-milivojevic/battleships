@@ -62,6 +62,16 @@ export class GameService {
 
         this.myMove.set(this.storage.getItem<boolean>('FIRST') ?? false);
 
+        this.setup.set(this.storage.getItem<boolean>('SETUP') ?? true);
+        this.game.set(this.storage.getItem<boolean>('GAME') ?? false);
+        this.gameOver.set(this.storage.getItem<boolean>('GAME_OVER') ?? false);
+        this.win.set(this.storage.getItem<boolean>('WIN') ?? false);
+        this.oppReady.set(this.storage.getItem<boolean>('OPP_READY') ?? false);
+        this.imReady.set(this.storage.getItem<boolean>('IM_READY') ?? false);
+        this.fieldError.set(this.storage.getItem<string>('FIELD_ERROR') ?? '');
+        this.surrenderMessage.set(this.storage.getItem<string>('SURR_MSG') ?? '');
+        this.lastMove.set(this.storage.getItem<{ result: string, coords: number[] }>('LAST_MOVE') ?? { result: '', coords: [] });
+
         this.socket.on('id-req',
             () => {
                 console.log('id-req heard');
@@ -115,7 +125,6 @@ export class GameService {
         this.socket.off('ready');
         this.socket.off('attack');
         this.socket.off('report');
-        this.clear();
         console.log('disconnect');
         this.socket.disconnect();
     }
@@ -127,27 +136,38 @@ export class GameService {
 
     readyUp(field: number[][]) {
         this.imReady.set(true);
+        this.storage.setItem('IM_READY', true);
         this.socket.emit('ready', { field });
         this.fieldError.set('');
         if (this.oppReady()) {
             this.setup.set(false);
+            this.storage.setItem('SETUP', false);
             this.game.set(true);
+            this.storage.setItem('GAME', true);
         }
     }
 
     ready() {
         this.oppReady.set(true);
+        this.storage.setItem('OPP_READY', true);
         if (this.imReady()) {
             this.setup.set(false);
+            this.storage.setItem('SETUP', false);
             this.game.set(true);
+            this.storage.setItem('GAME', true);
         }
     }
 
     oppAttack(data: { result: string, coords: number[] }) {
         console.log('attack: ', data.result, data.coords);
         this.lastMove.set({ result: data.result, coords: data.coords });
+        this.storage.setItem('LAST_MOVE', { result: data.result, coords: data.coords });
         this.myMove.set(true);
-        if (data.result === 'game-end') this.gameOver.set(true);
+        this.storage.setItem('MY_MOVE', true);
+        if (data.result === 'game-end') {
+            this.gameOver.set(true);
+            this.storage.setItem('GAME_OVER', true);
+        }
     }
 
     myAttack(coords: number[]) {
@@ -157,36 +177,55 @@ export class GameService {
     report(data: { result: string, coords: number[] }) {
         console.log('report: ', data.result, data.coords);
         this.lastMove.set({ result: data.result, coords: data.coords });
+        this.storage.setItem('LAST_MOVE', { result: data.result, coords: data.coords });
         this.myMove.set(false);
+        this.storage.setItem('MY_MOVE', false);
         if (data.result === 'game-end') {
             this.gameOver.set(true);
+            this.storage.setItem('GAME_OVER', true);
             this.win.set(true);
+            this.storage.setItem('WIN', true);
         }
     }
 
     surrender() {
         this.myMove.set(false);
+        this.storage.setItem('MY_MOVE', false);
         this.gameOver.set(true);
+        this.storage.setItem('GAME_OVER', true);
         this.surrenderMessage.set('You Have Surrendered');
+        this.storage.setItem('SURR_MSG', this.surrenderMessage());
         this.socket.emit('surrender');
     }
 
     oppSurrender() {
         this.gameOver.set(true);
+        this.storage.setItem('GAME_OVER', true);
         this.win.set(true);
+        this.storage.setItem('WIN', true);
         this.surrenderMessage.set('Opponent Surrendered');
+        this.storage.setItem('SURR_MSG', this.surrenderMessage());
     }
 
     error(data: { message: string }) {
-        if (data.message.startsWith('Field'))
-        {
+        if (data.message.startsWith('Field')) {
             this.fieldError.set(data.message);
+            this.storage.setItem('FIELD_ERROR', this.fieldError());
         }
     }
 
     clear() {
         this.storage.removeItem('FIRST');
         this.storage.removeItem('OPP');
+        this.storage.removeItem('SETUP');
+        this.storage.removeItem('GAME');
+        this.storage.removeItem('GAME_OVER');
+        this.storage.removeItem('WIN');
+        this.storage.removeItem('OPP_READY');
+        this.storage.removeItem('IM_READY');
+        this.storage.removeItem('FIELD_ERROR');
+        this.storage.removeItem('SURR_MSG');
+        this.storage.removeItem('LAST_MOVE');
     }
 
     back() {
@@ -200,5 +239,6 @@ export class GameService {
         this.imReady.set(false);
         this.fieldError.set('');
         this.surrenderMessage.set('');
+        this.clear();
     }
 }
