@@ -1,135 +1,130 @@
 import { Injectable } from "@nestjs/common";
+import { WsException } from "@nestjs/websockets";
+import { ILike } from "typeorm";
 
 @Injectable()
 export class GameService {
 
     readonly fieldDim = 10;
 
-    verifyField(field: number[][]): boolean {
-        if (
-            !this.has1Boats(field) ||
-            !this.has2Boats(field) ||
-            !this.has3Boats(field) ||
-            !this.has4Boat(field)
-        ) {
-            return false;
-        }
-        return true;
-    }
-
-    has1Boats(field: number[][]): boolean {
-        let count = 0;
-
-        for (let i = 0; i < this.fieldDim; i++) {
-            for (let j = 0; j < this.fieldDim; j++) {
-                if (field[i][j]) {
-                    if (this.is1Boat(i, j, field)) count++;
-                }
-            }
-        }
-
-        return count === 4;
-    }
-
-    is1Boat(x: number, y: number, field: number[][]): boolean {
+    is1Boat(x: number, y: number, field: number[][], visited: boolean[][]): boolean {
         for (let i = -1; i <= 1; i++) {
             for (let j = -1; j <= 1; j++) {
-                if (i < 0 || i > this.fieldDim || j < 0 || j > this.fieldDim) continue;
-                if (field[i][j]) return false;
+                let nx = x + i;
+                let ny = y + j;
+                if (nx < 0 || nx >= this.fieldDim || ny < 0 || ny >= this.fieldDim) continue;
+                visited[nx][ny] = true;
+                if (i === 0 && j === 0) continue;
+                if (field[nx][ny]) return false;
             }
         }
         return true;
     }
 
-    has2Boats(_field: number[][]): boolean {
-        let count = 0;
-        const field = structuredClone(_field);
-        for (let i = 0; i < this.fieldDim; i++) {
-            for (let j = 0; j < this.fieldDim; j++) {
-                if (field[i][j]) {
-                    if (this.is2Boat(i, j, field)) count++;
-                }
-            }
-        }
-        return count === 3;
-    }
-
-    is2Boat(x: number, y: number, field: number[][]): boolean {
-        const { result, next } = this.isBoatEdge(x, y, field);
+    is2Boat(x: number, y: number, field: number[][], visited: boolean[][]): boolean {
+        const { result, next } = this.isBoatEdge(x, y, field, visited);
         if (result) {
-            if (this.isBoatEdge(next.x, next.y, field).result) {
-                field[next.x][next.y] = 0;
-                return true;
-            }
+            if (this.isBoatEdge(next.x, next.y, field, visited).result) return true;
         }
         return false;
     }
 
-    has3Boats(_field: number[][]): boolean {
-        let count = 0;
-        let field = structuredClone(_field);
-        for (let i = 0; i < this.fieldDim; i++) {
-            for (let j = 0; j < this.fieldDim; j++) {
-                if (field[i][j]) {
-                    if (this.is3Boat(i, j, field)) count++;
-                }
-            }
-        }
-        return count === 2;
-    }
-
-    is3Boat(x: number, y: number, field: number[][]): boolean {
-        let { result, next } = this.isBoatMiddle(x, y, field);
-        if (result) {
+    is3Boat(x: number, y: number, field: number[][], visited: boolean[][]): boolean {
+        let { result: result1, next: next1 } = this.isBoatMiddle(x, y, field, visited);
+        if (result1) {
             if (
-                this.isBoatEdge(next[0].x, next[0].y, field).result &&
-                this.isBoatEdge(next[1].x, next[1].y, field).result
-            ) {
-                field[next[0].x][next[0].y] = 0;
-                field[next[1].x][next[1].y] = 0;
-                return true;
+                this.isBoatEdge(next1[0].x, next1[0].y, field, visited).result &&
+                this.isBoatEdge(next1[1].x, next1[1].y, field, visited).result
+            )
+            return true;
+        }
+        let { result: result2, next: next2 } = this.isBoatEdge(x, y, field, visited);
+        if (result2) {
+            let { result, next } = this.isBoatMiddle(next2.x, next2.y, field, visited);
+            if (result &&
+                this.isBoatEdge(next[0].x, next[0].y, field, visited).result &&
+                this.isBoatEdge(next[1].x, next[1].y, field, visited).result
+            )
+            return true;
+        }
+        return false;
+    }
+
+    is4Boat(x: number, y: number, field: number[][], visited: boolean[][]) {
+        let { result, next } = this.isBoatEdge(x, y, field, visited);
+        if (result) {
+            if (this.is4BoatFromMiddle(next.x, next.y, field, visited)) return true;
+        }
+        return this.is4BoatFromMiddle(x, y, field, visited);
+    }
+
+    is4BoatFromMiddle(x: number, y: number, field: number[][], visited: boolean[][]) {
+        const { result, next } = this.isBoatMiddle(x, y, field, visited);
+        if (result) {
+            let v1 = this.isBoatEdge(next[0].x, next[0].y, field, visited).result && this.isBoatMiddle(next[1].x, next[1].y, field, visited).result;
+            let v2 = this.isBoatMiddle(next[0].x, next[0].y, field, visited).result && this.isBoatEdge(next[1].x, next[1].y, field, visited).result;
+            if (v1) {
+                let { result: res, next: nx } = this.isBoatMiddle(next[1].x, next[1].y, field, visited);
+                if (
+                    (this.isBoatEdge(nx[0].x, nx[0].y, field, visited).result && this.isBoatMiddle(nx[1].x, nx[1].y, field, visited).result) ||
+                    (this.isBoatMiddle(nx[0].x, nx[0].y, field, visited).result && this.isBoatEdge(nx[1].x, nx[1].y, field, visited).result)
+                ) return true;
+            }
+            if (v2) {
+                let { result: res, next: nx } = this.isBoatMiddle(next[0].x, next[0].y, field, visited);
+                if (
+                    (this.isBoatEdge(nx[0].x, nx[0].y, field, visited).result && this.isBoatMiddle(nx[1].x, nx[1].y, field, visited).result) ||
+                    (this.isBoatMiddle(nx[0].x, nx[0].y, field, visited).result && this.isBoatEdge(nx[1].x, nx[1].y, field, visited).result)
+                ) return true;
             }
         }
         return false;
     }
 
-    has4Boat(_field: number[][]): boolean {
-        let count = 0;
-        let field = structuredClone(_field);
+    verify(field: number[][]): boolean {
+        const visited = Array.from(
+            { length: this.fieldDim },
+            () => Array(this.fieldDim).fill(false)
+        );
+        
+        const ships: number[] = [];
+        
         for (let i = 0; i < this.fieldDim; i++) {
             for (let j = 0; j < this.fieldDim; j++) {
-                if (field[i][j]) {
-                    
+                if (field[i][j] && !visited[i][j]) {
+                    const size = this.getShip(i, j, field, visited);
+                    ships.push(size);
                 }
             }
         }
-        return true;
+
+        ships.sort((a, b) => a - b);
+
+        return JSON.stringify(ships) === JSON.stringify([1, 1, 1, 1, 2, 2, 2, 3, 3, 4]);
     }
 
-    is4Boat(x: number, y: number, field: number[][]) {
-        const { result, next } = this.isBoatMiddle(x, y, field);
-        if (result) {
-            let v1 = this.isBoatEdge(next[0].x, next[0].y, field) && this.isBoatMiddle(next[1].x, next[1].y, field);
-            let v2 = this.isBoatMiddle(next[0].x, next[0].y, field) && this.isBoatEdge(next[1].x, next[1].y, field);
-            if (v1 || v2) {
-                field[next[0].x][next[0].y] = 0;
-                field[next[1].x][next[1].y] = 0;
-                return true;
-            }
-        }
-        return false;
+    getShip(x: number, y: number, field: number[][], visited: boolean[][]): number {
+        if (this.is1Boat(x,y,field, visited)) return 1;
+        else if (this.is2Boat(x,y,field, visited)) return 2;
+        else if (this.is3Boat(x,y,field, visited)) return 3;
+        else if (this.is4Boat(x,y,field, visited)) return 4;
+        throw new WsException('Field is not valid');
     }
 
-    isBoatEdge(x: number, y: number, field: number[][]): { result, next } {
+    isBoatEdge(x: number, y: number, field: number[][], visited: boolean[][]): { result, next } {
         let counter = 0;
         let next = { x, y };
         for (let i = -1; i <= 1; i++) {
             for (let j = -1; j <= 1; j++) {
-                if (i < 0 || i > this.fieldDim || j < 0 || j > this.fieldDim) continue;
-                if (field[i][j]) {
+                let nx = x + i;
+                let ny = y + j;
+                if (nx < 0 || nx >= this.fieldDim || ny < 0 || ny >= this.fieldDim) continue;
+                visited[nx][ny] = true;
+                if (i === 0 && j === 0) continue;
+                if (field[nx][ny]) {
                     counter++;
-                    next.x = i;
-                    next.y = j;
+                    next.x = nx;
+                    next.y = ny;
                 }
             }
         }
@@ -137,25 +132,29 @@ export class GameService {
         return { result: counter === 1, next };
     }
 
-    isBoatMiddle(x: number, y: number, field: number[][]): { result, next } {
+    isBoatMiddle(x: number, y: number, field: number[][], visited: boolean[][]): { result, next } {
         let next: { x, y }[] = [];
 
-        if (x < 0 || x > this.fieldDim || y < 0 || y > this.fieldDim) return { result: false, next };
+        if (x < 0 || x >= this.fieldDim || y < 0 || y >= this.fieldDim) return { result: false, next };
         
         let numOfShipParts = 0;
         for (let i = -1; i <= 1; i++) {
             for (let j = -1; j <= 1; j++) {
-                if (i < 0 || i > this.fieldDim || j < 0 || j > this.fieldDim) continue;
-                if (field[i][j]) {
+                let nx = x + i;
+                let ny = y + j;
+                if (nx < 0 || nx >= this.fieldDim || ny < 0 || ny >= this.fieldDim) continue;
+                visited[nx][ny] = true;
+                if (i === 0 && j === 0) continue;
+                if (field[nx][ny]) {
                     numOfShipParts++;
-                    next.push({ x: i, y: j });
+                    next.push({ x: nx, y: ny });
                 }
             }
         }
         if (numOfShipParts !== 2) return { result: false, next };
 
-        let v1 = (field[x-1][y] && field[x+1][y]);
-        let v2 = (field[x][y-1] && field[x][y+1]);
+        let v1 = (x > 0 && x < this.fieldDim - 1) && (field[x-1][y] && field[x+1][y]);
+        let v2 = (y > 0 && y < this.fieldDim - 1) && (field[x][y-1] && field[x][y+1]);
         
         return { result: v1 || v2, next };
     }

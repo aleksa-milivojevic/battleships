@@ -190,7 +190,7 @@ export class GameService {
     back() {
         this.gameOver.set(false);
         this.myMove.set(false);
-        this.setup.set(false);
+        this.setup.set(true);
         this.game.set(false);
         this.lastMove.set({ result: '', coords: [] });
         this.win.set(false);
