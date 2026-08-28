@@ -2,6 +2,7 @@ import { Component, OnInit, effect, inject, signal } from "@angular/core";
 import { GameService } from "../../services/sockets/game.service";
 import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
+import { StorageService } from "../../services/storage.service";
 
 @Component({
     selector: 'app-game',
@@ -13,6 +14,7 @@ import { Router } from "@angular/router";
 export class GameComponent implements OnInit {
     private gameService = inject(GameService);
     private router = inject(Router);
+    private storage = inject(StorageService);
 
     readonly fieldDim = 10;
     
@@ -26,7 +28,7 @@ export class GameComponent implements OnInit {
     win = this.gameService.win;
     surrenderMessage = this.gameService.surrenderMessage;
 
-    htmlMyMove = signal(this.gameService.myMove());
+    htmlMyMove = signal(false);
     // htmlMyMove = signal(true);
 
     gameOverScreen = signal(false);
@@ -38,6 +40,9 @@ export class GameComponent implements OnInit {
 
     constructor() {
         this.gameService.connect();
+        this.field.set(this.storage.getItem('MY_FIELD') ?? this.field());
+        this.oppField.set(this.storage.getItem('OPP_FIELD') ?? this.oppField());
+        this.htmlMyMove.set(this.storage.getItem('FIRST') ?? false);
         effect(() => {
             this.myMove();
             if (!this.myMove()) {
@@ -52,7 +57,13 @@ export class GameComponent implements OnInit {
             if (this.gameOver()) {
                 this.showGameOverScreen();
             }
-        })
+        });
+        effect(() => {
+            this.gamePhase();
+            if (this.gamePhase()) {
+                this.htmlMyMove.set(this.gameService.myMove());
+            }
+        });
     }
 
     ngOnInit(): void {}
@@ -63,10 +74,12 @@ export class GameComponent implements OnInit {
             else f[i][j] = 0;
             return f;
         });
+        this.storage.setItem('MY_FIELD', this.field());
     }
 
     onReadyUp() {
         this.gameService.readyUp(this.field());
+        this.storage.setItem('MY_FIELD', this.field());
     }
 
     onOppMove() {
@@ -86,6 +99,7 @@ export class GameComponent implements OnInit {
                 f[x][y] = -2;
                 return f;
             });
+            this.htmlMyMove.set(true);
         }
         else if (result === 'game-end') {
             console.log('updating field: ', result, coords);
@@ -94,8 +108,7 @@ export class GameComponent implements OnInit {
                 return f;
             });
         }
-
-        this.htmlMyMove.set(true);
+        this.storage.setItem('MY_FIELD', this.field());
     }
 
     onMyReport() {
@@ -115,6 +128,7 @@ export class GameComponent implements OnInit {
                 f[x][y] = -1;
                 return f;
             });
+            this.htmlMyMove.set(false);
         }
         else if (result === 'game-end') {
             console.log('updating opp field: ', result, coords);
@@ -123,8 +137,7 @@ export class GameComponent implements OnInit {
                 return f;
             });
         }
-
-        this.htmlMyMove.set(false);
+        this.storage.setItem('OPP_FIELD', this.oppField());
     }
 
     onAttack(x: number, y: number) {

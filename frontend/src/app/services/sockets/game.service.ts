@@ -61,6 +61,7 @@ export class GameService {
         }
 
         this.myMove.set(this.storage.getItem<boolean>('FIRST') ?? false);
+        console.log('my move: ', this.myMove());
 
         this.setup.set(this.storage.getItem<boolean>('SETUP') ?? true);
         this.game.set(this.storage.getItem<boolean>('GAME') ?? false);
@@ -162,8 +163,10 @@ export class GameService {
         console.log('attack: ', data.result, data.coords);
         this.lastMove.set({ result: data.result, coords: data.coords });
         this.storage.setItem('LAST_MOVE', { result: data.result, coords: data.coords });
-        this.myMove.set(true);
-        this.storage.setItem('MY_MOVE', true);
+        if (data.result === 'miss') {
+            this.myMove.set(true);
+            this.storage.setItem('FIRST', true);    
+        }
         if (data.result === 'game-end') {
             this.gameOver.set(true);
             this.storage.setItem('GAME_OVER', true);
@@ -178,8 +181,10 @@ export class GameService {
         console.log('report: ', data.result, data.coords);
         this.lastMove.set({ result: data.result, coords: data.coords });
         this.storage.setItem('LAST_MOVE', { result: data.result, coords: data.coords });
-        this.myMove.set(false);
-        this.storage.setItem('MY_MOVE', false);
+        if (data.result === 'miss') {
+            this.myMove.set(false);
+            this.storage.setItem('FIRST', false);
+        }
         if (data.result === 'game-end') {
             this.gameOver.set(true);
             this.storage.setItem('GAME_OVER', true);
@@ -190,7 +195,7 @@ export class GameService {
 
     surrender() {
         this.myMove.set(false);
-        this.storage.setItem('MY_MOVE', false);
+        this.storage.setItem('FIRST', false);
         this.gameOver.set(true);
         this.storage.setItem('GAME_OVER', true);
         this.surrenderMessage.set('You Have Surrendered');
