@@ -3,6 +3,7 @@ import { Socket, Server } from "socket.io";
 import { ChallangeDto } from "./challange.dto";
 import { NotFoundException } from "@nestjs/common";
 import { delay } from "rxjs";
+import { randomInt } from "crypto";
 
 @WebSocketGateway({ namespace: '/challange', cors: { origin: 'http://localhost:4200', credentials: true } })
 export class ChallangeGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -67,13 +68,18 @@ export class ChallangeGateway implements OnGatewayConnection, OnGatewayDisconnec
     }
 
     @SubscribeMessage('accept')
-    handleAccept(@MessageBody() data: ChallangeDto) {
-        const target = this.utc.get(data.target);
-
+    handleAccept(@MessageBody('source') sourceId: string, @MessageBody('target') targetId: string, @ConnectedSocket() client: Socket) {
+        console.log('source: ', sourceId);
+        console.log('target', targetId);
+        const target = this.utc.get(targetId);
+        
         if (!target) {
             throw new NotFoundException('user went offline');
         }
 
-        target.emit('accept', { source: data.source });
+        let first = !!(randomInt(0,2));
+
+        target.emit('accept', { source: sourceId, myMove: first });
+        client.emit('accept', { source: targetId, myMove: !first });
     }
 }

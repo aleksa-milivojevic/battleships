@@ -3,6 +3,7 @@ import {  } from "ngx-socket-io";
 import { StorageService } from "../storage.service";
 import { User } from "../user.service";
 import { io, Socket } from "socket.io-client";
+import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: 'root'
@@ -13,6 +14,7 @@ export class ChallangeService {
         autoConnect: false
     });
     private storage = inject(StorageService);
+    private router = inject(Router);
 
     private self = signal(this.storage.getItem<User>('SELF')?.id);
 
@@ -42,14 +44,14 @@ export class ChallangeService {
         this.socket.on('accept',
             (data) => {
                 console.log('accept heard');
-                this.handleAccept(data.source);
+                this.handleAccept(data);
             }
         )
 
         this.socket.on('disconnection',
             data => {
                 console.log('disconnection heard');
-                this.eraseInvite(data.source);
+                this.eraseInvite(data);
             }
         )
     }
@@ -81,7 +83,7 @@ export class ChallangeService {
     }
 
     sendAccept(target: string) {
-        console.log('accept sent');
+        console.log('accept sent', this.self(), " ", target);
         this.socket.emit('accept', { source: this.self(), target: target });
     }
 
@@ -92,8 +94,12 @@ export class ChallangeService {
         this.storage.setItem('INVITES', this._invites());
     }
 
-    handleAccept(source: string) {
-        // pokretanje igre
+    handleAccept(data: { source: string, myMove: boolean}) {
+        console.log('data', data);
+        this.storage.setItem('OPP', data.source);
+        this.storage.setItem('FIRST', data.myMove);
+        this.eraseInvite(data.source);
+        this.router.navigate(['/game']);
     }
 
     eraseInvite(source: string) {

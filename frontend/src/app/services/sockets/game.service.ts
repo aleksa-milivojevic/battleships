@@ -132,6 +132,7 @@ export class GameService {
         this.socket.on('exception',
             (data) => {
                 console.log('exception heard');
+                console.log(data);
                 this.error(data);
             }
         )
