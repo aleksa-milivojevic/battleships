@@ -27,6 +27,8 @@ export class GameComponent implements OnInit {
     gameOver = this.gameService.gameOver;
     win = this.gameService.win;
     surrenderMessage = this.gameService.surrenderMessage;
+    disconnected = this.gameService.disconnected;
+    waiting = this.gameService.waiting;
 
     htmlMyMove = signal(false);
     // htmlMyMove = signal(true);
@@ -156,12 +158,19 @@ export class GameComponent implements OnInit {
     toGameScreen() {
         this.gameService.disconnect();
         this.gameOverScreen.set(false);
+        this.clearLocal();
     }
 
     toMainScreen() {
         this.gameService.disconnect();
         this.gameService.back();
         this.router.navigate(['main']);
+        this.clearLocal();
+    }
+
+    clearLocal() {
+        this.storage.removeItem('OPP_FIELD');
+        this.storage.removeItem('MY_FIELD');
     }
 
     onBack() {

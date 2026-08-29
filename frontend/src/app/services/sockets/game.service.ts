@@ -19,6 +19,8 @@ export class GameService {
 
     private opp = signal<string | null>(null);
 
+    private reconnectTimeout = signal<number | undefined>(undefined);
+
     setup = signal(true);
     game = signal(false);
 
@@ -35,6 +37,9 @@ export class GameService {
     fieldError = signal('');
 
     surrenderMessage = signal('');
+
+    disconnected = signal(false);
+    waiting = signal(false);
 
     constructor() {
         
@@ -72,6 +77,8 @@ export class GameService {
         this.fieldError.set(this.storage.getItem<string>('FIELD_ERROR') ?? '');
         this.surrenderMessage.set(this.storage.getItem<string>('SURR_MSG') ?? '');
         this.lastMove.set(this.storage.getItem<{ result: string, coords: number[] }>('LAST_MOVE') ?? { result: '', coords: [] });
+        this.disconnected.set(this.storage.getItem('DISCONNECT') ?? false);
+        this.waiting.set(this.storage.getItem('WAIT') ?? false);
 
         this.socket.on('id-req',
             () => {
@@ -105,6 +112,20 @@ export class GameService {
             () => {
                 console.log('surrender heard');
                 this.oppSurrender();
+            }
+        )
+
+        this.socket.on('disconnection',
+            () => {
+                console.log('disconnection heard');
+                this.onDisconnect();
+            }
+        )
+
+        this.socket.on('reconnect',
+            () => {
+                console.log('reconnect heard');
+                this.onReconnect();
             }
         )
 
@@ -214,8 +235,16 @@ export class GameService {
 
     error(data: { message: string }) {
         if (data.message.startsWith('Field')) {
+            console.log(data.message);
             this.fieldError.set(data.message);
             this.storage.setItem('FIELD_ERROR', this.fieldError());
+        }
+        if (data.message.endsWith('Opponent')) {
+            console.log(data.message);
+            this.surrenderMessage.set('You disconnected');
+            this.storage.setItem('SURR_MSG', this.surrenderMessage());
+            this.disconnected.set(true);
+            this.storage.setItem('DISCONNECT', true);
         }
     }
 
@@ -231,6 +260,8 @@ export class GameService {
         this.storage.removeItem('FIELD_ERROR');
         this.storage.removeItem('SURR_MSG');
         this.storage.removeItem('LAST_MOVE');
+        this.storage.removeItem('DISCONNECT');
+        this.storage.removeItem('WAIT');
     }
 
     back() {
@@ -244,6 +275,32 @@ export class GameService {
         this.imReady.set(false);
         this.fieldError.set('');
         this.surrenderMessage.set('');
+        this.disconnected.set(false);
+        this.waiting.set(false);
         this.clear();
+    }
+
+    onDisconnect() {
+        if (this.gameOver()) return;
+        this.reconnectTimeout.set(setTimeout(this.oppDisconnect, 5000));
+        this.waiting.set(true);
+        this.storage.setItem('WAIT', true);
+    }
+
+    onReconnect() {
+        clearTimeout(this.reconnectTimeout());
+        this.waiting.set(false);
+        this.storage.setItem('WAIT', false);
+    }
+
+    oppDisconnect() {
+        this.waiting.set(false);
+        this.storage.setItem('WAIT', false);
+        this.gameOver.set(true);
+        this.storage.setItem('GAME_OVER', true);
+        this.win.set(true);
+        this.storage.setItem('WIN', true);
+        this.surrenderMessage.set('Opponent Disconnected');
+        this.storage.setItem('SURR_MSG', this.surrenderMessage());
     }
 }

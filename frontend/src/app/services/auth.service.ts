@@ -29,6 +29,7 @@ export class AuthService implements OnDestroy {
     private storage = inject(StorageService);
     private challangeService = inject(ChallangeService);
     private queueService = inject(QueueService);
+    private gameService = inject(GameService);
     
     private platformId = inject(PLATFORM_ID);
     private isBrowser = isPlatformBrowser(this.platformId);
@@ -104,6 +105,7 @@ export class AuthService implements OnDestroy {
             tap(() => {
                     this.challangeService.disconnect();
                     this.queueService.disconnect();
+                    this.gameService.disconnect();
                 }
             )
         );

@@ -115,3 +115,20 @@
         </div>
     </div>
 }
+
+@if (waiting()) {
+    <div class="overlay">
+        <div class="waiting-div">
+            <h1>Waiting for opponent to reconnect...</h1>
+        </div>
+    </div>
+}
+
+@if (disconnected()) {
+    <div class="overlay">
+        <div class="waiting-div">
+            <h1 style="color: white">You have been disconnected.</h1>
+            <button class="go-btn" (click)="toMainScreen()">Back To Main Screen</button>
+        </div>
+    </div>
+}
