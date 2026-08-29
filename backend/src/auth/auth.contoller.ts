@@ -103,7 +103,28 @@ export class AuthController {
 
     @UseGuards(PassportJwtAuthGuard)
     @Post('logout')
-    logout(@Req() req) {
-        this.authService.logout(req.user);
+    async logout(
+        @Req() req,
+        @Res({ passthrough: true }) response: Response
+    ) {
+        await this.authService.logout(req.user);
+
+        response.clearCookie(
+            'accessToken',
+            {
+                httpOnly: true,
+                secure: false,
+                sameSite: 'lax'
+            }
+        )
+
+        response.clearCookie(
+            'refreshToken',
+            {
+                httpOnly: true,
+                secure: false,
+                sameSite: 'lax'
+            }
+        )
     }
 }
