@@ -1,10 +1,7 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, NotImplementedException, Post, Req, Request, Res, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { AuthGuard } from "./guards/auth.guard";
 import { PassportLocalGuard } from "./guards/passport-local.guard";
 import { PassportJwtAuthGuard } from "./guards/passport-jwt.guard";
-import { RawSqlResultsToEntityTransformer } from "typeorm/query-builder/transformer/RawSqlResultsToEntityTransformer.js";
-import { SignInInput } from "./auth.dto";
 import { RefreshAuthGuard } from "./guards/refresh-jwt.guard";
 import type { Response } from "express";
 
@@ -109,6 +106,29 @@ export class AuthController {
     ) {
         await this.authService.logout(req.user);
 
+        response.clearCookie(
+            'accessToken',
+            {
+                httpOnly: true,
+                secure: false,
+                sameSite: 'lax'
+            }
+        )
+
+        response.clearCookie(
+            'refreshToken',
+            {
+                httpOnly: true,
+                secure: false,
+                sameSite: 'lax'
+            }
+        )
+    }
+
+    @Post('clear')
+    async clearCookies(
+        @Res({ passthrough: true }) response: Response
+    ) {
         response.clearCookie(
             'accessToken',
             {

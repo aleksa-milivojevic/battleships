@@ -149,4 +149,11 @@ export class AuthService implements OnDestroy {
             })
         )
     }
+
+    clearCookies(): Observable<any> {
+        return this.http.post<any>(
+            `${this.apiUrl}/clear`,
+            {}
+        );
+    }
 }
