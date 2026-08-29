@@ -6,8 +6,6 @@ import { Observable, tap } from "rxjs";
 import { StorageService } from "./storage.service";
 import { isPlatformBrowser } from "@angular/common";
 import { ChallangeService } from "./sockets/challange.service";
-import { QueueService } from "./sockets/queue.service";
-import { GameService } from "./sockets/game.service";
 
 interface LoginRequest {
     email: string,
@@ -28,8 +26,6 @@ export class AuthService implements OnDestroy {
     private http = inject(HttpClient);
     private storage = inject(StorageService);
     private challangeService = inject(ChallangeService);
-    private queueService = inject(QueueService);
-    private gameService = inject(GameService);
     
     private platformId = inject(PLATFORM_ID);
     private isBrowser = isPlatformBrowser(this.platformId);
@@ -103,9 +99,7 @@ export class AuthService implements OnDestroy {
             tap(() => this.clearLocal())
         ).pipe(
             tap(() => {
-                    this.challangeService.disconnect();
-                    this.queueService.disconnect();
-                    this.gameService.disconnect();
+                    this.storage.removeAll();
                 }
             )
         );

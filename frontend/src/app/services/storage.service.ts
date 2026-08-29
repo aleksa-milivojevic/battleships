@@ -39,4 +39,14 @@ export class StorageService {
             console.error(err);
         }
     }
+
+    removeAll() {
+        try {
+            localStorage.clear();
+        }
+        catch (err) {
+            console.log('Error removing all from storage');
+            console.error(err);
+        }
+    }
 }
