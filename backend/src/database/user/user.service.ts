@@ -221,4 +221,15 @@ export class UserService {
             users: users
         }
     }
+
+    async updateScores(wId: string, lId: string, points: number) {
+        const looser = (await this.findOne(lId)).user;
+        
+        if (looser.score <= points)
+            await this.userRepository.update({ id: lId }, { score: 0 });
+        else 
+            await this.userRepository.decrement({ id: lId }, 'score', points);
+        
+        await this.userRepository.increment({ id: wId }, 'score', points);    
+    }
 }
