@@ -8,11 +8,11 @@ export class Match {
 
     @ManyToOne(() => User, { onDelete: 'SET NULL' })
     @JoinColumn({ name: 'winner' })
-    winner: User;
+    winner: User | null;
 
     @ManyToOne(() => User, { onDelete: 'SET NULL' })
     @JoinColumn({ name: 'looser' })
-    looser: User;
+    looser: User | null;
 
     @Column({
         type: "int",

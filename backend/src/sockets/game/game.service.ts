@@ -1,11 +1,16 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { WsException } from "@nestjs/websockets";
-import { ILike } from "typeorm";
+import { MatchService } from "src/database/match/match.service";
+import { UserService } from "src/database/user/user.service";
 
 @Injectable()
 export class GameService {
-
     readonly fieldDim = 10;
+
+    constructor(
+        private userService: UserService,
+        private matchService: MatchService
+    ) {}
 
     is1Boat(x: number, y: number, field: number[][], visited: boolean[][]): boolean {
         for (let i = -1; i <= 1; i++) {
@@ -176,5 +181,30 @@ export class GameService {
             }
         }
         return true;
+    }
+
+    async saveMatch(wId: string, lId: string) {
+        const winner = (await this.userService.findOne(wId)).user;
+        const looser = (await this.userService.findOne(lId)).user;
+        let points = 150;
+
+        if (!winner || !looser) {
+            throw new BadRequestException('Player not found');
+        }
+
+        let diff = Math.abs(winner.score - looser.score);
+
+        if (winner.score >= looser.score) {
+            if (diff <= 1000) points = 150;
+            else if (diff <= 2000) points = 100;
+            else if (diff <= 3000) points = 50;
+        }
+        else {
+            if (diff <= 1000) points = 50;
+            else if (diff <= 2000) points = 100;
+            else if (diff <= 3000) points = 150;
+        }
+        
+        this.matchService.addOne({ winner: wId, looser: lId, points: points })
     }
 }

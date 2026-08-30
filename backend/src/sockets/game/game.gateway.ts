@@ -2,6 +2,7 @@ import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect,
 import { Socket } from "socket.io";
 import { GameService } from "./game.service";
 import { ClientInfo } from "./game.dto";
+import { BadRequestException } from "@nestjs/common";
 
 @WebSocketGateway({ namespace: '/game', cors: { origin: 'http://localhost:4200', credentials: true } })
 export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -87,16 +88,24 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @SubscribeMessage('attack')
     attack(@MessageBody('coords') coords: any, @ConnectedSocket() client: Socket) {
         const id = this.ids.get(client.id);
-        const opp = this.clients.get(id!)?.opp;
-        console.log('[attack]: ', id, opp);
+
+        if (!id) throw new WsException('Client not found');
+
+        const opp = this.clients.get(id)?.opp;
+
+        if (!opp) throw new WsException('Opponent not found');
         
         const result = this.gameService.getAttackResult(
             coords,
-            this.clients.get(id!)?.field!
+            this.clients.get(id)?.field!
         );
 
-        this.clients.get(opp!)?.socket?.emit('attack', { result, coords });
+        this.clients.get(opp)?.socket?.emit('attack', { result, coords });
         client.emit('report', { result, coords });
+
+        if (result === 'game-end') {
+            this.gameService.saveMatch(id, opp);
+        }
     }
 
     @SubscribeMessage('surrender')
@@ -120,6 +129,19 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
         }
 
         opponent.socket.emit('surrender');
+
+        this.gameService.saveMatch(player.opp, id);
+    }
+
+    @SubscribeMessage('opp-disconnect')
+    oppDisconnect(@ConnectedSocket() client: Socket) {
+        const id = this.ids.get(client.id);
+        if (!id) throw new WsException('Player not found');
+
+        const player = this.clients.get(id);
+        if (!player) throw new WsException('Player info not found');
+        
+        this.gameService.saveMatch(id, player.opp);
     }
 
     checkForReconnect(id: string, opp: string) {
