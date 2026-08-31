@@ -283,7 +283,7 @@ export class GameService {
 
     onDisconnect() {
         if (this.gameOver()) return;
-        this.reconnectTimeout.set(setTimeout(this.oppDisconnect, 5000));
+        this.reconnectTimeout.set(setTimeout(() => this.oppDisconnect(), 5000));
         this.waiting.set(true);
         this.storage.setItem('WAIT', true);
     }
@@ -295,6 +295,7 @@ export class GameService {
     }
 
     oppDisconnect() {
+        this.socket.emit('opp-disconnect');
         this.waiting.set(false);
         this.storage.setItem('WAIT', false);
         this.gameOver.set(true);
