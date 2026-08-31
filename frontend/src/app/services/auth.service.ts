@@ -99,6 +99,7 @@ export class AuthService implements OnDestroy {
             tap(() => this.clearLocal())
         ).pipe(
             tap(() => {
+                    this.challangeService.disconnect();
                     this.storage.removeAll();
                 }
             )

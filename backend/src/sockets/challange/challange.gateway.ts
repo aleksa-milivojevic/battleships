@@ -4,6 +4,7 @@ import { ChallangeDto } from "./challange.dto";
 import { NotFoundException } from "@nestjs/common";
 import { delay } from "rxjs";
 import { randomInt } from "crypto";
+import { UserService } from "src/database/user/user.service";
 
 @WebSocketGateway({ namespace: '/challange', cors: { origin: 'http://localhost:4200', credentials: true } })
 export class ChallangeGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -13,6 +14,10 @@ export class ChallangeGateway implements OnGatewayConnection, OnGatewayDisconnec
     private utc = new Map<string, Socket>();
     private ctu = new Map<string, string>();
     private interactions = new Map<string, string[]>();
+
+    constructor(
+        private userService: UserService
+    ) {}
     
     handleConnection(@ConnectedSocket() client: Socket) {
         console.log("new client ", client.id);
@@ -22,6 +27,8 @@ export class ChallangeGateway implements OnGatewayConnection, OnGatewayDisconnec
     handleDisconnect(@ConnectedSocket() client: any) {
         const id = this.ctu.get(client.id);
 
+        if (!id) return;
+
         const targets = this.interactions.get(id!);
         
         if (targets) {
@@ -30,6 +37,8 @@ export class ChallangeGateway implements OnGatewayConnection, OnGatewayDisconnec
                 ctarget?.emit('disconnection', { source: id });
             });
         }
+
+        this.userService.setOffline(id);
 
         this.ctu.delete(client.id);
         this.utc.delete(id!);

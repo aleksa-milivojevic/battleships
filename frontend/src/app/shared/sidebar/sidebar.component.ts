@@ -17,6 +17,9 @@ export class SidebarComponent {
     this.authService.logout().subscribe({
       next: () => {
         this.router.navigate(['/home']);
+        this.authService.clearCookies().subscribe({
+          error: (err) => console.error(err)
+        });
       },
       error: (err) => {
         console.error(err);

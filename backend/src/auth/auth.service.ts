@@ -155,6 +155,5 @@ export class AuthService {
 
     async logout(user: SignInData) {
         await this.userService.updateRefreshToken(user.userId, null);
-        await this.userService.setOffline(user.userId);
     }
 }
