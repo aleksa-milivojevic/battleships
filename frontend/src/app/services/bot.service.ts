@@ -1,4 +1,5 @@
-import { Injectable, signal } from "@angular/core";
+import { Injectable, effect, inject, signal } from "@angular/core";
+import { StorageService } from "./storage.service";
 
 interface Coords {
     x: number,
@@ -9,6 +10,8 @@ interface Coords {
     providedIn: 'root'
 })
 export class BotService {
+    private storage = inject(StorageService);
+
     private readonly fieldDim = 9;
 
     private _field = signal<number[][]>([]);
@@ -16,7 +19,22 @@ export class BotService {
 
     private _oppField = signal<number[][]>([]);
 
-    private nextMove: { x: number, y: number, axis: number }[] = [];
+    private nextMove = signal<{ x: number, y: number, axis: number }[]>([]);
+
+    constructor() {
+        effect(() => {
+            this._field();
+            this.storage.setItem('BOT_FIELD', this._field());
+        });
+        effect(() => {
+            this._oppField();
+            this.storage.setItem('BOT_OPP_FIELD', this._oppField());
+        });
+        effect(() => {
+            this.nextMove;
+            this.storage.setItem('MOVES', this.nextMove);
+        });
+    }
 
     setOppField(oppField: number[][]) {
         this._oppField.set(oppField);
@@ -248,7 +266,8 @@ export class BotService {
             return { result, coords: { x, y } };
         }
         else {
-            let move = this.nextMove.pop();
+            let move: { x: number, y: number, axis: number } | undefined;
+            this.nextMove.update(list => {let n = [...list]; move = n.pop(); return n});
             if (!move) throw new Error('move is null');
 
             let x = move.x;
@@ -260,14 +279,14 @@ export class BotService {
                 if (this.gameOver(this._oppField())) result = 'game-end';
                 else {
                     result = 'hit';
-                    this.nextMove.filter(m => m.axis === axis);
+                    this.nextMove.update(list => list.filter(m => m.axis === axis));
                     if (axis) {
-                        if (this._oppField()[x][y-1] >= 0) this.nextMove.push({ x: x, y: y-1, axis: 1 });
-                        if (this._oppField()[x][y+1] >= 0) this.nextMove.push({ x: x, y: y+1, axis: 1 });
+                        if (this._oppField()[x][y-1] >= 0) this.nextMove.update(list => { return [...list, { x: x, y: y-1, axis: 1 }]});
+                        if (this._oppField()[x][y+1] >= 0) this.nextMove.update(list => { return [...list, { x: x, y: y+1, axis: 1 }]});
                     }
                     else {
-                        if (this._oppField()[x-1][y] >= 0) this.nextMove.push({ x: x-1, y: y, axis: 0 });
-                        if (this._oppField()[x+1][y] >= 0) this.nextMove.push({ x: x+1, y: y, axis: 0 });
+                        if (this._oppField()[x-1][y] >= 0) this.nextMove.update(list => { return [...list, { x: x-1, y: y, axis: 0 }]});
+                        if (this._oppField()[x+1][y] >= 0) this.nextMove.update(list => { return [...list, { x: x+1, y: y, axis: 0 }]});
                     }
                 }
             }
@@ -286,10 +305,10 @@ export class BotService {
                 if (nx < 0 || nx > this.fieldDim || ny < 0 || ny > this.fieldDim) continue;
                 if (this._oppField()[nx][ny] >= 0) {
                     if (i === 0) {
-                        this.nextMove.push({ x: nx, y: ny, axis: 0 });
+                        this.nextMove.update(list => { return [...list, { x: nx, y: ny, axis: 0 }]});
                     }
                     if (j === 0) {
-                        this.nextMove.push({ x: nx, y: ny, axis: 1 });
+                        this.nextMove.update(list => { return [...list, { x: nx, y: ny, axis: 1 }]});
                     }
                 }
             }
@@ -320,6 +339,6 @@ export class BotService {
     clear() {
         this._field.set([]);
         this._oppField.set([]);
-        this.nextMove = [];
+        this.nextMove.set([]);
     }
 }
