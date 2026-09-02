@@ -20,6 +20,8 @@ export class BotGameComponent implements OnInit {
     fieldError = signal('');
     gameOver = signal(false);
     gameOverScreen = signal(false);
+    win = signal(false);
+    surrenderMessage = signal('');
 
     field = signal<number[][]>(Array.from({ length: 10 }, () => Array(10).fill(0)));
     oppField = signal<number[][]>(Array.from({ length: 10 }, () => Array(10).fill(0)));
@@ -33,6 +35,10 @@ export class BotGameComponent implements OnInit {
             if (this.myMove() === false) {
                 this.botMove();
             }
+        });
+        effect(() => {
+            this.gameOver();
+            this.toggleGameOverScreen();
         })
     }
 
@@ -78,6 +84,7 @@ export class BotGameComponent implements OnInit {
                 f[x][y] = -1;
                 return f;
             })
+            this.gameOver.set(true);
         }
     }
 
@@ -100,7 +107,14 @@ export class BotGameComponent implements OnInit {
                 f[x][y] = 1;
                 return f;
             })
+            this.gameOver.set(true);
+            this.win.set(true);
         }
+    }
+
+    onSurrender() {
+        this.gameOver.set(true);
+        this.surrenderMessage.set('You have surrendered');
     }
 
     toggleGameOverScreen() {
