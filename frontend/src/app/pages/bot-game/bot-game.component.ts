@@ -87,12 +87,11 @@ export class BotGameComponent implements OnInit {
     }
 
     onReadyUp() {
-        try {
-            this.bot.setOppField(this.field());
+        if (!this.bot.setOppField(this.field())) {
+            this.fieldError.set('Field is not valid');
+            return;
         }
-        catch (error: any) {
-            this.fieldError.set(error.message);
-        }
+        this.setupPhase.set(false);
     }
 
     botMove() {
