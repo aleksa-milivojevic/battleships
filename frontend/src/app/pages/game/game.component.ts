@@ -165,7 +165,6 @@ export class GameComponent implements OnInit {
     toGameScreen() {
         this.gameService.disconnect();
         this.gameOverScreen.set(false);
-        this.clearLocal();
     }
 
     toMainScreen() {
@@ -175,13 +174,14 @@ export class GameComponent implements OnInit {
         this.clearLocal();
     }
 
-    clearLocal() {
-        this.storage.removeItem('OPP_FIELD');
-        this.storage.removeItem('MY_FIELD');
-    }
-
     onBack() {
         this.router.navigate(['/main']);
         this.gameService.back();
+        this.clearLocal();
+    }
+
+    clearLocal() {
+        this.storage.removeItem('OPP_FIELD');
+        this.storage.removeItem('MY_FIELD');
     }
 }
