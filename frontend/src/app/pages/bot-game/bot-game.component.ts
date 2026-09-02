@@ -78,7 +78,8 @@ export class BotGameComponent implements OnInit {
     ngOnInit(): void {}
 
     toggleSquare(i: number, j: number) {
-        this.field.update(f => {
+        this.field.update(field => {
+            let f = field.map(row => [...row]);
             if (f[i][j] === 0) f[i][j] = 1;
             else f[i][j] = 0;
             return f;
@@ -99,20 +100,23 @@ export class BotGameComponent implements OnInit {
         let x = attack.coords.x;
         let y = attack.coords.y;
         if (attack.result === 'hit') {
-            this.field.update(f => {
+            this.field.update(field => {
+                let f = field.map(row => [...row]);
                 f[x][y] = -1;
                 return f;
             })
         }
         else if (attack.result === 'miss') {
-            this.field.update(f => {
+            this.field.update(field => {
+                let f = field.map(row => [...row]);
                 f[x][y] = -2;
                 return f;
             })
             this.myMove.set(true);
         }
         else if (attack.result === 'game-end') {
-            this.field.update(f => {
+            this.field.update(field => {
+                let f = field.map(row => [...row]);
                 f[x][y] = -1;
                 return f;
             })
@@ -123,19 +127,22 @@ export class BotGameComponent implements OnInit {
     onAttack(x: number, y: number) {
         let report = this.bot.regiterAttack(x, y);
         if (report === 'hit') {
-            this.oppField.update(f => {
+            this.oppField.update(field => {
+                let f = field.map(row => [...row]);
                 f[x][y] = 1;
                 return f;
             })
         }
         else if (report === 'miss') {
-            this.oppField.update(f => {
+            this.oppField.update(field => {
+                let f = field.map(row => [...row]);
                 f[x][y] = -1;
                 return f;
             })
         }
         else if (report === 'game-end') {
-            this.oppField.update(f => {
+            this.oppField.update(field => {
+                let f = field.map(row => [...row]);
                 f[x][y] = 1;
                 return f;
             })
