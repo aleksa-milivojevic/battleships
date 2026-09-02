@@ -6,6 +6,7 @@ import { Match, MatchService } from '../../services/match.service';
 import { AuthService } from '../../services/auth.service';
 import { ChallangeService } from '../../services/sockets/challange.service';
 import { QueueService } from '../../services/sockets/queue.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main',
@@ -20,6 +21,7 @@ export class MainComponent implements OnInit {
   private authService = inject(AuthService);
   private challangeService = inject(ChallangeService);
   private queueService = inject(QueueService);
+  private router = inject(Router);
 
   self = this.authService.user;
   
@@ -146,6 +148,10 @@ export class MainComponent implements OnInit {
   onPvP() {
     this.queueService.connect();
     this.toggleQueue();
+  }
+
+  onBot() {
+    this.router.navigate(['/bot']);
   }
 
   toggleQueue() {

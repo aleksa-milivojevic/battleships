@@ -8,6 +8,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { AnonGuard, UserGuard } from './guards/auth.guard';
 import { ChallangesComponent } from './pages/challanges/challanges.component';
 import { GameComponent } from './pages/game/game.component';
+import { BotGameComponent } from './pages/bot-game/bot-game.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -19,5 +20,6 @@ export const routes: Routes = [
     { path: 'profile', component: ProfileComponent, canActivate: [UserGuard]},
     { path: 'challanges', component: ChallangesComponent, canActivate: [UserGuard] },
     { path: 'game', component: GameComponent, canActivate: [UserGuard] },
+    { path: 'bot', component: BotGameComponent, canActivate: [UserGuard] },
     { path: '**', redirectTo: 'home' }
 ];
