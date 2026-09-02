@@ -71,7 +71,8 @@ export class GameComponent implements OnInit {
     ngOnInit(): void {}
 
     toggleSquare(i: number, j: number) {
-        this.field.update(f => {
+        this.field.update(field => {
+            let f = field.map(row => [...row]);
             if (f[i][j] === 0) f[i][j] = 1;
             else f[i][j] = 0;
             return f;
@@ -90,14 +91,16 @@ export class GameComponent implements OnInit {
 
         if (result === 'hit') {
             console.log('updating field: ', result, coords);
-            this.field.update(f => {
+            this.field.update(field => {
+                let f = field.map(row => [...row]);
                 f[x][y] = -1;
                 return f;
             });
         }
         else if (result === 'miss') {
             console.log('updating field: ', result, coords);
-            this.field.update(f => {
+            this.field.update(field => {
+                let f = field.map(row => [...row]);
                 f[x][y] = -2;
                 return f;
             });
@@ -105,7 +108,8 @@ export class GameComponent implements OnInit {
         }
         else if (result === 'game-end') {
             console.log('updating field: ', result, coords);
-            this.field.update(f => {
+            this.field.update(field => {
+                let f = field.map(row => [...row]);
                 f[x][y] = -1;
                 return f;
             });
@@ -119,14 +123,16 @@ export class GameComponent implements OnInit {
 
         if (result === 'hit') {
             console.log('updating opp field: ', result, coords);
-            this.oppField.update(f => {
+            this.oppField.update(field => {
+                let f = field.map(row => [...row]);
                 f[x][y] = 1;
                 return f;
             });
         }
         else if (result === 'miss') {
             console.log('updating opp field: ', result, coords);
-            this.oppField.update(f => {
+            this.oppField.update(field => {
+                let f = field.map(row => [...row]);
                 f[x][y] = -1;
                 return f;
             });
@@ -134,7 +140,8 @@ export class GameComponent implements OnInit {
         }
         else if (result === 'game-end') {
             console.log('updating opp field: ', result, coords);
-            this.oppField.update(f => {
+            this.oppField.update(field => {
+                let f = field.map(row => [...row]);
                 f[x][y] = 1;
                 return f;
             });
