@@ -79,7 +79,7 @@ export class BotService {
         let vh = Math.floor(Math.random() * 2);
         let dir = Math.floor(Math.random() * 2);
 
-        this._field.update(f => { f[x][y] = 1; return f; });
+        this._field.update(field => {let f = field.map(row => [...row]); f[x][y] = 1; return f; });
         this.takeUp(x, y, taken);
         if (vh) {
             let bottom, top;
@@ -92,11 +92,11 @@ export class BotService {
                 bottom = toSet - top;
             }
             for (let i = 1; i <= bottom; i++) {
-                this._field.update(f => { f[x+i][y] = 1; return f; });
+                this._field.update(field => {let f = field.map(row => [...row]); f[x+i][y] = 1; return f; });
                 this.takeUp(x+i, y, taken);
             }
             for (let i = 1; i <= top; i++) {
-                this._field.update(f => { f[x-i][y] = 1; return f; });
+                this._field.update(field => {let f = field.map(row => [...row]); f[x-i][y] = 1; return f; });
                 this.takeUp(x-i, y, taken);
             }
         }
@@ -111,11 +111,11 @@ export class BotService {
                 right = toSet - left;
             }
             for (let i = 1; i <= right; i++) {
-                this._field.update(f => { f[x][y+i] = 1; return f; });
+                this._field.update(field => {let f = field.map(row => [...row]); f[x][y+i] = 1; return f; });
                 this.takeUp(x, y+i, taken);
             }
             for (let i = 1; i <= left; i++) {
-                this._field.update(f => { f[x][y-i] = 1; return f; });
+                this._field.update(field => {let f = field.map(row => [...row]); f[x][y-i] = 1; return f; });
                 this.takeUp(x, y-i, taken);
             }
         }
@@ -131,19 +131,19 @@ export class BotService {
             let top1 = this.isTaken(x-1, y, taken), top2 = this.isTaken(x-2, y, taken);
             
             if (!bot1 && !bot2) {
-                this._field.update(f => { f[x][y] = 1; f[x+1][y] = 1; f[x+2][y] = 1; return f });
+                this._field.update(field => {let f = field.map(row => [...row]); f[x][y] = 1; f[x+1][y] = 1; f[x+2][y] = 1; return f });
                 this.takeUp(x, y, taken); this.takeUp(x+1, y, taken); this.takeUp(x+2, y, taken);
                 success++;
                 continue;
             }
             else if (!bot1 && bot2 && !top1) {
-                this._field.update(f => { f[x][y] = 1; f[x+1][y] = 1; f[x-1][y] = 1; return f });
+                this._field.update(field => {let f = field.map(row => [...row]); f[x][y] = 1; f[x+1][y] = 1; f[x-1][y] = 1; return f });
                 this.takeUp(x, y, taken); this.takeUp(x+1, y, taken); this.takeUp(x-1, y, taken);
                 success++;
                 continue;
             }
             else if (!top1 && !top2) {
-                this._field.update(f => { f[x][y] = 1; f[x-1][y] = 1; f[x-2][y] = 1; return f });
+                this._field.update(field => {let f = field.map(row => [...row]); f[x][y] = 1; f[x-1][y] = 1; f[x-2][y] = 1; return f });
                 this.takeUp(x, y, taken); this.takeUp(x-1, y, taken); this.takeUp(x-2, y, taken);
                 success++;
                 continue;
@@ -153,19 +153,19 @@ export class BotService {
             let left1 = this.isTaken(x, y-1, taken), left2 = this.isTaken(x, y-2, taken);
 
             if (!right1 && !right2) {
-                this._field.update(f => { f[x][y] = 1; f[x][y+1] = 1; f[x][y+2] = 1; return f });
+                this._field.update(field => {let f = field.map(row => [...row]); f[x][y] = 1; f[x][y+1] = 1; f[x][y+2] = 1; return f });
                 this.takeUp(x, y, taken); this.takeUp(x, y+1, taken); this.takeUp(x, y+2, taken);
                 success++;
                 continue;
             }
             else if (!right1 && right2 && !left1) {
-                this._field.update(f => { f[x][y] = 1; f[x][y+1] = 1; f[x][y-1] = 1; return f });
+                this._field.update(field => {let f = field.map(row => [...row]); f[x][y] = 1; f[x][y+1] = 1; f[x][y-1] = 1; return f });
                 this.takeUp(x, y, taken); this.takeUp(x, y+1, taken); this.takeUp(x, y-1, taken);
                 success++;
                 continue;
             }
             else if (!left1 && !left2) {
-                this._field.update(f => { f[x][y] = 1; f[x][y-1] = 1; f[x][y-2] = 1; return f });
+                this._field.update(field => {let f = field.map(row => [...row]); f[x][y] = 1; f[x][y-1] = 1; f[x][y-2] = 1; return f });
                 this.takeUp(x, y, taken); this.takeUp(x, y-1, taken); this.takeUp(x, y-2, taken);
                 success++;
                 continue;
@@ -189,25 +189,25 @@ export class BotService {
             let left = this.isTaken(x, y-1, taken);
             let right = this.isTaken(x, y+1, taken);
             if (!top) {
-                this._field.update(f => { f[x][y] = 1; f[x-1][y] = 1; return f });
+                this._field.update(field => {let f = field.map(row => [...row]); f[x][y] = 1; f[x-1][y] = 1; return f });
                 this.takeUp(x, y, taken); this.takeUp(x-1, y, taken);
                 success++;
                 continue;
             }
             else if (!bot) {
-                this._field.update(f => { f[x][y] = 1; f[x+1][y] = 1; return f });
+                this._field.update(field => {let f = field.map(row => [...row]); f[x][y] = 1; f[x+1][y] = 1; return f });
                 this.takeUp(x, y, taken); this.takeUp(x+1, y, taken);
                 success++;
                 continue;
             }
             else if (!left) {
-                this._field.update(f => { f[x][y] = 1; f[x][y-1] = 1; return f });
+                this._field.update(field => {let f = field.map(row => [...row]); f[x][y] = 1; f[x][y-1] = 1; return f });
                 this.takeUp(x, y, taken); this.takeUp(x, y-1, taken);
                 success++;
                 continue;
             }
             else if (!right) {
-                this._field.update(f => { f[x][y] = 1; f[x][y+1] = 1; return f });
+                this._field.update(field => {let f = field.map(row => [...row]); f[x][y] = 1; f[x][y+1] = 1; return f });
                 this.takeUp(x, y, taken); this.takeUp(x, y+1, taken);
                 success++;
                 continue;
@@ -226,7 +226,7 @@ export class BotService {
             let index = Math.floor(Math.random() * free.length);
             let x = free[index].x;
             let y = free[index].y;
-            this._field.update(f => { f[x][y] = 1; return f });
+            this._field.update(field => {let f = field.map(row => [...row]); f[x][y] = 1; return f });
             this.takeUp(x, y, taken);
             success++;
             continue;
@@ -253,7 +253,7 @@ export class BotService {
             let y = free[index].y;
             let result = '';
             if (this._oppField()[x][y] === 1) {
-                this._oppField.update(f => { f[x][y] = -1; return f });
+                this._oppField.update(field => {let f = field.map(row => [...row]); f[x][y] = -1; return f });
                 if (this.gameOver(this._oppField())) result = 'game-end';
                 else {
                     result = 'hit';
@@ -324,7 +324,7 @@ export class BotService {
                     nx >= 0 && nx <= this.fieldDim &&
                     ny >= 0 && ny <= this.fieldDim
                 ) {
-                    this._oppField.update(f => { f[nx][ny] = -2; return f });
+                    this._oppField.update(field => {let f = field.map(row => [...row]); f[nx][ny] = -2; return f });
                 }
             }
     }
