@@ -40,7 +40,7 @@ export class BotGameComponent implements OnInit {
         effect(() => {
             this.myMove();
             if (this.myMove() === false) {
-                this.botMove();
+                setTimeout(() => this.botMove(), 1000);
             }
             this.storage.setItem('MY_MOVE', this.myMove());
         });
@@ -97,6 +97,7 @@ export class BotGameComponent implements OnInit {
     }
 
     botMove() {
+        console.log('bot');
         let attack = this.bot.attack();
         let x = attack.coords.x;
         let y = attack.coords.y;
@@ -105,7 +106,7 @@ export class BotGameComponent implements OnInit {
                 let f = field.map(row => [...row]);
                 f[x][y] = -1;
                 return f;
-            })
+            });
         }
         else if (attack.result === 'miss') {
             this.field.update(field => {
@@ -126,6 +127,7 @@ export class BotGameComponent implements OnInit {
     }
 
     onAttack(x: number, y: number) {
+        console.log('me');
         let report = this.bot.regiterAttack(x, y);
         if (report === 'hit') {
             this.oppField.update(field => {

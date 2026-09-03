@@ -14,6 +14,7 @@ export class BotService {
 
     private readonly fieldDim = 9;
 
+    // 1 ship, 0 sea, -1 sink
     private _field = signal<number[][]>(Array.from({ length: 10 }, () => Array(10).fill(0)));
     readonly field = this._field.asReadonly();
 
@@ -240,6 +241,7 @@ export class BotService {
 
     regiterAttack(x: number, y: number): string {
         if (this._field()[x][y] === 1) {
+            this._field.update(field => {let f = field.map(row => [...row]); f[x][y] = -1; return f });
             if (this.gameOver(this._field())) return 'game-end';
             return 'hit'
         }
@@ -247,7 +249,7 @@ export class BotService {
     }
 
     attack(): {result: string, coords: Coords} {
-        if (this.nextMove.length === 0) {
+        if (this.nextMove().length === 0) {
             let free = []
             for (let i = 0; i <= this.fieldDim; i++)
                 for (let j = 0; j <= this.fieldDim; j++)
@@ -266,7 +268,10 @@ export class BotService {
                     this.setNextMoves(x, y);
                 }
             }
-            else if (this._oppField()[x][y] === 0) result = 'miss';
+            else if (this._oppField()[x][y] === 0) {
+                this._oppField.update(field => {let f = field.map(row => [...row]); f[x][y] = -2; return f });
+                result = 'miss';
+            }
 
             return { result, coords: { x, y } };
         }
@@ -281,6 +286,7 @@ export class BotService {
             let result = '';
 
             if (this._oppField()[x][y] === 1) {
+                this._oppField.update(field => {let f = field.map(row => [...row]); f[x][y] = -1; return f });
                 if (this.gameOver(this._oppField())) result = 'game-end';
                 else {
                     result = 'hit';
@@ -295,7 +301,10 @@ export class BotService {
                     }
                 }
             }
-            else if (this._oppField()[x][y] === 0) result = 'miss';
+            else if (this._oppField()[x][y] === 0) {
+                this._oppField.update(field => {let f = field.map(row => [...row]); f[x][y] = -2; return f });
+                result = 'miss';
+            }
 
             
             return { result: result, coords: { x, y } };
