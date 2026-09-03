@@ -1,3 +1,8 @@
+.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
 .content {
     min-width: 100vw;
     min-height: 100vh;

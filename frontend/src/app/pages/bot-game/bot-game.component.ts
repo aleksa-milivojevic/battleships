@@ -23,6 +23,7 @@ export class BotGameComponent implements OnInit {
     gameOverScreen = signal(false);
     win = signal(false);
     surrenderMessage = signal('');
+    botAgain = signal(false);
 
     field = signal<number[][]>(Array.from({ length: 10 }, () => Array(10).fill(0)));
     oppField = signal<number[][]>(Array.from({ length: 10 }, () => Array(10).fill(0)));
@@ -36,6 +37,7 @@ export class BotGameComponent implements OnInit {
         this.win.set(this.storage.getItem('WIN') ?? false);
         this.fieldError.set(this.storage.getItem('FIELD_ERR') ?? '');
         this.surrenderMessage.set(this.storage.getItem('SURR_MSG') ?? '');
+        this.botAgain.set(this.storage.getItem('BOT_AGAIN') ?? false);
 
         effect(() => {
             this.myMove();
@@ -75,6 +77,12 @@ export class BotGameComponent implements OnInit {
             this.surrenderMessage();
             this.storage.setItem('SURR_MSG', this.surrenderMessage());
         });
+        effect(() => {
+            this.botAgain();
+            if (this.botAgain()) {
+                setTimeout(() => this.botMove(), 1000);
+            }
+        })
     }
 
     ngOnInit(): void {}
@@ -98,6 +106,7 @@ export class BotGameComponent implements OnInit {
 
     botMove() {
         console.log('bot');
+        this.botAgain.set(false);
         let attack = this.bot.attack();
         let x = attack.coords.x;
         let y = attack.coords.y;
@@ -107,6 +116,7 @@ export class BotGameComponent implements OnInit {
                 f[x][y] = -1;
                 return f;
             });
+            this.botAgain.set(true);
         }
         else if (attack.result === 'miss') {
             this.field.update(field => {
@@ -152,6 +162,10 @@ export class BotGameComponent implements OnInit {
             })
             this.gameOver.set(true);
             this.win.set(true);
+        }
+        else if (report === 'invalid') {
+            console.log('invalid attack');
+            // mozda popup snackbar
         }
     }
 

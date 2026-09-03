@@ -61,7 +61,7 @@
                 <div class="opp-table" [class.disabled]="!myMove()">
                     @for (row of oppField(); track $index; let i = $index) {
                         @for (col of row; track $index; let j = $index) {
-                            <div class="square" (click)="onAttack(i,j)" [class.disabled]="gameOver() || !myMove()">
+                            <div class="square" (click)="onAttack(i,j)" [class.disabled]="gameOver() || !myMove() || oppField()[i][j] !== 0">
                                 <div class="ship-div">
                                     @if (oppField()[i][j] === 0) {}
                                     @else {
