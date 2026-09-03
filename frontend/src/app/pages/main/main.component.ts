@@ -154,6 +154,11 @@ export class MainComponent implements OnInit {
     this.router.navigate(['/bot']);
   }
 
+  exitPvP() {
+    this.queueService.disconnect();
+    this.toggleQueue();
+  }
+
   toggleQueue() {
     this.showQueueScreen.update(o => !o);
   }
