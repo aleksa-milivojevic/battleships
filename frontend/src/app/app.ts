@@ -17,9 +17,9 @@ export class App {
   protected readonly title = signal('frontend');
 
   constructor() {
-    this.storageService.removeAll();
-    this.authService.clearCookies().subscribe({
-      error: (err) => console.error(err)
-    });
+    // this.storageService.removeAll();
+    // this.authService.clearCookies().subscribe({
+    //   error: (err) => console.error(err)
+    // });
   }
 }

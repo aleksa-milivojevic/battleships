@@ -14,7 +14,7 @@ export class BotService {
 
     private readonly fieldDim = 9;
 
-    private _field = signal<number[][]>([]);
+    private _field = signal<number[][]>(Array.from({ length: 10 }, () => Array(10).fill(0)));
     readonly field = this._field.asReadonly();
 
     private _oppField = signal<number[][]>([]);
@@ -39,6 +39,8 @@ export class BotService {
     setOppField(oppField: number[][]): boolean {
         if (!this.validateField(oppField)) return false;
         this._oppField.set(oppField);
+        this._field.set(Array.from({ length: 10 }, () => Array(10).fill(0)));
+        this.createField();
         return true;
     }
 
@@ -69,12 +71,13 @@ export class BotService {
             x < 0 || x > this.fieldDim ||
             y < 0 || y > this.fieldDim
         ) {
-            return false;
+            return true;
         }
         return taken[x][y];
     }
 
     create4Boat(taken: boolean[][]) {
+        console.log(this._field());
         const toSet = 3;
         let x = Math.floor(Math.random() * 10);
         let y = Math.floor(Math.random() * 10);
@@ -340,14 +343,14 @@ export class BotService {
 
     validateField(field: number[][]) {
         const visited = Array.from(
-            { length: this.fieldDim },
-            () => Array(this.fieldDim).fill(false)
+            { length: this.fieldDim + 1 },
+            () => Array(this.fieldDim + 1).fill(false)
         );
         
         const ships: number[] = [];
         
-        for (let i = 0; i < this.fieldDim; i++) {
-            for (let j = 0; j < this.fieldDim; j++) {
+        for (let i = 0; i <= this.fieldDim; i++) {
+            for (let j = 0; j <= this.fieldDim; j++) {
                 if (field[i][j] && !visited[i][j]) {
                     const size = this.getShip(i, j, field, visited);
                     ships.push(size);
@@ -373,7 +376,7 @@ export class BotService {
             for (let j = -1; j <= 1; j++) {
                 let nx = x + i;
                 let ny = y + j;
-                if (nx < 0 || nx >= this.fieldDim || ny < 0 || ny >= this.fieldDim) continue;
+                if (nx < 0 || nx >= this.fieldDim + 1 || ny < 0 || ny >= this.fieldDim + 1) continue;
                 visited[nx][ny] = true;
                 if (i === 0 && j === 0) continue;
                 if (field[nx][ny]) return false;
@@ -449,7 +452,7 @@ export class BotService {
             for (let j = -1; j <= 1; j++) {
                 let nx = x + i;
                 let ny = y + j;
-                if (nx < 0 || nx >= this.fieldDim || ny < 0 || ny >= this.fieldDim) continue;
+                if (nx < 0 || nx >= this.fieldDim + 1 || ny < 0 || ny >= this.fieldDim + 1) continue;
                 visited[nx][ny] = true;
                 if (i === 0 && j === 0) continue;
                 if (field[nx][ny]) {
@@ -466,14 +469,14 @@ export class BotService {
     isBoatMiddle(x: number, y: number, field: number[][], visited: boolean[][]): { result: any, next: { x: number, y: number }[] } {
         let next: { x: number, y: number }[] = [];
 
-        if (x < 0 || x >= this.fieldDim || y < 0 || y >= this.fieldDim) return { result: false, next };
+        if (x < 0 || x >= this.fieldDim + 1 || y < 0 || y >= this.fieldDim + 1) return { result: false, next };
         
         let numOfShipParts = 0;
         for (let i = -1; i <= 1; i++) {
             for (let j = -1; j <= 1; j++) {
                 let nx = x + i;
                 let ny = y + j;
-                if (nx < 0 || nx >= this.fieldDim || ny < 0 || ny >= this.fieldDim) continue;
+                if (nx < 0 || nx >= this.fieldDim + 1 || ny < 0 || ny >= this.fieldDim + 1) continue;
                 visited[nx][ny] = true;
                 if (i === 0 && j === 0) continue;
                 if (field[nx][ny]) {
@@ -484,8 +487,8 @@ export class BotService {
         }
         if (numOfShipParts !== 2) return { result: false, next };
 
-        let v1 = (x > 0 && x < this.fieldDim - 1) && (field[x-1][y] && field[x+1][y]);
-        let v2 = (y > 0 && y < this.fieldDim - 1) && (field[x][y-1] && field[x][y+1]);
+        let v1 = (x > 0 && x < this.fieldDim) && (field[x-1][y] && field[x+1][y]);
+        let v2 = (y > 0 && y < this.fieldDim) && (field[x][y-1] && field[x][y+1]);
         
         return { result: v1 || v2, next };
     }

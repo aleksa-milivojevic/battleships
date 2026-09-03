@@ -46,7 +46,9 @@ export class BotGameComponent implements OnInit {
         });
         effect(() => {
             this.gameOver();
-            this.toggleGameOverScreen();
+            if (this.gameOver() === true) {
+                this.toggleGameOverScreen();
+            }
             this.storage.setItem('GAME_OVER', this.gameOver());
         });
         effect(() => {
@@ -138,6 +140,7 @@ export class BotGameComponent implements OnInit {
                 f[x][y] = -1;
                 return f;
             })
+            this.myMove.set(false);
         }
         else if (report === 'game-end') {
             this.oppField.update(field => {
