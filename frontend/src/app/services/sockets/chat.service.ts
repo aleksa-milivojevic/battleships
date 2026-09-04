@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from "@angular/core";
+import { Injectable, effect, inject, signal } from "@angular/core";
 import { Socket, io } from "socket.io-client";
 import { StorageService } from "../storage.service";
 import { User } from "../user.service";
@@ -24,7 +24,16 @@ export class ChatService {
 
     messages = signal<ChatMessage[]>([]);
 
-    constructor() {}
+    constructor() {
+        this.self.set(this.storage.getItem<User>('SELF')?.id);
+        this.opp.set(this.storage.getItem<string>('OPP'));
+        this.messages.set(this.storage.getItem<ChatMessage[]>('MESSAGES') ?? this.messages());
+
+        effect(() => {
+            this.messages();
+            this.storage.setItem('MESSAGES', this.messages());
+        })
+    }
 
     connect() {
         if (this.socket.connected) {
