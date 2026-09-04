@@ -14,7 +14,7 @@
                 @if ($index === 0 || messages()[$index - 1].author !== msg.author) {
                     <label [ngClass]="(msg.author) ? 'opp-author' : 'me-author'">{{ (msg.author) ? opp()?.username : self()?.username }}</label>
                 }
-                <label [ngClass]="(msg.author) ? 'op-msg' : 'my-msg'">{{ msg.text }}</label>
+                <label [ngClass]="(msg.author) ? 'opp-msg' : 'my-msg'">{{ msg.text }}</label>
             }
         </div>
     </div>

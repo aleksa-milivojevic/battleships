@@ -2,8 +2,7 @@ import { Component, OnInit, inject, signal } from "@angular/core";
 import { User, UserService } from "../../../services/user.service";
 import { ChatService } from "../../../services/sockets/chat.service";
 import { StorageService } from "../../../services/storage.service";
-import { RouterUpgradeInitializer } from "@angular/router/upgrade";
-import { NgClass } from "../../../../../node_modules/@angular/common/types/_common_module-chunk";
+import { NgClass } from "@angular/common";
 
 @Component({
     selector: 'app-chat',

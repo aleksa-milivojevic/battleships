@@ -3,11 +3,12 @@ import { GameService } from "../../services/sockets/game.service";
 import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
 import { StorageService } from "../../services/storage.service";
+import { ChatComponent } from "./chat/chat.component";
 
 @Component({
     selector: 'app-game',
     standalone: true,
-    imports: [FormsModule],
+    imports: [FormsModule, ChatComponent],
     templateUrl: './game.component.html',
     styleUrl: './game.component.scss'
 })
