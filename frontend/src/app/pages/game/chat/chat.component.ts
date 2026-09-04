@@ -1,17 +1,18 @@
-import { Component, OnInit, inject, signal } from "@angular/core";
+import { Component, OnDestroy, OnInit, inject, signal } from "@angular/core";
 import { User, UserService } from "../../../services/user.service";
 import { ChatService } from "../../../services/sockets/chat.service";
 import { StorageService } from "../../../services/storage.service";
 import { NgClass } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 
 @Component({
     selector: 'app-chat',
     standalone: true,
-    imports: [NgClass],
+    imports: [NgClass, FormsModule],
     templateUrl: './chat.component.html',
     styleUrl: './chat.component.scss'
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, OnDestroy {
     private userService = inject(UserService);
     private chatService = inject(ChatService);
     private storage = inject(StorageService);
@@ -23,10 +24,16 @@ export class ChatComponent implements OnInit {
 
     errorMessage = signal<string>('');
 
+    message = signal('');
+
     constructor() {
         this.self.set(this.storage.getItem<User>('SELF'));
         this.oppId.set(this.storage.getItem<string>('OPP'));
         this.getOpp();
+        this.chatService.connect();
+    }
+    ngOnDestroy(): void {
+        this.chatService.disconnect();
     }
 
     ngOnInit(): void {}
@@ -48,7 +55,8 @@ export class ChatComponent implements OnInit {
         });
     }
 
-    sendMessage(text: string) {
-        this.chatService.sendMessage(text);
+    sendMessage() {
+        this.chatService.sendMessage(this.message());
+        this.message.set('');
     }
 }

@@ -9,6 +9,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private ids = new Map<string,string>();
 
     handleConnection(@ConnectedSocket() client: Socket) {
+        console.log('[CHAT] new connection');
         client.emit('id-req');
     }
     
@@ -21,6 +22,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     @SubscribeMessage('id-res')
     handleId(@MessageBody() data: {id: string, opp: string}, @ConnectedSocket() client: Socket) {
+        console.log('[CHAT] connection: ', data.id, 'to', data.opp);
         this.ids.set(client.id, data.id);
         this.clients.set(data.id, { opp: data.opp, socket: client });
         
@@ -33,6 +35,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     @SubscribeMessage('message')
     message(@MessageBody('text') text: string, @ConnectedSocket() client: Socket) {
+        console.log('[CHAT] message: ', text);
         const id = this.ids.get(client.id);
         if (!id) {
             new WsException('Who are you?');

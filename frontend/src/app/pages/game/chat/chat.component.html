@@ -17,5 +17,9 @@
                 <label [ngClass]="(msg.author) ? 'opp-msg' : 'my-msg'">{{ msg.text }}</label>
             }
         </div>
+        <div class="input-div">
+            <input type="text" name="message" placeholder="write a message..." [ngModel]="message()" (ngModelChange)="message.set($event)">
+            <button class="send-btn" (click)="sendMessage()" [disabled]="message() === ''">Send</button>
+        </div>
     </div>
 </div>
