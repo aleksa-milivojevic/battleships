@@ -13,6 +13,7 @@ import { AuthModule } from './auth/auth.module';
 import { ChallangeModule } from './sockets/challange/challange.module';
 import { QueueModule } from './sockets/queue/queue.module';
 import { GameModule } from './sockets/game/game.module';
+import { ChatModule } from './sockets/chat/chat.module';
 
 @Module({
   imports: [
@@ -35,7 +36,8 @@ import { GameModule } from './sockets/game/game.module';
     AuthModule,
     ChallangeModule,
     QueueModule,
-    GameModule
+    GameModule,
+    ChatModule
   ],
   controllers: [AppController],
   providers: [AppService],
