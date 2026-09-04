@@ -1,0 +1,21 @@
+<div class="main">
+    <div class="opp-div">
+        <div class="pts-div">
+            <label class="pts">+150\-150</label>
+        </div>
+        <div class="username-div">
+            <label class="opp-username">{{ opp()?.username || 'unknown' }}</label>
+        </div>
+        <div class="opp-info">
+            <label class="opp-score">{{ opp()?.score }}</label>
+        </div>
+        <div class="chat-div">
+            @for (msg of messages(); track $index) {
+                @if ($index === 0 || messages()[$index - 1].author !== msg.author) {
+                    <label [ngClass]="(msg.author) ? 'opp-author' : 'me-author'">{{ (msg.author) ? opp()?.username : self()?.username }}</label>
+                }
+                <label [ngClass]="(msg.author) ? 'op-msg' : 'my-msg'">{{ msg.text }}</label>
+            }
+        </div>
+    </div>
+</div>

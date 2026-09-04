@@ -22,7 +22,7 @@ export class ChatService {
     private self = signal<string | undefined>(undefined);
     private opp = signal<string | null>(null);
 
-    private messages = signal<ChatMessage[]>([]);
+    messages = signal<ChatMessage[]>([]);
 
     constructor() {
         this.connect();
