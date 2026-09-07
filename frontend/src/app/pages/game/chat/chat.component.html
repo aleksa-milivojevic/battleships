@@ -5,6 +5,13 @@
         </div>
         <div class="username-div">
             <label class="opp-username">{{ opp()?.username || 'unknown' }}</label>
+            <button class="report-btn" (click)="toggleReportOptions()">report</button>
+            @if (showReportOptions()) {
+                <div class="report-div">
+                    <label class="report-option" [class.disabled]="cheatReported()" (click)="onReport()">cheating</label>
+                    <label class="report-option" [class.disabled]="msgReported()" (click)="onReport('messages')">vulgar chat</label>
+                </div>
+            }
         </div>
         <div class="opp-info">
             <label class="opp-score">{{ opp()?.score }}</label>

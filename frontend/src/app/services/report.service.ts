@@ -15,7 +15,7 @@ export interface Report {
 @Injectable({
     providedIn: 'root'
 })
-export class MatchService {
+export class ReportService {
     private apiUrl = `${environment.apiUrl}/report`;
     private http = inject(HttpClient);
     
@@ -43,7 +43,7 @@ export class MatchService {
         );
     }
 
-    report(reported: string, source: string, type: number, messages: string): Observable<Report> {
+    report(reported: string, source: string, type: string, messages: string): Observable<Report> {
         return this.http.post<Report>(
             `${this.apiUrl}/add`,
             { reported: reported, source: source, type: type, messages: messages }
