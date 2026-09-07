@@ -1,6 +1,6 @@
 import { User } from "src/database/user/user.entity";
 import { text } from "stream/consumers";
-import { Check, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Check, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("Reports")
 @Check("'type' IN ('messages', 'cheating')")
@@ -8,19 +8,15 @@ export class Report {
     @PrimaryGeneratedColumn()
     id: string;
 
-    @Column({
-        type: "int",
-        nullable: false,
-    })
-    @ManyToOne(() => User)
-    reported: number;
+    
+    @ManyToOne(() => User, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'reported' })
+    reported: User;
 
-    @Column({
-        type: "int",
-        nullable: false,
-    })
-    @ManyToOne(() => User)
-    source: number;
+    
+    @ManyToOne(() => User, { onDelete: 'SET NULL' })
+    @JoinColumn({ name: 'source' })
+    source: User | null;
 
     @Column({
         type: "varchar",
