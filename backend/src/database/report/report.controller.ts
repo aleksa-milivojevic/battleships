@@ -1,9 +1,9 @@
-import { Controller, Delete, Get, NotImplementedException, Post, Query, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, NotImplementedException, Post, Query, UseGuards } from "@nestjs/common";
 import { ReportService } from "./report.service";
 import { PassportJwtAuthGuard } from "src/auth/guards/passport-jwt.guard";
 import { AddOneDto } from "./report.dto";
 
-@Controller()
+@Controller('report')
 export class ReportController {
     constructor(
         private reportService: ReportService
@@ -11,19 +11,19 @@ export class ReportController {
 
     @UseGuards(PassportJwtAuthGuard)
     @Get('getall')
-    getAll(@Query() params: any) {
+    getAll(@Body() params: any) {
         return this.reportService.findAll(params);
     }
 
     @UseGuards(PassportJwtAuthGuard)
     @Post('add')
-    addOne(@Query() params: AddOneDto) {
+    addOne(@Body() params: AddOneDto) {
         return this.reportService.addOne(params);
     }
 
     @UseGuards(PassportJwtAuthGuard)
     @Delete('del')
-    deleteOnes(@Query('id') id: string) {
+    deleteOnes(@Body('id') id: string) {
         return this.reportService.removeOnes(id);
     }
 }

@@ -73,7 +73,15 @@ export class ChatComponent implements OnInit, OnDestroy {
     onReport(type: string = 'cheating') {
         if (this.oppId === null || this.self()?.id === null) return;
 
-        const messages = (type === 'messages') ? this.messages().join('\n') : '';
+        console.log(this.messages());
+        let messages = '';
+        if (type == 'messages') {
+            console.log('concating')
+            this.messages().forEach(message => {
+                messages = messages.concat(`\n${(message.author) ? this.opp()?.username : this.self()?.username}: ${message.text}`);
+            });
+        }
+        console.log(messages);
 
         this.reportService.report(this.oppId()!, this.self()?.id!, type, messages).subscribe({
             next: res => {

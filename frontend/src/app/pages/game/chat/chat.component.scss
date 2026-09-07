@@ -4,7 +4,7 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    padding-top: 50px;
+    padding-top: 40px;
     padding-bottom: 50px;
     padding-left: 15px;
     padding-right: 15px;
@@ -35,6 +35,9 @@
     height: fit-content;
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .opp-username {
@@ -50,7 +53,7 @@
 
 .chat-div {
     margin: 5px;
-    margin-top: 15px;
+    margin-top: 30px;
     background-color: whitesmoke;
     padding: 15px;
     display: flex;
@@ -106,4 +109,37 @@ input {
     width: 80%;
     margin: 0;
     margin-right: auto;
+}
+
+.dropdown {
+    position: relative;
+    margin-left: auto;
+    margin-right: 5px;
+}
+
+.report-btn {
+    width: 100px;
+}
+
+.report-div {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 1;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.322);
+    width: 100px;
+
+    &.hidden {
+        display: none;
+    }
+}
+
+.report-option {
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
