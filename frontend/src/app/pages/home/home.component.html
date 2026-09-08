@@ -1,4 +1,21 @@
 <div class="content">
+    @if (banned()) {
+        <div class="restriction-div">
+            <label class="restriction">
+                Your account has been permanently banned by a game administrator.
+                You will not be able to login into your account until (and if) it is unbanned.
+            </label>
+        </div>
+    }
+    @else if (timeout()) {
+        <div class="restriction-div">
+            <label class="restriction">
+                Your account has been timed out by a game administrator.
+                You will not be able to access your account until
+                {{ expiration().getDate() + " " + expiration().getTime() }}.
+            </label>
+        </div>
+    }
     <h1 class="title">BATTLESHIPS</h1>
     <div class="btn-div">
         <button routerLink="/login" class="login">Log in</button>
