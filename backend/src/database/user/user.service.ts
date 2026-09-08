@@ -232,4 +232,52 @@ export class UserService {
         
         await this.userRepository.increment({ id: wId }, 'score', points);    
     }
+
+    async ban(adminId: string, targetId: string) {
+        const admin = (await this.findOne(adminId)).user;
+        if (!admin.admin) {
+            throw new UnauthorizedException('You have no admin priviledges');
+        }
+
+        const result = await this.userRepository.update({ id: targetId }, { banned: true });
+        if (result.affected !== 1) {
+            throw new InternalServerErrorException(`Rows affected: ${result.affected}`);
+        }
+    }
+
+    async unban(adminId: string, targetId: string) {
+        const admin = (await this.findOne(adminId)).user;
+        if (!admin.admin) {
+            throw new UnauthorizedException('You have no admin priviledges');
+        }
+
+        const result = await this.userRepository.update({ id: targetId }, { banned: false });
+        if (result.affected !== 1) {
+            throw new InternalServerErrorException(`Rows affected: ${result.affected}`);
+        }
+    }
+
+    async timeout(adminId: string, targetId: string, duration: number) {
+        const admin = (await this.findOne(adminId)).user;
+        if (!admin.admin) {
+            throw new UnauthorizedException('You have no admin priviledges');
+        }
+
+        const result = await this.userRepository.update({ id: targetId }, { timeout: duration });
+        if (result.affected !== 1) {
+            throw new InternalServerErrorException(`Rows affected: ${result.affected}`);
+        }
+    }
+
+    async untimeout(adminId: string, targetId: string) {
+        const admin = (await this.findOne(adminId)).user;
+        if (!admin.admin) {
+            throw new UnauthorizedException('You have no admin priviledges');
+        }
+
+        const result = await this.userRepository.update({ id: targetId }, { timeout: 0 });
+        if (result.affected !== 1) {
+            throw new InternalServerErrorException(`Rows affected: ${result.affected}`);
+        }
+    }
 }
