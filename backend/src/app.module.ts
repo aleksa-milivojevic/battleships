@@ -14,6 +14,7 @@ import { ChallangeModule } from './sockets/challange/challange.module';
 import { QueueModule } from './sockets/queue/queue.module';
 import { GameModule } from './sockets/game/game.module';
 import { ChatModule } from './sockets/chat/chat.module';
+import { RestrictionModule } from './sockets/restriction/restriction.module';
 
 @Module({
   imports: [
@@ -37,7 +38,8 @@ import { ChatModule } from './sockets/chat/chat.module';
     ChallangeModule,
     QueueModule,
     GameModule,
-    ChatModule
+    ChatModule,
+    RestrictionModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -236,10 +236,12 @@ export class UserService {
     async ban(adminId: string, targetId: string) {
         const admin = (await this.findOne(adminId)).user;
         if (!admin.admin) {
+            console.log('user not an admin');
             throw new UnauthorizedException('You have no admin priviledges');
         }
 
         const result = await this.userRepository.update({ id: targetId }, { banned: true });
+        console.log('rows affected: ', result.affected);
         if (result.affected !== 1) {
             throw new InternalServerErrorException(`Rows affected: ${result.affected}`);
         }

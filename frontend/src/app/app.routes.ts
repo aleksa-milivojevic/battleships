@@ -5,10 +5,11 @@ import { MainComponent } from './pages/main/main.component';
 import { SigninComponent } from './pages/signin/sign-in.component';
 import { LeaderboardComponent } from './pages/leaderboard/leaderboard.component';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { AnonGuard, UserGuard } from './guards/auth.guard';
+import { AdminGuard, AnonGuard, UserGuard } from './guards/auth.guard';
 import { ChallangesComponent } from './pages/challanges/challanges.component';
 import { GameComponent } from './pages/game/game.component';
 import { BotGameComponent } from './pages/bot-game/bot-game.component';
+import { RestrctionsComponent } from './pages/restrictions/restrictions.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -21,5 +22,6 @@ export const routes: Routes = [
     { path: 'challanges', component: ChallangesComponent, canActivate: [UserGuard] },
     { path: 'game', component: GameComponent, canActivate: [UserGuard] },
     { path: 'bot', component: BotGameComponent, canActivate: [UserGuard] },
+    { path: 'restrictions', component: RestrctionsComponent, canActivate: [AdminGuard] },
     { path: '**', redirectTo: 'home' }
 ];

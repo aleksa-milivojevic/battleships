@@ -25,6 +25,7 @@ export class RestrictionGateway implements OnGatewayConnection, OnGatewayDisconn
 
     @SubscribeMessage('id-res')
     handleId(@MessageBody('id') id: string, @ConnectedSocket() client: Socket) {
+        console.log('[RS] new client', id);
         this.ids.set(client.id, id);
         this.sockets.set(id, client);
     }
@@ -32,18 +33,23 @@ export class RestrictionGateway implements OnGatewayConnection, OnGatewayDisconn
     @SubscribeMessage('ban')
     async ban(@MessageBody('target') target: string, @ConnectedSocket() client: Socket) {
         const admin = this.ids.get(client.id);
-        if (!admin) return;
+        if (!admin) {
+            console.log('not admin');
+            return;
+        }
         
         try {
             await this.userService.ban(admin, target);
         }
         catch (error) {
+            console.log(error);
             throw new WsException(error.message);
         }
 
         const targetSock = this.sockets.get(target);
         if (!targetSock) return;
         targetSock.emit('banned');
+        console.log('banned');
     }
 
     @SubscribeMessage('unban')

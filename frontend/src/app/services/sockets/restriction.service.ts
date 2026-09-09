@@ -21,21 +21,27 @@ export class RestrictionService {
 
     private storage = inject(StorageService);
     private router = inject(Router);
-    private authService = inject(AuthService);
+    // private authService = inject(AuthService);
 
-    private self = signal<User | undefined>(undefined);
+    private self = signal<User | null>(null);
+
+    banned = signal(false);
+    timedout = signal<number | null>(null);
 
     constructor() {
-        this.self.set(this.storage.getItem<User>('SELF') ?? this.self());
+        effect(() => {
+            this.banned();
+            console.log('BANNED:', this.banned());
+        })
     }
 
     connect() {
         if (this.socket.connected) {
-            console.warn('Chat socket already connected');
+            console.warn('Restriction socket already connected');
             return;
         }
 
-        this.self.set(this.storage.getItem<User>('SELF') ?? this.self());
+        this.self.set(this.storage.getItem<User>('SELF'));
         if (this.self() === undefined) {
             console.error('self is undefined');
             return;
@@ -43,6 +49,7 @@ export class RestrictionService {
 
         this.listen();
         this.socket.connect();
+        console.log('rs connected:', this.socket.connected);
     }
 
     listen() {
@@ -54,6 +61,7 @@ export class RestrictionService {
 
         this.socket.on('banned',
             () => {
+                console.log('banned heard');
                 this.getBanned();
             }
         );
@@ -69,11 +77,14 @@ export class RestrictionService {
         if (this.socket.disconnected) {
             console.warn('Restriction socket already disconnected');
         }
+        this.socket.off('id-req');
+        this.socket.off('banned');
+        this.socket.off('timed-out');
         this.socket.disconnect();
     }
 
     idResponse() {
-        this.socket.emit('id-res', { id: this.self() });
+        this.socket.emit('id-res', { id: this.self()?.id });
     }
 
     ban(target: string) {
@@ -82,6 +93,7 @@ export class RestrictionService {
             return;
         }
         this.socket.emit('ban', { target });
+        console.log('ban msg sent for ', target);
     }
 
     timeout(target: string, duration: number) {
@@ -93,28 +105,42 @@ export class RestrictionService {
     }
 
     getBanned() {
-        this.disconnect();
-        this.authService.logout().subscribe({
-            next: () => {
-                this.router.navigate(['\home']);
-                this.storage.setItem('BAN', true);
-            },
-            error: (err) => {
-                console.error(err);
-            }
-        });
+        this.banned.set(true);
+        // this.disconnect();
+        // this.authService.logout().subscribe({
+        //     next: () => {
+        //         this.router.navigate(['\home']);
+        //         this.storage.setItem('BAN', true);
+        //     },
+        //     error: (err) => {
+        //         console.error(err);
+        //     }
+        // });
     }
 
     getTimedOut(duration: number) {
-        this.disconnect();
-        this.authService.logout().subscribe({
-            next: () => {
-                this.router.navigate(['\home']);
-                this.storage.setItem('TIMEOUT', duration);
-            },
-            error: (err) => {
-                console.error(err);
-            }
-        });
+        this.timedout.set(duration);
+    //     this.disconnect();
+    //     this.authService.logout().subscribe({
+    //         next: () => {
+    //             this.router.navigate(['\home']);
+    //             this.storage.setItem('TIMEOUT', duration);
+    //         },
+    //         error: (err) => {
+    //             console.error(err);
+    //         }
+    //     });
     }
+
+    clearAndStoreRestrictions() {
+        if (this.banned()) {
+            this.storage.setItem('BAN', this.banned());
+            this.banned.set(false);
+        }
+        if (this.timedout() !== null) {
+            this.storage.setItem('TIMEOUT', this.timedout());
+            this.timedout.set(null);
+        }
+    }
+    
 }

@@ -6,6 +6,8 @@ import { Observable, tap } from "rxjs";
 import { StorageService } from "./storage.service";
 import { isPlatformBrowser } from "@angular/common";
 import { ChallangeService } from "./sockets/challange.service";
+import { RestrictionService } from "./sockets/restriction.service";
+import { Router } from "@angular/router";
 
 interface LoginRequest {
     email: string,
@@ -25,7 +27,9 @@ export class AuthService implements OnDestroy {
     private apiUrl = `${environment.apiUrl}/auth`
     private http = inject(HttpClient);
     private storage = inject(StorageService);
+    private router = inject(Router);
     private challangeService = inject(ChallangeService);
+    private restrictionService = inject(RestrictionService);
     
     private platformId = inject(PLATFORM_ID);
     private isBrowser = isPlatformBrowser(this.platformId);
@@ -38,11 +42,46 @@ export class AuthService implements OnDestroy {
     isAuthenticated = computed(() => !!this._user());
     isAdmin = computed(() => this._user()?.admin);
 
+    banned = this.restrictionService.banned;
+    timedout = this.restrictionService.timedout;
+
     constructor() {
         effect(() => {
             this._user();
             if (this._user()?.online) {
                 this.challangeService.connect();
+                this.restrictionService.connect();
+            }
+        });
+        effect(() => {
+            console.log('EFFECT', this.banned());
+            this.banned();
+            if (this.banned()) {
+                this.logout().subscribe({
+                    next: () => {
+                        this.router.navigate(['/home']);
+                        this.restrictionService.clearAndStoreRestrictions();
+                    },
+                    error: err => {
+                        console.error(err);
+                        this.restrictionService.clearAndStoreRestrictions();
+                    }
+                });
+            }
+        });
+        effect(() => {
+            this.timedout();
+            if (this.timedout() !== null) {
+                this.logout().subscribe({
+                    next: () => {
+                        this.router.navigate(['\home']);
+                        this.restrictionService.clearAndStoreRestrictions();
+                    },
+                    error: err => {
+                        console.error(err);
+                        this.restrictionService.clearAndStoreRestrictions();
+                    }
+                })
             }
         })
     }
@@ -92,6 +131,7 @@ export class AuthService implements OnDestroy {
     }
 
     logout(): Observable<any> {
+        console.log('logout');
         return this.http.post<any>(
             `${this.apiUrl}/logout`,
             {}
@@ -100,6 +140,7 @@ export class AuthService implements OnDestroy {
         ).pipe(
             tap(() => {
                     this.challangeService.disconnect();
+                    this.restrictionService.disconnect();
                     this.storage.removeAll();
                 }
             )

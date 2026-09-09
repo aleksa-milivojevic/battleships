@@ -9,6 +9,7 @@ import { ChallangeService } from './services/sockets/challange.service';
 import { QueueService } from './services/sockets/queue.service';
 import { GameService } from './services/sockets/game.service';
 import { BotService } from './services/bot.service';
+import { RestrictionService } from './services/sockets/restriction.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,6 +25,7 @@ export const appConfig: ApplicationConfig = {
     ChallangeService,
     QueueService,
     GameService,
-    BotService
+    BotService,
+    RestrictionService
   ]
 };

@@ -154,6 +154,7 @@ export class AuthService {
     }
 
     async logout(user: SignInData) {
+        console.log('LOGGING OUT USER', user);
         await this.userService.updateRefreshToken(user.userId, null);
     }
 }
