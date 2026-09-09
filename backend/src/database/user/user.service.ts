@@ -240,7 +240,7 @@ export class UserService {
             throw new UnauthorizedException('You have no admin priviledges');
         }
 
-        const result = await this.userRepository.update({ id: targetId }, { banned: true });
+        const result = await this.userRepository.update({ id: targetId }, { banned: true, timeout: 0 });
         console.log('rows affected: ', result.affected);
         if (result.affected !== 1) {
             throw new InternalServerErrorException(`Rows affected: ${result.affected}`);
@@ -263,6 +263,14 @@ export class UserService {
         const admin = (await this.findOne(adminId)).user;
         if (!admin.admin) {
             throw new UnauthorizedException('You have no admin priviledges');
+        }
+
+        const target = (await this.findOne(targetId)).user;
+        if (!target) {
+            throw new BadRequestException('targeted user not found');
+        }
+        if (target.banned) {
+            throw new BadRequestException('targeted user is already permanently banned');
         }
 
         const result = await this.userRepository.update({ id: targetId }, { timeout: duration });
