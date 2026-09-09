@@ -53,13 +53,20 @@ export class AuthService {
             username: user.username
         }
 
+        const db_res = await this.userService.findOne(user.userId);
+        if (!db_res.user) throw new NotFoundException('user not found in sign');
+        if (db_res.user.banned) throw new BadRequestException('user is permanently banned');
+        if (db_res.user.timeout !== 0) {
+            let date = new Date();
+            date.setMinutes(date.getMinutes() + db_res.user.timeout);
+            throw new BadRequestException(`user is timed out until ${date.getDate()} ${date.getTime()}`);
+        }
+
         const accessToken = await this.jwtService.signAsync(tokenPayload);
         const refreshToken = await this.jwtService.signAsync(tokenPayload, this.refreshTokenConfig);
 
         await this.userService.updateRefreshToken(user.userId, refreshToken);
 
-        const db_res = await this.userService.findOne(user.userId);
-        if (!db_res.user) throw new NotFoundException('user not found in sign');
 
         const safeUser: SafeUserDto = {
             id: db_res.user.id,
