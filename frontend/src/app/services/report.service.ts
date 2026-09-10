@@ -53,13 +53,4 @@ export class ReportService {
             { reported: reported, source: source, type: type, messages: messages }
         );
     }
-
-    deleteOnes(id: string): Observable<void> {
-        return this.http.delete<void>(
-            `${this.apiUrl}/del`,
-            { body: { id: id } }
-        ).pipe(
-            tap(res => this._reports.update(list => list.filter(el => el.reported?.id !== id)))
-        )
-    }
 }

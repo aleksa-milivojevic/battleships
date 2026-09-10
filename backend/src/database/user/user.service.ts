@@ -5,12 +5,14 @@ import { In, Like, Not, Repository } from "typeorm";
 import { ChangePasswordDto, ChangeUsernameDto, CreateUserDto, DeleteUserDto, FindAllParams, FindAllResponse, LeaderboardParams, MultipleUserResponse, SingleUserResponse } from "./user.dto.params";
 import * as bcrypt from "bcrypt";
 import * as argon from "argon2";
+import { ReportService } from "../report/report.service";
 
 @Injectable()
 export class UserService {
     constructor(
         @InjectRepository(User)
-        private userRepository: Repository<User>
+        private userRepository: Repository<User>,
+        private reportService: ReportService
     ) {}
 
     async findAll(params: FindAllParams): Promise<FindAllResponse> {
@@ -245,6 +247,8 @@ export class UserService {
         if (result.affected !== 1) {
             throw new InternalServerErrorException(`Rows affected: ${result.affected}`);
         }
+
+         await this.reportService.removeOnes(targetId);
     }
 
     async unban(adminId: string, targetId: string) {
@@ -277,6 +281,8 @@ export class UserService {
         if (result.affected !== 1) {
             throw new InternalServerErrorException(`Rows affected: ${result.affected}`);
         }
+
+        await this.reportService.removeOnes(targetId);
     }
 
     async untimeout(adminId: string, targetId: string) {
