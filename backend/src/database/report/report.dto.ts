@@ -1,5 +1,6 @@
 import { IsNumber, IsNumberString, IsString } from "class-validator";
 import { Report } from "./report.entity";
+import { User } from "../user/user.entity";
 
 export class FindAllParams {
     @IsNumber()
@@ -7,9 +8,6 @@ export class FindAllParams {
 
     @IsNumber()
     count: number;
-
-    @IsNumberString()
-    user: string;
 }
 
 export class FindAllResponse {
@@ -29,4 +27,14 @@ export class AddOneDto {
 
     @IsString()
     messages: string;
+}
+
+export class ReportedUser {
+    user: User;
+    reports: Report[];
+}
+
+export class ReportedUsersResponse {
+    users: ReportedUser[];
+    more: boolean;
 }

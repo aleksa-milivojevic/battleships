@@ -12,6 +12,11 @@ export interface Report {
     messages: string
 }
 
+export interface ReportedUser {
+    user: User,
+    reports: Report[];
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -19,24 +24,23 @@ export class ReportService {
     private apiUrl = `${environment.apiUrl}/report`;
     private http = inject(HttpClient);
     
-    private _reports = signal<Report[]>([]);
-    readonly reports = this._reports.asReadonly();
+    private _reportedUsers = signal<ReportedUser[]>([]);
+    readonly reportedUsers = this._reportedUsers.asReadonly();
 
-    getAllMatches(round: number = 1, count: number = 10, userId: string): Observable<{ reports: Report[], more: boolean }> {
+    getAll(round: number = 1, count: number = 10): Observable<{ users: ReportedUser[], more: boolean }> {
         const params = new HttpParams()
             .set('round', round.toString())
-            .set('count', count.toString())
-            .set('user', userId);
+            .set('count', count.toString());
 
-        return this.http.get<{ reports: Report[], more: boolean }>(
+        return this.http.get<{ users: ReportedUser[], more: boolean }>(
             `${this.apiUrl}/get`,
             { params: params }
         ).pipe(
             tap(res => {
                 if (round == 1) {
-                    this._reports.set(res.reports || [])
+                    this._reportedUsers.set(res.users || [])
                 } else {
-                    this._reports.update(current => [...current, ...res.reports || []])
+                    this._reportedUsers.update(current => [...current, ...res.users || []])
                 }
                 console.log(res);
             })

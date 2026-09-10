@@ -1,8 +1,9 @@
-import { Component, OnInit, inject, signal } from "@angular/core";
+import { Component, OnInit, effect, inject, signal } from "@angular/core";
 import { User, UserService } from "../../services/user.service";
 import { RestrictionService } from "../../services/sockets/restriction.service";
 import { SidebarComponent } from "../../shared/sidebar/sidebar.component";
 import { StorageService } from "../../services/storage.service";
+import { Report, ReportService, ReportedUser } from "../../services/report.service";
 
 @Component({
     selector: 'app-restrictions',
@@ -16,35 +17,50 @@ export class RestrctionsComponent implements OnInit {
     readonly count = 10;
 
     private userService = inject(UserService);
+    private reportService = inject(ReportService);
     private restrictionService = inject(RestrictionService);
     private storage = inject(StorageService);
 
-    users = signal<User[]>([]);
+    reports = signal<Report[]>([]);
 
     loading = signal(false);
-    more = signal(true);
-    round = signal(1);
-    
 
     self = signal<User | null>(null);
 
+    round1 = signal(1);
+    round2 = signal(1);
+
+    reportedUsers = signal<ReportedUser[]>([]);
+
+    more = signal(true);
+
+    reportedOrRestricted = signal(false); //false => reported, true => restricted
+
     constructor() {
         this.self.set(this.storage.getItem<User>('SELF'));
-        this.loadUsers();
+        effect(() => {
+            this.reportedOrRestricted();
+            if (this.reportedOrRestricted()) {
+                // this.loadRestrictedUsers();
+            }
+            else {
+                this.loadReportedUsers();
+            }
+        })
     }
 
     ngOnInit(): void {}
 
-    loadUsers() {
+    loadReportedUsers() {
         if (this.loading() || !this.more()) return;
 
         this.loading.set(true);
 
-        this.userService.getAllUsers(this.self()?.id!, this.round(), this.count).subscribe({
+        this.reportService.getAll(this.round1(), this.count).subscribe({
             next: (res) => {
-                this.round.update(r => r + 1);
-                this.users.update(current => [...current, ...res.users]);
+                this.reportedUsers.update(list => [...list, ...res.users]);
                 this.more.set(res.more);
+                this.round1.update(num => num + 1);
                 this.loading.set(false);
             },
             error: (err) => {
@@ -63,7 +79,12 @@ export class RestrctionsComponent implements OnInit {
 
         if (load) {
             console.log('load');
-            this.loadUsers();
+            if (this.reportedOrRestricted()) {
+                // this.loadRestrictedUsers();
+            }
+            else {
+                this.loadReportedUsers();
+            }
         }
     }
 
