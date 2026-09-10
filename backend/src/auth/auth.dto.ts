@@ -16,7 +16,7 @@ export type SafeUserDto = {
     admin: boolean,
     online: boolean,
     banned: boolean,
-    timeout: number,
+    timeout: Date | null,
     createdAt: Date
 }
 

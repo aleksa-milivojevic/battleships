@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./user.entity";
-import { In, Like, Not, Repository } from "typeorm";
+import { In, LessThan, Like, Not, Repository } from "typeorm";
 import { ChangePasswordDto, ChangeUsernameDto, CreateUserDto, DeleteUserDto, FindAllParams, FindAllResponse, LeaderboardParams, MultipleUserResponse, SingleUserResponse } from "./user.dto.params";
 import * as bcrypt from "bcrypt";
 import * as argon from "argon2";
@@ -12,7 +12,7 @@ export class UserService {
     constructor(
         @InjectRepository(User)
         private userRepository: Repository<User>,
-        private reportService: ReportService
+        // private reportService: ReportService
     ) {}
 
     async findAll(params: FindAllParams): Promise<FindAllResponse> {
@@ -248,7 +248,7 @@ export class UserService {
             throw new InternalServerErrorException(`Rows affected: ${result.affected}`);
         }
 
-         await this.reportService.removeOnes(targetId);
+        //  await this.reportService.removeOnes(targetId);
     }
 
     async unban(adminId: string, targetId: string) {
@@ -277,12 +277,15 @@ export class UserService {
             throw new BadRequestException('targeted user is already permanently banned');
         }
 
-        const result = await this.userRepository.update({ id: targetId }, { timeout: duration });
+        let date = new Date();
+        date.setHours(date.getHours() + duration * 24);
+
+        const result = await this.userRepository.update({ id: targetId }, { timeout: date });
         if (result.affected !== 1) {
             throw new InternalServerErrorException(`Rows affected: ${result.affected}`);
         }
 
-        await this.reportService.removeOnes(targetId);
+        // await this.reportService.removeOnes(targetId);
     }
 
     async untimeout(adminId: string, targetId: string) {
@@ -291,9 +294,33 @@ export class UserService {
             throw new UnauthorizedException('You have no admin priviledges');
         }
 
-        const result = await this.userRepository.update({ id: targetId }, { timeout: 0 });
+        const result = await this.userRepository.update({ id: targetId }, { timeout: null });
         if (result.affected !== 1) {
             throw new InternalServerErrorException(`Rows affected: ${result.affected}`);
+        }
+    }
+
+    async expire(targetId: string) {
+        const result = await this.userRepository.update({ id: targetId }, { timeout: null });
+        if (result.affected !== 1) {
+            throw new InternalServerErrorException(`Timeout expired error. Rows affected: ${result.affected}`);
+        }
+    }
+
+    async checkExpiredTimeouts() {
+        const list = await this.userRepository.find({
+            where: {
+                timeout: LessThan(new Date())
+            }
+        });
+
+        const result = await this.userRepository.update(
+            list.map(user => user.id),
+            { timeout: null }
+        );
+
+        if (result.affected !== list.length) {
+            throw new InternalServerErrorException(`Checking expired timeouts error. Affected ${result.affected} rows, but found ${list.length} expired timeouts`);
         }
     }
 }

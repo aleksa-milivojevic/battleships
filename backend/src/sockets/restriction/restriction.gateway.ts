@@ -1,5 +1,6 @@
 import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WsException } from "@nestjs/websockets";
 import { Socket } from "socket.io"
+import { ReportService } from "src/database/report/report.service";
 import { UserService } from "src/database/user/user.service";
 
 @WebSocketGateway({ namespace: 'restriction',  cors: { origin: 'http://localhost:4200', credentials: true } })
@@ -9,7 +10,8 @@ export class RestrictionGateway implements OnGatewayConnection, OnGatewayDisconn
     private sockets = new Map<string, Socket>();
 
     constructor(
-        private userService: UserService
+        private userService: UserService,
+        private reportService: ReportService
     ) {}
 
     handleConnection(@ConnectedSocket() client: Socket) {
@@ -40,6 +42,7 @@ export class RestrictionGateway implements OnGatewayConnection, OnGatewayDisconn
         
         try {
             await this.userService.ban(admin, target);
+            await this.reportService.removeOnes(target);
         }
         catch (error) {
             console.log(error);
@@ -80,6 +83,7 @@ export class RestrictionGateway implements OnGatewayConnection, OnGatewayDisconn
         
         try {
             await this.userService.timeout(admin, target, duration);
+            await this.reportService.removeOnes(target);
         }
         catch (error) {
             throw new WsException(error.message);
@@ -87,7 +91,7 @@ export class RestrictionGateway implements OnGatewayConnection, OnGatewayDisconn
 
         const targetSock = this.sockets.get(target);
         if (!targetSock) return;
-        targetSock.emit('timed-out');
+        targetSock.emit('timed-out', { duration });
     }
 
     @SubscribeMessage('untimeout')

@@ -63,11 +63,11 @@ export class User {
     banned: boolean;
 
     @Column({
-        type: "int",
-        nullable: false,
-        default: 0
+        type: "timestamp",
+        nullable: true,
+        default: null
     })
-    timeout: number;
+    timeout: Date | null;
 
     @Column({
         type: "timestamp",

@@ -3,12 +3,14 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Report } from "./report.entity";
 import { Repository } from "typeorm";
 import { AddOneDto, FindAllParams, FindAllResponse, ReportedUser, ReportedUsersResponse } from "./report.dto";
+import { UserService } from "../user/user.service";
 
 @Injectable()
 export class ReportService {
     constructor(
         @InjectRepository(Report)
-        private reportRepository: Repository<Report>
+        private reportRepository: Repository<Report>,
+        private userService: UserService
     ) {}
 
     async findAll(params: FindAllParams): Promise<FindAllResponse> {
@@ -32,6 +34,8 @@ export class ReportService {
     }
 
     async reportedUsers(params: FindAllParams): Promise<ReportedUsersResponse> {
+        await this.userService.checkExpiredTimeouts();
+
         const reports = await this.reportRepository.find({
             relations: {
                 source: true,
