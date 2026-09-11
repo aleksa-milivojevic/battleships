@@ -31,6 +31,10 @@ export class RestrctionsComponent implements OnInit {
     round2 = signal(1);
 
     reportedUsers = signal<ReportedUser[]>([]);
+    restrictedUsers = signal<User[]>([]);
+
+    selectedUser = signal<User | null>(null);
+    reportList = signal<Report[]>([]);
 
     more = signal(true);
 
@@ -70,7 +74,26 @@ export class RestrctionsComponent implements OnInit {
         })
     }
 
-    onScrollUsers(event: Event) {
+    loadRestrictedUsers() {
+        if (this.loading() || !this.more()) return;
+
+        this.loading.set(true);
+
+        this.userService.getRestricted(this.round2(), this.count).subscribe({
+            next: (res) => {
+                this.restrictedUsers.update(list => [...list, ...res.users]);
+                this.more.set(res.more);
+                this.round2.update(o => o + 1);
+                this.loading.set(false);
+            },
+            error: (err) => {
+                this.loading.set(false);
+                console.log(err);
+            }
+        })
+    }
+
+    onScroll(event: Event) {
         if (this.loading() && !this.more()) return;
 
         const element = event.target as HTMLElement;
@@ -80,7 +103,7 @@ export class RestrctionsComponent implements OnInit {
         if (load) {
             console.log('load');
             if (this.reportedOrRestricted()) {
-                // this.loadRestrictedUsers();
+                this.loadRestrictedUsers();
             }
             else {
                 this.loadReportedUsers();
@@ -88,7 +111,24 @@ export class RestrctionsComponent implements OnInit {
         }
     }
 
+    toggleList() {
+        this.reportedOrRestricted.update(o => !o);
+        if (this.reportedOrRestricted()) {
+            this.selectedUser.set(null);
+            this.reportList.set([]);
+        }
+    }
+
+    selectUser(reportedUser: ReportedUser) {
+        this.selectedUser.set(reportedUser.user);
+        this.reportList.set(reportedUser.reports);
+    }
+
     onBan(target: string) {
         this.restrictionService.ban(target);
+    }
+
+    onTimeout(target: string, duration: number) {
+        this.restrictionService.timeout(target, duration);
     }
 }
