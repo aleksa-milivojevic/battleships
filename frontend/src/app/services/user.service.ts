@@ -113,4 +113,15 @@ export class UserService {
             { params: { ids: ids.join(',') } }
         );
     }
+
+    getRestricted(round: number, count: number): Observable<{ users: User[], more: boolean }> {
+        const params = new HttpParams()
+                    .set('round', round)
+                    .set('count', count);
+        
+        return this.http.get<{ users: User[], more: boolean }>(
+            `${this.apiUrl}/restricted`,
+            { params: params }
+        )
+    }
 }
