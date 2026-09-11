@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsNumberString, IsString } from "class-validator";
+import { IsEmail, IsNotEmpty, IsNumber, IsNumberString, IsString, isNumber } from "class-validator";
 import { SafeUserDto } from "src/auth/auth.dto";
 
 export class CreateUserDto {
@@ -77,4 +77,17 @@ export class DeleteUserDto {
 
 export class MultipleUserResponse {
     users: SafeUserDto[];
+}
+
+export class FindRestrictedParams {
+    @IsNumber()
+    round: number;
+
+    @IsNumber()
+    count: number;
+}
+
+export class FindRestrictedResponse {
+    users: SafeUserDto[];
+    more: boolean;
 }

@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./user.entity";
-import { In, LessThan, Like, Not, Repository } from "typeorm";
-import { ChangePasswordDto, ChangeUsernameDto, CreateUserDto, DeleteUserDto, FindAllParams, FindAllResponse, LeaderboardParams, MultipleUserResponse, SingleUserResponse } from "./user.dto.params";
+import { In, IsNull, LessThan, Like, Not, Repository } from "typeorm";
+import { ChangePasswordDto, ChangeUsernameDto, CreateUserDto, DeleteUserDto, FindAllParams, FindAllResponse, FindRestrictedParams, FindRestrictedResponse, LeaderboardParams, MultipleUserResponse, SingleUserResponse } from "./user.dto.params";
 import * as bcrypt from "bcrypt";
 import * as argon from "argon2";
 import { ReportService } from "../report/report.service";
@@ -321,6 +321,24 @@ export class UserService {
 
         if (result.affected !== list.length) {
             throw new InternalServerErrorException(`Checking expired timeouts error. Affected ${result.affected} rows, but found ${list.length} expired timeouts`);
+        }
+    }
+
+    async findRestricted(params: FindRestrictedParams): Promise<FindRestrictedResponse> {
+        let users = await this.userRepository.find({
+            where: [
+                { banned: true },
+                { timeout: Not(IsNull()) }
+            ]
+        })
+
+        if (!users) throw new NotFoundException('no restricted users');
+
+        users = users.slice((params.round-1)*params.count, params.round*params.count);
+
+        return {
+            users: users,
+            more: users.length === params.count
         }
     }
 }
