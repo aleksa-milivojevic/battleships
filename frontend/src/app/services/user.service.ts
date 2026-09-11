@@ -11,6 +11,8 @@ export interface User {
     score: number,
     admin: boolean,
     online: boolean,
+    banned: boolean,
+    timeout: Date | null,
     createdAt: Date
 }
 

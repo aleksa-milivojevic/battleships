@@ -104,6 +104,22 @@ export class RestrictionService {
         this.socket.emit('timeout', { target, duration });
     }
 
+    unban(target: string) {
+        if (!this.self()?.admin) {
+            console.warn('You are not an admin');
+            return;
+        }
+        this.socket.emit('unban', { target });
+    }
+
+    untimeout(target: string) {
+        if (!this.self()?.admin) {
+            console.warn('You are not an admin');
+            return;
+        }
+        this.socket.emit('untimeout', { target });
+    }
+
     getBanned() {
         this.banned.set(true);
         // this.disconnect();

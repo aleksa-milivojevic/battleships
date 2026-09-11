@@ -131,4 +131,17 @@ export class RestrctionsComponent implements OnInit {
     onTimeout(target: string, duration: number) {
         this.restrictionService.timeout(target, duration);
     }
+
+    onUnrestrict(target: string) {
+        let user = this.restrictedUsers().filter(el => el.id === target)[0];
+
+        if (!user) return;
+
+        if (user.banned) {
+            this.restrictionService.unban(target);
+        }
+        else if (user.timeout !== null) {
+            this.restrictionService.untimeout(target);
+        }
+    }
 }
