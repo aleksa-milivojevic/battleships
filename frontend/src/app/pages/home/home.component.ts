@@ -28,7 +28,7 @@ export class HomeComponent {
       this.storage.removeItem('TIMEOUT');
       this.expiration.update(date => {
         let copy = new Date(date);
-        copy.setMinutes(copy.getMinutes() + this.timeout()!);
+        copy.setHours(copy.getHours() + this.timeout()! * 24);
         return copy;
       })
     }
