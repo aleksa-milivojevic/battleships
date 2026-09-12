@@ -6,21 +6,41 @@
     z-index: 0;
 }
 
+app-sidebar {
+    width: 15%;
+}
+
 .container {
     display: flex;
-    width: 50%;
-    flex-direction: column;
+    width: 100%;
+    flex-direction: row;
     margin: 0;
     padding: 5px;
     justify-content: center;
     align-items: center;
 }
 
-app-sidebar {
-    width: 15%;
+.list-div {
+    width: 50%;
+    height: 80%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.user-list, .match-list {
+.selected-user {
+    width: 100%;
+    height: fit-content;
+    margin: 0;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+}
+
+.user-list, .report-list {
     margin: 10px;
     padding: 10px;
     padding-top: 2px;
@@ -36,6 +56,10 @@ app-sidebar {
     border-radius: 20px;
 }
 
+.report-list {
+    height: 89%;
+}
+
 .user {
     width: 95%;
     margin: 5px;
@@ -48,4 +72,66 @@ app-sidebar {
     background-color: rgb(47, 47, 212);
     border: 0px solid white;
     border-radius: 10px;
+}
+
+.user-info {
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    width: 70%;
+    font-size: 150%;
+}
+
+.username-div {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.score {
+    margin-right: 0px;
+    margin-left: auto;
+}
+
+.restriction-btns {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+}
+
+.timeout-div {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+}
+
+.report {
+    display: flex;
+    flex-direction: column;
+}
+
+.report-info {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+}
+
+.msgs-div {
+    margin-top: 10px;
+    background-color: rgba(0, 0, 0, 0.212);
+}
+
+button {
+    width: fit-content;
+}
+
+input {
+    width: 50%;
 }

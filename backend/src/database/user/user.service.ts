@@ -314,8 +314,10 @@ export class UserService {
             }
         });
 
+        if (!list || list.length === 0) return;
+
         const result = await this.userRepository.update(
-            list.map(user => user.id),
+            { id: In(list.map(user => user.id))},
             { timeout: null }
         );
 

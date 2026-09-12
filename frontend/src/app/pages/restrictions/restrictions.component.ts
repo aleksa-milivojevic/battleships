@@ -4,11 +4,12 @@ import { RestrictionService } from "../../services/sockets/restriction.service";
 import { SidebarComponent } from "../../shared/sidebar/sidebar.component";
 import { StorageService } from "../../services/storage.service";
 import { Report, ReportService, ReportedUser } from "../../services/report.service";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @Component({
     selector: 'app-restrictions',
     standalone: true,
-    imports: [SidebarComponent],
+    imports: [SidebarComponent, FormsModule, ReactiveFormsModule],
     templateUrl: './restrictions.component.html',
     styleUrl: './restrictions.component.scss'
 })
@@ -39,6 +40,11 @@ export class RestrctionsComponent implements OnInit {
     more = signal(true);
 
     reportedOrRestricted = signal(false); //false => reported, true => restricted
+
+    duration = signal<number>(0);
+
+    selectedReport = signal('');
+    showReportMessages = signal(false);
 
     constructor() {
         this.self.set(this.storage.getItem<User>('SELF'));
@@ -143,5 +149,18 @@ export class RestrctionsComponent implements OnInit {
         else if (user.timeout !== null) {
             this.restrictionService.untimeout(target);
         }
+    }
+
+    selectReport(id: string) {
+        if (!this.showReportMessages()) return;
+        this.selectedReport.set(id);
+    }
+
+    toggleReportMessages(id: string) {
+        if (this.selectedReport() === id) {
+            this.showReportMessages.set(false);
+            this.selectedReport.set('');
+        }
+        else this.showReportMessages.set(true);
     }
 }
