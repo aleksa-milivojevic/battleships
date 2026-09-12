@@ -136,15 +136,27 @@ export class RestrctionsComponent implements OnInit {
     }
 
     onBan(target: string) {
+        const user = this.reportedUsers().find(user => user.user.id === target)?.user;
+        if (!user) return;
         this.restrictionService.ban(target);
+        user.banned = true;
+        this.restrictedUsers.update(curr => [...curr, user]);
+        this.reportedUsers.set(this.reportedUsers().filter(user => user.user.id !== target));
+        this.reportList.set([]);
     }
 
     onTimeout(target: string, duration: number) {
+        const user = this.reportedUsers().find(user => user.user.id === target)?.user;
+        if (!user) return;
         this.restrictionService.timeout(target, duration);
+        user.timeout?.setDate((new Date()).getHours() + duration * 24);
+        this.restrictedUsers.update(curr => [...curr, user]);
+        this.reportedUsers.update(list => list.filter(user => user.user.id !== target));
+        this.reportList.set([]);
     }
 
     onUnrestrict(target: string) {
-        let user = this.restrictedUsers().filter(el => el.id === target)[0];
+        let user = this.restrictedUsers().find(el => el.id === target);
 
         if (!user) return;
 
@@ -154,6 +166,8 @@ export class RestrctionsComponent implements OnInit {
         else if (user.timeout !== null) {
             this.restrictionService.untimeout(target);
         }
+
+        this.restrictedUsers.update(list => list.filter(user => user.id !== target));
     }
 
     selectReport(id: string) {
@@ -167,5 +181,9 @@ export class RestrctionsComponent implements OnInit {
             this.selectedReport.set('');
         }
         else this.showReportMessages.set(true);
+    }
+
+    parsedDate(user: User) {
+        return user.timeout?.toString().slice(0, 10).split('-').join('. ').concat('.');
     }
 }

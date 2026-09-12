@@ -33,9 +33,11 @@
                                 <label class="score">{{ el.score }}</label>
                             </div>
                             <div class="restriction-type-div">
-                                <label class="restriction-type">{{ (el.banned) ? 'PERMANENTLY BANNED' : `TIMED OUT UNTIL ${el.timeout?.getDate()}` }}</label>
+                                <label class="restriction-type">{{ (el.banned) ? 'PERMANENTLY BANNED' : `TIMED OUT UNTIL ${parsedDate(el)}` }}</label>
                             </div>
-                            <div class="unrestrict-btn">unrestrict</div>
+                            <div class="unrestrict-div">
+                                <button class="unrestrinct-btn" (click)="onUnrestrict(el.id)">unrestrict</button>
+                            </div>
                         </div>
                     }
                 }
@@ -50,7 +52,7 @@
                     <label class="score">{{ selectedUser()?.score }}</label>
                 </div>
                 <div class="restriction-btns">
-                    <button class="ban-btn">ban</button>
+                    <button class="ban-btn" [disabled]="selectedUser()?.banned || selectedUser()?.timeout" (click)="onBan(selectedUser()?.id!)">ban</button>
                     <div class="timeout-div">
                         <input
                             type="number"
@@ -59,7 +61,7 @@
                             [ngModel]="duration()"
                             (ngModelChange)="duration.set($event)"
                         >
-                        <button class="timeout-btn">timeout</button>
+                        <button class="timeout-btn" [disabled]="selectedUser()?.banned || selectedUser()?.timeout" (click)="onTimeout(selectedUser()?.id!, duration())">timeout</button>
                     </div>
                 </div>
             </div>
