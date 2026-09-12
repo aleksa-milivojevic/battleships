@@ -12,7 +12,7 @@
             <label class="restriction">
                 Your account has been timed out by a game administrator.
                 You will not be able to access your account until
-                {{ expiration().getDate() + " " + expiration().getTime() }}.
+                {{ expiration().getDate() + '.' + expiration().getMonth() + '.' + expiration().getFullYear() + ". " + expiration().getHours() + ':' + expiration().getMinutes()}}.
             </label>
         </div>
     }
