@@ -2,16 +2,42 @@
     <app-sidebar></app-sidebar>
     <div class="container">
         <div class="list-div">
+            <div class="selector-div">
+                <div class="reported-div" [class.selected]="!reportedOrRestricted()" (click)="reportedOrRestricted.set(false)">
+                    <label>reported</label>
+                </div>
+                <div class="restricted-div" [class.selected]="reportedOrRestricted()" (click)="reportedOrRestricted.set(true)">
+                    <label>restricted</label>
+                </div>
+            </div>
             <div class="user-list" (scroll)="onScroll($event)">
-                @for(el of reportedUsers(); track el.user.id) {
-                    <div class="user" (click)="selectUser(el)">
-                        <div class="username-score">
-                            <div class="username-div">
-                                <label class="username">{{ el.user.username }}</label>
+                @if (!reportedOrRestricted()) {
+                    @for(el of reportedUsers(); track el.user.id) {
+                        <div class="user" (click)="selectUser(el)">
+                            <div class="username-score">
+                                <div class="username-div">
+                                    <label class="username">{{ el.user.username }}</label>
+                                </div>
+                                <label class="score">{{ el.user.score }}</label>
                             </div>
-                            <label class="score">{{ el.user.score }}</label>
                         </div>
-                    </div>
+                    }
+                }
+                @else {
+                    @for(el of restrictedUsers(); track el.id) {
+                        <div class="user">
+                            <div class="username-score">
+                                <div class="username-div">
+                                    <label class="username">{{ el.username }}</label>
+                                </div>
+                                <label class="score">{{ el.score }}</label>
+                            </div>
+                            <div class="restriction-type-div">
+                                <label class="restriction-type">{{ (el.banned) ? 'PERMANENTLY BANNED' : `TIMED OUT UNTIL ${el.timeout?.getDate()}` }}</label>
+                            </div>
+                            <div class="unrestrict-btn">unrestrict</div>
+                        </div>
+                    }
                 }
             </div>
         </div>

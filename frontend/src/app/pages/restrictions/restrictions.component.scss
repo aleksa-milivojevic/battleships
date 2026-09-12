@@ -30,6 +30,30 @@ app-sidebar {
     align-items: center;
 }
 
+.selector-div {
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    background-color: rgb(15, 15, 117);
+    border-radius: 20px;
+}
+
+.restricted-div, .reported-div {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    background-color: rgb(15, 15, 117);
+    color: white;
+    border-radius: 10px;
+    
+    &.selected {
+        background-color: rgb(47, 47, 212);
+        pointer-events: none;
+    }
+}
+
 .selected-user {
     width: 100%;
     height: fit-content;

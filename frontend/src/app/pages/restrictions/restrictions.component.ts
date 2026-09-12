@@ -37,7 +37,8 @@ export class RestrctionsComponent implements OnInit {
     selectedUser = signal<User | null>(null);
     reportList = signal<Report[]>([]);
 
-    more = signal(true);
+    more1 = signal(true);
+    more2 = signal(true);
 
     reportedOrRestricted = signal(false); //false => reported, true => restricted
 
@@ -50,8 +51,9 @@ export class RestrctionsComponent implements OnInit {
         this.self.set(this.storage.getItem<User>('SELF'));
         effect(() => {
             this.reportedOrRestricted();
+            
             if (this.reportedOrRestricted()) {
-                // this.loadRestrictedUsers();
+                this.loadRestrictedUsers();
             }
             else {
                 this.loadReportedUsers();
@@ -62,14 +64,14 @@ export class RestrctionsComponent implements OnInit {
     ngOnInit(): void {}
 
     loadReportedUsers() {
-        if (this.loading() || !this.more()) return;
+        if (this.loading() || !this.more1()) return;
 
         this.loading.set(true);
 
         this.reportService.getAll(this.round1(), this.count).subscribe({
             next: (res) => {
                 this.reportedUsers.update(list => [...list, ...res.users]);
-                this.more.set(res.more);
+                this.more1.set(res.more);
                 this.round1.update(num => num + 1);
                 this.loading.set(false);
             },
@@ -81,16 +83,17 @@ export class RestrctionsComponent implements OnInit {
     }
 
     loadRestrictedUsers() {
-        if (this.loading() || !this.more()) return;
+        if (this.loading() || !this.more2()) return;
 
         this.loading.set(true);
 
         this.userService.getRestricted(this.round2(), this.count).subscribe({
             next: (res) => {
                 this.restrictedUsers.update(list => [...list, ...res.users]);
-                this.more.set(res.more);
+                this.more2.set(res.more);
                 this.round2.update(o => o + 1);
                 this.loading.set(false);
+                console.log(this.restrictedUsers());
             },
             error: (err) => {
                 this.loading.set(false);
@@ -100,7 +103,9 @@ export class RestrctionsComponent implements OnInit {
     }
 
     onScroll(event: Event) {
-        if (this.loading() && !this.more()) return;
+        if (this.loading()) return;
+        if (this.reportedOrRestricted() && !this.more2()) return;
+        if (!this.reportedOrRestricted() && this.more1()) return;
 
         const element = event.target as HTMLElement;
         const threshold = 10;
