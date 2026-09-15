@@ -86,7 +86,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
 
     @SubscribeMessage('attack')
-    attack(@MessageBody('coords') coords: any, @ConnectedSocket() client: Socket) {
+    async attack(@MessageBody('coords') coords: any, @ConnectedSocket() client: Socket) {
         const id = this.ids.get(client.id);
 
         if (!id) throw new WsException('Client not found');
@@ -104,12 +104,14 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
         client.emit('report', { result, coords });
 
         if (result === 'game-end') {
-            this.gameService.saveMatch(id, opp);
+            const points = await this.gameService.saveMatch(id, opp);
+            this.clients.get(opp)?.socket?.emit('points', { points });
+            client.emit('points', { points });
         }
     }
 
     @SubscribeMessage('surrender')
-    surrender(@ConnectedSocket() client: Socket) {
+    async surrender(@ConnectedSocket() client: Socket) {
         const id = this.ids.get(client.id);
 
         if (!id) {
@@ -130,18 +132,21 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
         opponent.socket.emit('surrender');
 
-        this.gameService.saveMatch(player.opp, id);
+        const points = await this.gameService.saveMatch(player.opp, id);
+        opponent.socket.emit('points', { points });
+        client.emit('points', { points });
     }
 
     @SubscribeMessage('opp-disconnect')
-    oppDisconnect(@ConnectedSocket() client: Socket) {
+    async oppDisconnect(@ConnectedSocket() client: Socket) {
         const id = this.ids.get(client.id);
         if (!id) throw new WsException('Player not found');
 
         const player = this.clients.get(id);
         if (!player) throw new WsException('Player info not found');
         
-        this.gameService.saveMatch(id, player.opp);
+        const points = await this.gameService.saveMatch(id, player.opp);
+        player.socket?.emit('points', { points });
     }
 
     checkForReconnect(id: string, opp: string) {

@@ -207,5 +207,7 @@ export class GameService {
         
         await this.matchService.addOne({ winner: wId, looser: lId, points: points });
         await this.userService.updateScores(wId, lId, points);
+
+        return points;
     }
 }

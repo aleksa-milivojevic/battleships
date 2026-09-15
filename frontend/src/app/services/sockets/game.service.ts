@@ -149,6 +149,13 @@ export class GameService {
             }
         )
 
+        this.socket.on('points',
+            (data) => {
+                console.log('points heard');
+                this.updateScore(data.points);
+            }
+        )
+
         this.socket.connect();
 
         console.log("connection");
@@ -160,6 +167,11 @@ export class GameService {
         this.socket.off('ready');
         this.socket.off('attack');
         this.socket.off('report');
+        this.socket.off('surrender');
+        this.socket.off('disconnection');
+        this.socket.off('reconnect');
+        this.socket.off('exception');
+        this.socket.off('points');
         console.log('disconnect');
         this.socket.disconnect();
     }
@@ -316,5 +328,14 @@ export class GameService {
         this.storage.setItem('WIN', true);
         this.surrenderMessage.set('Opponent Disconnected');
         this.storage.setItem('SURR_MSG', this.surrenderMessage());
+    }
+
+    updateScore(points: number) {
+        if (!this.gameOver()) return;
+        const user = this.storage.getItem<User>('SELF');
+        if (!user) return;
+        if (this.win()) user.score += points; 
+        else user.score -= points;
+        this.storage.setItem('SELF', user);
     }
 }
