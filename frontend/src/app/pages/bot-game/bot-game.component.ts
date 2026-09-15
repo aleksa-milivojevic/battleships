@@ -181,7 +181,9 @@ export class BotGameComponent implements OnInit {
     toMainScreen() {
         this.bot.clear();
         this.clearLocal();
+        this.bot.canLeave.set(true);
         this.router.navigate(['/main']);
+        this.bot.canEnter.set(false);
     }
 
     clearLocal() {

@@ -4,6 +4,7 @@ import { StorageService } from "../storage.service";
 import { User } from "../user.service";
 import { io, Socket } from "socket.io-client";
 import { Router } from "@angular/router";
+import { GameService } from "./game.service";
 
 @Injectable({
     providedIn: 'root'
@@ -14,6 +15,7 @@ export class QueueService {
         autoConnect: false
     });
 
+    private gameService = inject(GameService);
     private storage = inject(StorageService);
     private router = inject(Router);
 
@@ -48,7 +50,9 @@ export class QueueService {
                 console.log('match-found heard');
                 this.saveLocal(data);
                 this.disconnect();
+                this.gameService.canEnter.set(true);
                 this.router.navigate(['/game']);
+                this.gameService.canLeave.set(false);
             }
         )
 

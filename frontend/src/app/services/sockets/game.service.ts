@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from "@angular/core";
+import { Injectable, computed, effect, inject, signal } from "@angular/core";
 import {  } from "ngx-socket-io";
 import { StorageService } from "../storage.service";
 import { User } from "../user.service";
@@ -41,8 +41,20 @@ export class GameService {
     disconnected = signal(false);
     waiting = signal(false);
 
+    canEnter = signal(false);
+    canLeave = signal(true);
+
     constructor() {
-        
+        this.canEnter.set(this.storage.getItem<boolean>('GAME_CAN_ENTER') ?? this.canEnter());
+        this.canLeave.set(this.storage.getItem<boolean>('GAME_CAN_LEAVE') ?? this.canLeave());
+        effect(() => {
+            this.canEnter();
+            this.storage.setItem('GAME_CAN_ENTER', this.canEnter());
+        });
+        effect(() => {
+            this.canLeave();
+            this.storage.setItem('GAME_CAN_LEAVE', this.canLeave());
+        });
     }
 
     connect() {

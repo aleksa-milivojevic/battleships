@@ -176,8 +176,10 @@ export class GameComponent implements OnInit {
     }
 
     onBack() {
-        this.router.navigate(['/main']);
         this.gameService.back();
+        this.gameService.canLeave.set(true);
+        this.router.navigate(['/main']);
+        this.gameService.canEnter.set(false);
         this.clearLocal();
     }
 

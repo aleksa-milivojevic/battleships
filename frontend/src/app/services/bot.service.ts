@@ -22,7 +22,12 @@ export class BotService {
 
     private nextMove = signal<{ x: number, y: number, axis: number }[]>([]);
 
+    canEnter = signal(false);
+    canLeave = signal(true);
+
     constructor() {
+        this.canEnter.set(this.storage.getItem<boolean>('BOT_CAN_ENTER') ?? this.canEnter());
+        this.canLeave.set(this.storage.getItem<boolean>('BOT_CAN_LEAVE') ?? this.canLeave());
         effect(() => {
             this._field();
             this.storage.setItem('BOT_FIELD', this._field());
@@ -34,6 +39,14 @@ export class BotService {
         effect(() => {
             this.nextMove;
             this.storage.setItem('MOVES', this.nextMove);
+        });
+        effect(() => {
+            this.canEnter();
+            this.storage.setItem('BOT_CAN_ENTER', this.canEnter());
+        });
+        effect(() => {
+            this.canLeave();
+            this.storage.setItem('BOT_CAN_LEAVE', this.canLeave());
         });
     }
 
