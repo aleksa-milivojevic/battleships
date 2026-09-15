@@ -169,9 +169,12 @@ export class GameComponent implements OnInit {
     }
 
     toMainScreen() {
+        this.gameOverScreen.set(false);
         this.gameService.disconnect();
         this.gameService.back();
+        this.gameService.canLeave.set(true);
         this.router.navigate(['main']);
+        this.gameService.canEnter.set(true);
         this.clearLocal();
     }
 
