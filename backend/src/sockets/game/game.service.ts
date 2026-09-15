@@ -200,9 +200,9 @@ export class GameService {
             else if (diff <= 3000) points = 50;
         }
         else {
-            if (diff <= 1000) points = 50;
-            else if (diff <= 2000) points = 100;
-            else if (diff <= 3000) points = 150;
+            if (diff <= 1000) points = 150;
+            else if (diff <= 2000) points = 200;
+            else if (diff <= 3000) points = 250;
         }
         
         await this.matchService.addOne({ winner: wId, looser: lId, points: points });
