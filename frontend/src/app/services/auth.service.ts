@@ -39,7 +39,7 @@ export class AuthService implements OnDestroy {
     private _user = signal<User | null>(this.storage.getItem<User>('SELF'));
     readonly user = this._user.asReadonly();
 
-    isAuthenticated = computed(() => !!this._user());
+    isAuthenticated = computed(() => !!this._user() && !this._user()?.banned && !this._user()?.timeout);
     isAdmin = computed(() => this._user()?.admin);
 
     banned = this.restrictionService.banned;
