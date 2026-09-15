@@ -2,16 +2,16 @@
     <app-sidebar></app-sidebar>
     <div class="user">
         <div class="username-div">
-            <h1 class="username">{{ self()?.username || "not found" }}</h1>
+            <h1 class="username">{{ self()?.username ?? "not found" }}</h1>
             <button class="username-btn" (click)="toggleChNameScreen()">✎</button>
         </div>
         <div class="email-created-div">
-            <label class="email">Connected to: {{ self()?.email || "not found" }}</label>
-            <label class="email">Date created: {{ self()?.createdAt?.toString()?.slice(0,10) || "not found" }}</label>
+            <label class="email">Connected to: {{ self()?.email ?? "not found" }}</label>
+            <label class="email">Date created: {{ self()?.createdAt?.toString()?.slice(0,10) ?? "not found" }}</label>
         </div>
         <div class="score-div">
             <h1 class="score-title">YOUR SCORE</h1>
-            <h1 class="score">{{ self()?.score || 0 }}</h1> 
+            <h1 class="score">{{ self()?.score ?? 0 }}</h1> 
         </div>
         <div class="btns">
             <button class="password-btn" (click)="toggleChPassScreen()">Change password</button>
