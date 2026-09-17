@@ -2,6 +2,9 @@
     <app-sidebar></app-sidebar>
     <div class="user">
         <div class="username-div">
+            <div class="pfp">
+                <img [src]="self()?.picture" alt="PFP"/>
+            </div>
             <h1 class="username">{{ self()?.username ?? "not found" }}</h1>
             <button class="username-btn" (click)="toggleChNameScreen()">✎</button>
         </div>

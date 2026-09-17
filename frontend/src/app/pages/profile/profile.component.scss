@@ -21,6 +21,18 @@ app-sidebar {
     width: 15%;
 }
 
+.pfp {
+    width: fit-content;
+    height: fit-content;
+    border-radius: 50px;
+}
+
+img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+}
+
 .username-div {
     display: flex;
     flex-direction: row;
