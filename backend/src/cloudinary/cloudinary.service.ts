@@ -24,7 +24,7 @@ export class NestCloudinaryService {
 
     async delete(id: string) {
         try {
-            await this.cloudinaryService.cloudinary.uploader.destroy(id);
+            await this.cloudinaryService.cloudinary.uploader.destroy(`profile_${id}`);
         }
         catch (error) {
             console.error('Cloudinary delete greska', error);

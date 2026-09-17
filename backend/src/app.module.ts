@@ -15,6 +15,7 @@ import { QueueModule } from './sockets/queue/queue.module';
 import { GameModule } from './sockets/game/game.module';
 import { ChatModule } from './sockets/chat/chat.module';
 import { RestrictionModule } from './sockets/restriction/restriction.module';
+import { NestCloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -39,7 +40,8 @@ import { RestrictionModule } from './sockets/restriction/restriction.module';
     QueueModule,
     GameModule,
     ChatModule,
-    RestrictionModule
+    RestrictionModule,
+    NestCloudinaryModule
   ],
   controllers: [AppController],
   providers: [AppService],

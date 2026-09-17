@@ -3,7 +3,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'nestjs-cloudinary';
 import { PassportJwtAuthGuard } from 'src/auth/guards/passport-jwt.guard';
 
-@Controller()
+@Controller('cloudinary')
 export class NestCloudinaryController {
 
     constructor(private readonly cloudinaryService: CloudinaryService ) {}

@@ -130,10 +130,7 @@ export class UserService {
     }
 
     async removeOne(id: string): Promise<void> {
-        const picture = (await this.findOne(id)).user.picture;
-        if (picture) {
-            this.cloudinaryService.delete(picture);
-        }
+        await this.cloudinaryService.delete(id);
         await this.userRepository.delete({ id });
     }
 
