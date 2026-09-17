@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { CloudinaryService } from "nestjs-cloudinary";
+import { UploadApiResponse } from "cloudinary";
 
 @Injectable()
 export class NestCloudinaryService {
@@ -8,7 +9,7 @@ export class NestCloudinaryService {
         private cloudinaryService: CloudinaryService
     ) {}
 
-    async upload(file: Express.Multer.File, options = {}) {
+    async upload(file: Express.Multer.File, options = {}): Promise<UploadApiResponse | undefined> {
         return new Promise((resolve, reject) => {
             const uploadStream = this.cloudinaryService.cloudinary.uploader.upload_stream(
                 options,

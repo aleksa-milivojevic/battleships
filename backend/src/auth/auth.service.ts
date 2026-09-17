@@ -73,6 +73,7 @@ export class AuthService {
             id: db_res.user.id,
             email: db_res.user.email,
             username: db_res.user.username,
+            picture: db_res.user.picture,
             admin: db_res.user.admin,
             score: db_res.user.score,
             banned: db_res.user.banned,

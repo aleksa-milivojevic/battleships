@@ -34,6 +34,13 @@ export class User {
     password: string;
 
     @Column({
+        type: "varchar",
+        nullable: false,
+        default: 'https://res.cloudinary.com/drjisyvve/image/upload/v1789641856/default-pfp_gwgrvg.jpg'
+    })
+    picture: string;
+
+    @Column({
         type: "int",
         unsigned: true,
         nullable: false,

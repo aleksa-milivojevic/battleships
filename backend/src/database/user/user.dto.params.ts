@@ -91,3 +91,10 @@ export class FindRestrictedResponse {
     users: SafeUserDto[];
     more: boolean;
 }
+
+export class PictureDto {
+    @IsNumberString()
+    id: string;
+
+    picture: Express.Multer.File;
+}

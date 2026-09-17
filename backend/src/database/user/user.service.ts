@@ -2,16 +2,18 @@ import { BadRequestException, Injectable, InternalServerErrorException, NotFound
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./user.entity";
 import { In, IsNull, LessThan, Like, Not, Repository } from "typeorm";
-import { ChangePasswordDto, ChangeUsernameDto, CreateUserDto, DeleteUserDto, FindAllParams, FindAllResponse, FindRestrictedParams, FindRestrictedResponse, LeaderboardParams, MultipleUserResponse, SingleUserResponse } from "./user.dto.params";
+import { ChangePasswordDto, ChangeUsernameDto, CreateUserDto, DeleteUserDto, FindAllParams, FindAllResponse, FindRestrictedParams, FindRestrictedResponse, LeaderboardParams, MultipleUserResponse, PictureDto, SingleUserResponse } from "./user.dto.params";
 import * as bcrypt from "bcrypt";
 import * as argon from "argon2";
-import { ReportService } from "../report/report.service";
+import { NestCloudinaryService } from "src/cloudinary/cloudinary.service";
+import { UploadApiResponse } from "cloudinary";
 
 @Injectable()
 export class UserService {
     constructor(
         @InjectRepository(User)
         private userRepository: Repository<User>,
+        private cloudinaryService: NestCloudinaryService
         // private reportService: ReportService
     ) {}
 
@@ -128,6 +130,10 @@ export class UserService {
     }
 
     async removeOne(id: string): Promise<void> {
+        const picture = (await this.findOne(id)).user.picture;
+        if (picture) {
+            this.cloudinaryService.delete(picture);
+        }
         await this.userRepository.delete({ id });
     }
 
@@ -341,6 +347,34 @@ export class UserService {
         return {
             users: users,
             more: users.length === params.count
+        }
+    }
+
+    async updatePicture(params: PictureDto) {
+        let user = await this.findOne(params.id);
+
+        const result = await this.cloudinaryService.upload(params.picture, {
+                public_id: `profile_${params.id}`,
+                folder: `battleships`,
+                upload_preset: 'user_setup',
+                overwrite: true,
+                transformation: [
+                    { width: 400, height: 400, crop: 'fill', gravity: 'face', fetch_format: 'auto', quiality: 'auto' }
+                ]
+            }
+        )
+
+        if (!result) {
+            throw new InternalServerErrorException('cloudinary upload failed');
+        }
+
+        const res = await this.userRepository.update(
+            { id: params.id },
+            { picture: result.secure_url }
+        )
+
+        if (res.affected !== 1) {
+            throw new InternalServerErrorException(`Rows affected while updating picture: ${res.affected}`);
         }
     }
 }
