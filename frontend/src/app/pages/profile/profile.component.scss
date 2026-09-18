@@ -25,6 +25,11 @@ app-sidebar {
     width: fit-content;
     height: fit-content;
     border-radius: 50px;
+    transition: filter 0.3s ease;
+
+    &:hover {
+        filter: brightness(50%);
+    }
 }
 
 img {
@@ -127,3 +132,73 @@ img {
 .fill {
     min-height: 21px;
 }
+
+.cancel, .confirm, .loading {
+    padding: 7px 18px;
+    padding-top: 13px;
+    border-radius: 50px;
+    font-family: 'Garamond', Times, serif;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+    text-align: center;
+}
+
+.overlay-dialog {
+    background: rgba(15, 15, 15, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    width: 100%;
+    max-width: 450px;
+    animation: scaleUp 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+  
+.input-fields {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+  
+.drop-zone {
+    width: 100%;
+    height: 180px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.03);
+    transition: all 0.25s ease;
+    color: rgba(255, 255, 255, 0.6);
+    position: relative;
+    box-sizing: border-box;
+  
+    &:hover, &.drop-zone--hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: #ffffff;
+      color: #ffffff;
+      transform: scale(1.02);
+    }
+}
+  
+.drop-text {
+    font-family: 'Garamond', Times, serif;
+    font-size: 1.1rem;
+}
+  
+.image-preview {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 10px;
+    object-fit: contain;
+}
+  

@@ -347,13 +347,15 @@ export class UserService {
         }
     }
 
-    async updatePicture(params: PictureDto) {
-        let user = await this.findOne(params.id);
+    async updatePicture(picture: Express.Multer.File, id: string): Promise<{ url: string }> {
+        if (!id) throw new BadRequestException(`id: ${id}`);
+        
+        let user = await this.findOne(id);
 
-        const result = await this.cloudinaryService.upload(params.picture, {
-                public_id: `profile_${params.id}`,
+        const result = await this.cloudinaryService.upload(picture, {
+                public_id: `profile_${id}`,
                 folder: `battleships`,
-                upload_preset: 'user_setup',
+                upload_preset: 'battleship_preset',
                 overwrite: true,
                 transformation: [
                     { width: 400, height: 400, crop: 'fill', gravity: 'face', fetch_format: 'auto', quiality: 'auto' }
@@ -366,12 +368,14 @@ export class UserService {
         }
 
         const res = await this.userRepository.update(
-            { id: params.id },
+            { id: id },
             { picture: result.secure_url }
         )
 
         if (res.affected !== 1) {
             throw new InternalServerErrorException(`Rows affected while updating picture: ${res.affected}`);
         }
+
+        return { url: result.secure_url };
     }
 }

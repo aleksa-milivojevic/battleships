@@ -4,11 +4,12 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AuthService } from "../../services/auth.service";
 import { UserService } from "../../services/user.service";
 import { Router } from "@angular/router";
+import { CommonModule } from "@angular/common";
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [SidebarComponent, FormsModule, ReactiveFormsModule],
+  imports: [SidebarComponent, FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
@@ -29,6 +30,12 @@ export class ProfileComponent implements OnInit {
     showChPassScreen = signal(false);
     showDelScreen = signal(false);
     delPassword = signal('');
+
+    isHovered = signal<boolean>(false);
+    imagePreview = signal<string | ArrayBuffer | null>(null);
+    file = signal<File | null>(null);
+    showUpdatePicture = signal(false);
+    updatePictureValid = computed(() => this.file() !== null);
 
     validUsername = computed(() => {
         return this.newUsername().length >= 3
@@ -121,5 +128,66 @@ export class ProfileComponent implements OnInit {
         this.showDelScreen.update(o => !o);
         this.errorMessage.set('');
         this.delPassword.set('');
+    }
+
+    toggleUpdatePicture() {
+        this.showUpdatePicture.update(o => !o);
+    }
+
+    onDragOver(event: DragEvent) {
+        event.preventDefault();
+        this.isHovered.set(true);
+    }
+
+    onDragLeave() {
+        this.isHovered.set(false);
+    }
+
+    onDrop(event: DragEvent) {
+        event.preventDefault();
+        this.isHovered.set(false);
+
+        const files = event.dataTransfer?.files;
+        if (files && files.length > 0)
+            this.handleFile(files[0]);
+    }
+
+    onFileSelected(event: Event) {
+        const input = event.target as HTMLInputElement;
+        if (input.files && input.files.length > 0) {
+            this.handleFile(input.files[0]);
+        }
+    }
+    
+    handleFile(file: File) {
+        if (!file.type.startsWith('image/')) {
+            alert('Dozvoljene su samo slike!');
+            return;
+        }
+
+        this.file.set(file);
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            this.imagePreview.set(reader.result);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    onUpdatePicture() {
+        if (this.loading() || !this.updatePictureValid()) return;
+
+        this.loading.set(true);
+
+        this.userService.updatePicture(this.file()!).subscribe({
+            next: () => {
+                this.loading.set(false);
+            },
+            error: (err) => {
+                this.loading.set(false);
+                console.error(err);
+                this.errorMessage.set(err.message);
+            }
+        });
     }
 }

@@ -24,6 +24,8 @@ export class UserService {
     private apiUrl = `${environment.apiUrl}/user`;
     private http = inject(HttpClient);
     private authService = inject(AuthService);
+
+    private self = this.authService.user;
     
     private _users = signal<User[]>([]);
     readonly users = this._users.asReadonly();
@@ -126,5 +128,24 @@ export class UserService {
             `${this.apiUrl}/restricted`,
             { params: params }
         )
+    }
+
+    updatePicture(file: File): Observable<{ url: string }> {
+        const formData = new FormData();
+        formData.append('picture', file);
+        formData.append('id', this.self()?.id!);
+
+        console.log(formData);
+
+        return this.http.post<{ url: string }>(
+            `${this.apiUrl}/picture`,
+            formData,
+        ).pipe(
+            tap(res => {
+                let copy = this.self()!;
+                copy.picture = res.url;
+                this.authService.updateSelf(copy);
+            })
+        );
     }
 }

@@ -2,7 +2,7 @@
     <app-sidebar></app-sidebar>
     <div class="user">
         <div class="username-div">
-            <div class="pfp">
+            <div class="pfp" (click)="toggleUpdatePicture()">
                 <img [src]="self()?.picture" alt="PFP"/>
             </div>
             <h1 class="username">{{ self()?.username ?? "not found" }}</h1>
@@ -73,6 +73,35 @@
             <div class="overlay-btns">
                 <button class="cancel" [disabled]="loading()" (click)="toggleDelScreen()">Cancel</button>
                 <button class="confirm" [disabled]="!validDel() || loading()" (click)="onDel()">Confirm</button>
+            </div>
+        </div>
+    </div>
+}
+
+@if (showUpdatePicture()) {
+    <div class="overlay">
+        <div class="overlay-dialog">
+            <div class="input-fields">
+                <div class="drop-zone" 
+                    [class.drop-zone--hover]="isHovered()"
+                    (dragover)="onDragOver($event)"
+                    (dragleave)="onDragLeave()"placeholder
+                    (drop)="onDrop($event)"
+                    (click)="fileInput.click()">
+
+                    @if (!imagePreview()) {
+                        <span class="drop-text">Drop a picture</span>
+                    } @else {
+                        <img [src]="imagePreview()" alt="Pregled slike" class="image-preview">
+                    }
+
+                    <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+                </div>
+                @if (errorMessage().length > 0) {<p class="error-message">{{ errorMessage() }}</p>}
+            </div>
+            <div class="button-field">
+                <button class="cancel" (click)="toggleUpdatePicture(); errorMessage.set('')">Cancel</button>
+                <button [ngClass]="loading() ? 'loading' : 'confirm'" (click)="onUpdatePicture()" [disabled]="!updatePictureValid()">{{loading() ? 'Confirming...' : 'Confirm' }}</button>
             </div>
         </div>
     </div>

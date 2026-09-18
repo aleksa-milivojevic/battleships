@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, NotImplementedException, Param, Post, Query, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, NotImplementedException, Param, Post, Query, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { User } from "./user.entity";
 import { CreateUserDto, FindAllParams, FindAllResponse, FindOneParams, ChangeUsernameDto, SingleUserResponse, ChangePasswordDto, DeleteUserDto, LeaderboardParams, MultipleUserResponse, FindRestrictedParams, PictureDto } from "./user.dto.params";
 import { PassportJwtAuthGuard } from "src/auth/guards/passport-jwt.guard";
+import { FileInterceptor } from "@nestjs/platform-express";
 
 @Controller('user')
 export class UserController {
@@ -80,7 +81,8 @@ export class UserController {
 
     @UseGuards(PassportJwtAuthGuard)
     @Post('picture')
-    updatePicture(@Body() body: PictureDto) {
-        return this.updatePicture(body);
+    @UseInterceptors(FileInterceptor('picture'))
+    async updatePicture(@UploadedFile() file: Express.Multer.File, @Body('id') id: string): Promise<{ url: string }> {
+        return await this.service.updatePicture(file, id);
     }
 }
