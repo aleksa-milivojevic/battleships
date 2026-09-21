@@ -31,12 +31,12 @@ export class SigninComponent {
     onSignin(): void {
         console.log(this.form.value);
         if (this.form.invalid)  {
-            this.errorMessage.set("invalid credentials");
+            this.errorMessage.set("Invalid credentials");
             return;
         }
 
         if (this.form.get('password')?.value !== this.form.get('password2')?.value) {
-            this.errorMessage.set("passwords must match");
+            this.errorMessage.set("Passwords must match");
             return;
         }
 
@@ -50,7 +50,7 @@ export class SigninComponent {
             },
             error: (err) => {
                 this.isLoading.set(false);
-                this.errorMessage.set(err);
+                this.errorMessage.set(err.message);
                 this.form.get('password')?.setValue('');
                 this.form.get('password2')?.setValue('');
             }
