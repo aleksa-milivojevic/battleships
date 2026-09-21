@@ -1,19 +1,23 @@
-<form [formGroup]="form" (ngSubmit)="onLogin()">
-    <div class="container">
-        <label for="email"><b>Email</b></label>
-        <input type="text" placeholder="Enter Email" formControlName="email" required>
+<div class="content">
+    <form [formGroup]="form" (ngSubmit)="onLogin()">
+        <div class="container">
+            <!-- <label for="email"><b>Email</b></label> -->
+            <input type="text" placeholder="Enter Email" formControlName="email" required>
 
-        <label for="password"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" formControlName="password" required>
+            <!-- <label for="password"><b>Password</b></label> -->
+            <input type="password" placeholder="Enter Password" formControlName="password" required>
 
-        @if(errorMessage() !== "") {
-            <label class="err-msg">{{ errorMessage() }}</label>
-        }
-        
-        <div class="btns">
-            <button routerLink="/home" type="button" class="cancelbtn">Cancel</button>
-            <button type="submit" class="submitbtn">Log in</button>
+            <div class="err-div">
+                @if(errorMessage() !== "") {
+                    <label class="err-msg">{{ errorMessage() }}</label>
+                }
+            </div>
+            
+            <div class="btns">
+                <button type="submit" class="submitbtn">Log in</button>
+                <button routerLink="/home" type="button" class="cancelbtn">Back</button>
+            </div>
+            <span class="psw">Dont have an account? <a routerLink="/signin">Sign up</a>!</span>
         </div>
-        <span class="psw"><a routerLink="/signin">Dont have an account?</a></span>
-    </div>
-</form>
+    </form>
+</div>

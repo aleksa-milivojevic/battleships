@@ -29,7 +29,7 @@ export class LoginComponent {
     onLogin(): void {
         console.log(this.form.value);
         if (this.form.invalid)  {
-            this.errorMessage.set("invalid credentials");
+            this.errorMessage.set("Invalid credentials");
             return;
         }
 
@@ -43,7 +43,7 @@ export class LoginComponent {
             },
             error: (err) => {
                 this.isLoading.set(false);
-                this.errorMessage.set(err);
+                this.errorMessage.set("Incorrect email or password");
                 this.form.get('password')?.setValue('');
             }
         });
