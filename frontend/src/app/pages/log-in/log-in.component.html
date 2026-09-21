@@ -14,10 +14,10 @@
             </div>
             
             <div class="btns">
-                <button type="submit" class="submitbtn">Log in</button>
-                <button routerLink="/home" type="button" class="cancelbtn">Back</button>
+                <button type="submit" [class.loading]="isLoading()" [disabled]="form.invalid || isLoading()" class="submitbtn">{{ isLoading() ? 'Logging in' : 'Log in'}}</button>
+                <button routerLink="/home" type="button" [disabled]="isLoading()" class="cancelbtn">Back</button>
             </div>
-            <span class="psw">Dont have an account? <a routerLink="/signin">Sign up</a>!</span>
+            <span class="psw">Don't have an account? <a routerLink="/signin">Sign up</a>!</span>
         </div>
     </form>
 </div>
