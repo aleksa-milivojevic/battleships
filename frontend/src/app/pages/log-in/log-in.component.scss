@@ -65,6 +65,7 @@ label {
 
     &:disabled {
         filter: brightness(90%);
+        pointer-events: none;
     }
 }
 

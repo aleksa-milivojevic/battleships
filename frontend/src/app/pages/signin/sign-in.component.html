@@ -16,8 +16,8 @@
             </div>
             
             <div class="btns">
-                <button type="submit" [disabled]="form.invalid" class="submitbtn">Sign in</button>
-                <button routerLink="/home" type="button" class="cancelbtn">Cancel</button>
+                <button type="submit" [disabled]="form.invalid || isLoading()" class="submitbtn">{{ isLoading()? 'Signing in' : 'Sign in' }}</button>
+                <button routerLink="/home" type="button" [disabled]="isLoading()" class="cancelbtn">Cancel</button>
             </div>
             <span class="psw">Already have an account? <a routerLink="/login">Log in</a>!</span>
         </div>
