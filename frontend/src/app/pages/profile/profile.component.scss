@@ -11,25 +11,36 @@
     flex: 1;
     flex-direction: column;
     margin: 0;
-    margin-left: 100px;
+    margin-left: 200px;
     padding: 5px;
+    padding-top: 50px;
     justify-content: center;
     font-size: 130%;
+}
+
+.user-top {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 app-sidebar {
     width: 15%;
 }
 
+.username-email-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .pfp {
+    position: relative;
+    display: flex;
+    margin-left: 180px;
     width: fit-content;
     height: fit-content;
     border-radius: 50px;
-    transition: filter 0.3s ease;
-
-    &:hover {
-        filter: brightness(50%);
-    }
 }
 
 img {
@@ -38,53 +49,167 @@ img {
     border-radius: 50px;
 }
 
-.username-div {
+.edit-pfp-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    border-radius: 50px;
+    font-size: 16px;
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+    background-color: white;
+    transition: filter 0.1s ease;
+
+    &:hover {
+        filter: brightness(90%);
+    }
+
+    &:active {
+        filter: brightness(70%);
+    }
+}
+
+.username-div, .email-div {
+    width: 350px;
+}
+
+.username-div, .email-div, .date-div {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
-.username {
-    margin: 10px;
+.username-div {
+    margin-bottom: 20px;
 }
 
-.username-btn {
-    height: fit-content;
+.date-div {
+    margin-top: 50px;
+}
+
+.input-div, .input-div-1, .input-div-2 {
+    padding-right: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: white;
+    border-radius: 20px;
+    border: 0px solid white;
+}
+
+.input-div {
+    width: 100%;
+}
+
+.input-div-1 {
+    width: 100%;
+}
+
+.input-div-2 {
     width: fit-content;
-    font-size: 130%;
-    padding: 0;
-    padding-left: 8px;
-    padding-right: 8px;
-    border-radius: 30px;
 }
 
-.email-created-div {
+.username, .email, .date, .password, .new-password {
+    padding: 7px;
+    padding-left: 12px;
+    font-size: 16px;
+    border: 0px solid white;
+    border-radius: 20px;
+    color: black;
+    background-color: white;
+}
+
+.password, .new-password {
+    margin-top: 10px;
+    width: 80%;
+}
+
+.edit-btn {
+    margin-right: 0;
+    margin-left: auto;
+    border-radius: 50px;
+    font-size: 16px;
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+    background-color: white;
+    transition: filter 0.1s ease;
+
+    &:hover {
+        filter: brightness(90%);
+    }
+
+    &:active {
+        filter: brightness(70%);
+    }
+}
+
+.username-lbl, .email-lbl, .date-lbl {
+    color: white;
+    margin-right: 20px;
+}
+
+.score-block {
+    color: white;
     display: flex;
     flex-direction: column;
-    font-size: 80%;
-}
-
-.score-div {
-    width: fit-content;
-    padding: 20px; 
-    display: flex;
-    flex-direction: column;
+    margin-top: 20px;
+    width: 60%;
     justify-content: center;
     align-items: center;
 }
 
-.score, .score-title {
-    margin: 10px;
+.score-lbl {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.score-div {
+    margin-top: 20px;
+    padding: 30px;
+    border-radius: 50px;
+    border: 0px solid white;
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.3);
+    font-size: 150px;
+    width: fit-content;
 }
 
 .btns {
-    margin-top: 50px;
+    margin: 0;
+    margin-top: 40px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    width: 30%;
 }
 
 .password-btn, .delete-btn {
-    margin: 0;
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    padding: 8px;
+    border-radius: 30px;
+    background-color: #006CA5;
+    transition: filter 0.1s ease;
+
+    &:hover {
+        filter: brightness(90%);
+    }
+
+    &:active {
+        filter: brightness(70%);
+    }
+}
+
+.password-btn {
+    color: white;
+    border: 1px solid white;
+}
+
+.delete-btn {
+    color: #7A1C27;
+    border: 1px solid #7A1C27;
 }
 
 .overlay {
@@ -106,14 +231,19 @@ img {
     margin: 0;
     padding: 15px;
     padding-top: 30px;
-    border: 1px solid white;
+    border: 0px solid white;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: rgb(47, 47, 212);
+    background-color: #006CA5;
     width: 350px;
+}
+
+.error-msg, .fill {
+    margin-top: 10px;
+    color: #7A1C27;
 }
 
 .overlay-btns {
@@ -121,6 +251,7 @@ img {
     flex-direction: row;
     margin: 10px;
     padding: 0;
+    width: 80%;
 }
 
 .new-username {
@@ -130,18 +261,42 @@ img {
 }
 
 .fill {
-    min-height: 21px;
+    min-height: 19px;
 }
 
 .cancel, .confirm, .loading {
-    padding: 7px 18px;
-    padding-top: 13px;
-    border-radius: 50px;
-    font-family: 'Garamond', Times, serif;
-    font-size: 1.1rem;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 8px;
+    width: 50%;
+    border-radius: 30px;
+    font-size: 16px;
     cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
-    text-align: center;
+    transition: filter 0.2s ease;
+
+    &:hover {
+        filter: brightness(90%);
+    }
+
+    &:active {
+        filter: brightness(70%);
+    }
+
+    &:disabled {
+        filter: brightness(70%);
+    }
+}
+
+.cancel {
+    color: white;
+    border: 2px solid white;
+    background-color: #006CA5;
+}
+
+.confirm {
+    background-color: white;
+    border: 2px solid black;
+    color: black;
 }
 
 .overlay-dialog {

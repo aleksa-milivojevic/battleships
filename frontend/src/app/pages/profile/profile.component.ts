@@ -20,7 +20,8 @@ export class ProfileComponent implements OnInit {
 
     self = this.authService.user;
 
-    newUsername = signal('');
+    newUsername = signal(this.self()?.username ?? '');
+    newEmail = signal(this.self()?.email ?? '');
     loading = signal(false);
     errorMessage = signal('');
     showChNameScreen = signal(false);
@@ -189,5 +190,14 @@ export class ProfileComponent implements OnInit {
                 this.errorMessage.set(err.message);
             }
         });
+    }
+
+    getCreatedAt() {
+        const date = this.self()?.createdAt
+                        .toString()
+                        .slice(0, 10)
+                        .split('-');
+        if (!date) return null;
+        return date[2] + '.' + date[1] + '.' + date[0] + ".";
     }
 }

@@ -1,20 +1,54 @@
 <div class="content">
     <app-sidebar></app-sidebar>
     <div class="user">
-        <div class="username-div">
-            <div class="pfp" (click)="toggleUpdatePicture()">
-                <img [src]="self()?.picture" alt="PFP"/>
+        <div class="user-top">
+            <div class="username-email-div">
+                <div class="username-div">
+                    <label class="username-lbl">username:</label>
+                    <div class="input-div">
+                        <!-- <input
+                        name="username"
+                        type="text"
+                        class="username"
+                        placeholder="username"
+                        [(ngModel)]="newUsername"
+                        [disabled]="!showChNameScreen()"> -->
+                        <label class="username">{{ self()?.username }}</label>
+                        <button class="edit-btn" (click)="toggleChNameScreen()">e</button>
+                    </div>
+                </div>
+                <div class="email-div">
+                    <label class="email-lbl">email:</label>
+                    <div class="input-div-1">
+                        <!-- <input
+                        name="email"
+                        type="text"
+                        class="email"
+                        placeholder="email"
+                        [(ngModel)]="newEmail"
+                        [disabled]="!showChNameScreen()"> -->
+                        <label class="email">{{ self()?.email }}</label>
+                        <button class="edit-btn">e</button>
+                    </div>
+                </div>
             </div>
-            <h1 class="username">{{ self()?.username ?? "not found" }}</h1>
-            <button class="username-btn" (click)="toggleChNameScreen()">✎</button>
+            <div class="pfp">
+                <img [src]="self()?.picture" alt="PFP">
+                <button class="edit-pfp-btn" (click)="toggleUpdatePicture()">e</button>
+            </div>
         </div>
-        <div class="email-created-div">
-            <label class="email">Connected to: {{ self()?.email ?? "not found" }}</label>
-            <label class="email">Date created: {{ self()?.createdAt?.toString()?.slice(0,10) ?? "not found" }}</label>
+        <div class="score-block">
+            <label class="score-lbl">Your score:</label>
+            <div class="score-div">
+                <label class="score">{{ self()?.score ?? 0 }}</label>
+            </div>
         </div>
-        <div class="score-div">
-            <h1 class="score-title">YOUR SCORE</h1>
-            <h1 class="score">{{ self()?.score ?? 0 }}</h1> 
+        <div class="date-div">
+            <label class="date-lbl">Joined the seas:</label>
+            <div class="input-div-2">
+                <!-- <label class="date">{{ self()?.createdAt!.getDay() + "." + self()?.createdAt!.getMonth() + "." + self()?.createdAt!.getFullYear() + "." }}</label> -->
+                <label class="date">{{ getCreatedAt() }}</label>
+            </div>
         </div>
         <div class="btns">
             <button class="password-btn" (click)="toggleChPassScreen()">Change password</button>
@@ -48,7 +82,7 @@
             <input name="newPassword2" type="password" class="new-password" placeholder="confirm password" [(ngModel)]="newPassword2">
             @if (!validPass() && password().length > 0 && newPassword().length > 0 && newPassword() === newPassword2()) {
                 <label class="error-msg">Passwords must be at least 5 characters</label>
-            } @else if (!validPass()) {
+            } @else if (!validPass() && newPassword().length >= 5 && newPassword2().length >= 5) {
                 <label class="error-msg">New passwords must match</label>
             } @else {
                 <label class="fill"></label>
