@@ -92,6 +92,17 @@ export class UserService {
         )
     }
 
+    changeEmail(id: string, email: string): Observable<{ user: User }> {
+        return this.http.post<{user: User}>(
+            `${this.apiUrl}/chemail`,
+            { id: id, email: email }
+        ).pipe(
+            tap(res => this.updateList(res.user))
+        ).pipe(
+            tap(res => this.authService.updateSelf(res.user))
+        )
+    }
+
     changePassword(id: string, password: string, newPassword: string): Observable<{ user: User }> {
         return this.http.post<{ user: User }>(
             `${this.apiUrl}/chpass`,

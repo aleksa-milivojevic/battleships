@@ -42,7 +42,7 @@ export class UserController {
     }
 
     @UseGuards(PassportJwtAuthGuard)
-    @Post('chname')
+    @Post('chemail')
     changeEmail(@Body() emailDto: ChangeEmailDto): Promise<SingleUserResponse> {
         return this.service.changeEmail(emailDto);
     }
