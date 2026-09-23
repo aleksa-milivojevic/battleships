@@ -35,8 +35,7 @@ app-sidebar {
     min-width: fit-content;
     overflow: hidden;
     overflow-y: scroll;
-    border-top: 10px solid #006CA5;
-    border-bottom: 10px solid #006CA5;
+    border: 2px solid rgb(0, 0, 0, 0.3);
     border-radius: 35px;
     box-shadow: inset 0px 0px 10px 2px rgb(0, 0, 0, 0.3);
 }

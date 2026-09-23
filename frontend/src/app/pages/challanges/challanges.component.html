@@ -6,9 +6,10 @@
                 <div class="invite">
                     <div class="user">
                         <div class="username-pfp">
+                            <img class="pfp" [src]="invite.picture" alt="pfp"/>
                             <label class="username">{{ invite.username }}</label>
+                            <label class="user-score">{{ invite.score }}</label>
                         </div>
-                        <label class="user-score">{{ invite.score }}</label>
                     </div>
                     <button class="accept" (click)="acceptInvite(invite.id)">Accept</button>
                 </div>

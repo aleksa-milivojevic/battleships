@@ -8,12 +8,12 @@
 
 .container {
     display: flex;
-    width: 100%;
+    flex: 1;
     flex-direction: column;
     margin: 0;
     padding: 5px;
     justify-content: center;
-    align-items: center;
+    padding-left: 240px;
 }
 
 app-sidebar {
@@ -23,32 +23,80 @@ app-sidebar {
 .invite-list {
     margin: 10px;
     padding: 10px;
-    padding-top: 2px;
+    padding-top: 10px;
     padding-right: 5px;
-    background-color: rgb(15, 15, 117);
+    background-color: #006CA5;
     display: flex;
     flex-direction: column;
-    width: 65%;
-    height: 80%;
+    width: 55%;
+    height: 70%;
+    max-height: 70%;
     min-width: fit-content;
+    overflow: hidden;
     overflow-y: scroll;
-    border-top: 10px solid rgb(15, 15, 117);
-    border-bottom: 10px solid rgb(15, 15, 117);
-    border-radius: 20px;
+    border: 2px solid rgb(0, 0, 0, 0.3);
+    border-radius: 35px;
+    box-shadow: inset 0px 0px 10px 2px rgb(0, 0, 0, 0.3);
 }
 
 .invite {
     width: 98%;
     margin: 5px;
-    padding: 15px;
     padding-left: 20px;
     padding-right: 20px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color: rgb(47, 47, 212);
+    background-color: #006CA5;
     border: 0px solid white;
-    border-radius: 10px;
+    border-radius: 20px;
     font-size: 150%;
+    box-shadow: 0px 0px 10px 2px rgb(0, 0, 0, 0.3);
 }
 
+.username-pfp {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.pfp {
+    height: 60px;
+    aspect-ratio: 1 / 1;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 50px;
+}
+
+.username {
+    margin-left: 15px;
+    margin-right: 40px;
+    color: white;
+    font-weight: 700;
+}
+
+.user-score {
+    color: white;
+    font-size: 110%;
+}
+
+.accept {
+    margin-right: 10px;
+    margin-left: auto;
+    font-size: 14px;
+    padding: 8px;
+    border-radius: 30px;
+    background-color: #006CA5;
+    transition: filter 0.1s ease;
+    color: white;
+    border: 2px solid white;
+    width: 20%;
+
+    &:hover {
+        filter: brightness(90%);
+    }
+
+    &:active {
+        filter: brightness(70%);
+    }
+}
