@@ -78,7 +78,7 @@ export class ProfileComponent implements OnInit {
             error: (err) => {
                 console.error(err);
                 this.loading.set(false);
-                this.errorMessage.set(err.message ?? 'Sorry, an error has occured. Try again in a bit.');
+                this.errorMessage.set(err.error.message ?? 'Sorry, an error has occured. Try again in a bit.');
             }
         });
     }
@@ -97,7 +97,7 @@ export class ProfileComponent implements OnInit {
             error: (err) => {
                 console.error(err);
                 this.loading.set(false);
-                this.errorMessage.set(err.message ?? 'Sorry, an error has occured. Try again in a bit.');
+                this.errorMessage.set(err.error.message ?? 'Sorry, an error has occured. Try again in a bit.');
             }
         });
     }
@@ -128,7 +128,7 @@ export class ProfileComponent implements OnInit {
             error: (err) => {
                 console.error(err);
                 this.loading.set(false);
-                this.errorMessage.set('serverska greska');
+                this.errorMessage.set(err.error.message ?? 'Sorry, an error has occured. Try again in a bit');
             }
         })
     }

@@ -102,6 +102,8 @@
                 <label class="error-msg">Passwords must be at least 5 characters</label>
             } @else if (!validPass() && newPassword().length >= 5 && newPassword2().length >= 5) {
                 <label class="error-msg">New passwords must match</label>
+            } @else if (errorMessage() !== '') {
+                <label class="error-msg">{{ errorMessage() }}</label>
             } @else {
                 <label class="fill"></label>
             }

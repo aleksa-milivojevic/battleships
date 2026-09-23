@@ -177,7 +177,7 @@ export class UserService {
         const matching = await bcrypt.compare(changePassword.password, user.password);
 
         if (!matching) {
-            throw new UnauthorizedException('passwords not matching');
+            throw new BadRequestException('Incorrect password');
         }
 
         const saltRounds = Number(process.env.SALT_ROUNDS) || 10;
