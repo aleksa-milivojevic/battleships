@@ -48,6 +48,7 @@ export class LeaderboardComponent {
         this.users.update(current => [...current, ...res.users]);
         this.more.set(res.more);
         this.loading.set(false);
+        console.log(res.users);
       },
       error: (err) => {
         this.loading.set(false);
@@ -65,7 +66,6 @@ export class LeaderboardComponent {
     const load = element.scrollHeight - element.scrollTop - element.clientHeight <= threshold;
 
     if (load) {
-      this.loading.set(true);
       console.log('load');
       this.loadUsers();
     }

@@ -5,10 +5,8 @@
             @for(user of users(); track $index) {
                 <div class="user">
                     <label class="rank" [ngClass]="{ 'rank-1': $index === 0, 'rank-2': $index === 1, 'rank-3': $index === 2 }" >{{ $index + 1 }}</label>
+                    <img class="pfp" [class.online]="user.online" [src]="user.picture" alt="PFP"/>
                     <label class="username">{{ user.username }}</label>
-                    @if(user.online) {
-                        <label class="online" style="color: greenyellow;">o</label>
-                    }
                     <label class="score">{{ user.score }}</label>
                 </div>
             }

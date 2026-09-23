@@ -1,6 +1,7 @@
 .content {
     min-width: 100vw;
     min-height: 100vh;
+    max-height: 100vh;
     display: flex;
     flex-direction: row;
     z-index: 0;
@@ -17,46 +18,82 @@ app-sidebar {
     margin: 0;
     padding: 5px;
     justify-content: center;
-    align-items: center;
+    padding-left: 240px;
 }
 
 .list-container {
     margin: 10px;
     padding: 10px;
-    padding-top: 2px;
+    padding-top: 10px;
     padding-right: 5px;
-    background-color: rgb(15, 15, 117);
+    background-color: #006CA5;
     display: flex;
     flex-direction: column;
-    width: 65%;
+    width: 55%;
     height: 80%;
+    max-height: 80%;
     min-width: fit-content;
+    overflow: hidden;
     overflow-y: scroll;
-    border-top: 10px solid rgb(15, 15, 117);
-    border-bottom: 10px solid rgb(15, 15, 117);
-    border-radius: 20px;
+    border-top: 10px solid #006CA5;
+    border-bottom: 10px solid #006CA5;
+    border-radius: 35px;
+    box-shadow: inset 0px 0px 10px 2px rgb(0, 0, 0, 0.3);
 }
+
+// .container::after {
+//     content: "";
+//     position: absolute;
+    
+//     border-radius: 20px;
+//     box-shadow: inset 0px 0px 10px 2px rgb(0, 0, 0, 0.3);
+//     pointer-events: none;
+// }
 
 .user {
     width: 98%;
     margin: 5px;
-    padding: 15px;
     padding-left: 20px;
     padding-right: 20px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color: rgb(47, 47, 212);
+    background-color: #006CA5;
     border: 0px solid white;
-    border-radius: 10px;
+    border-radius: 20px;
     font-size: 150%;
+    box-shadow: 0px 0px 10px 2px rgb(0, 0, 0, 0.3);
 }
+
+.pfp {
+    height: 40px;
+    aspect-ratio: 1 / 1;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 50px;
+
+    &.online {
+        border: 2px solid greenyellow;
+    }
+}
+
 .score {
     margin-left: auto;
+    color: white;
+}
+
+.username {
+    margin-left: 10px; 
+    color: white;
+    font-weight: 700;
 }
 
 .rank {
-    margin-right: 10px;
+    margin-left: 5px;
+    margin-right: 20px;
+    font-size: 110%;
+    font-weight: 900;
+    color: white;
 }
 
 .rank-1 {
