@@ -18,6 +18,8 @@ export class ProfileComponent implements OnInit {
     private userService = inject(UserService);
     private router = inject(Router);
 
+    private readonly emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
     self = this.authService.user;
 
     newUsername = signal(this.self()?.username ?? '');
@@ -29,6 +31,7 @@ export class ProfileComponent implements OnInit {
     newPassword = signal('');
     newPassword2 = signal('');
     showChPassScreen = signal(false);
+    showChEmailScreen = signal(false);
     showDelScreen = signal(false);
     delPassword = signal('');
 
@@ -40,6 +43,12 @@ export class ProfileComponent implements OnInit {
 
     validUsername = computed(() => {
         return this.newUsername().length >= 3
+    })
+
+    validEmail = computed(() => {
+        return String(this.newEmail())
+            .toLowerCase()
+            .match(this.emailRegex);
     })
 
     validPass = computed(() => {
@@ -74,10 +83,35 @@ export class ProfileComponent implements OnInit {
         });
     }
 
+    onChEmail(): void {
+        if (!this.validEmail()) return;
+
+        this.loading.set(true);
+
+        this.userService.changeEmail(this.self()?.id!, this.newEmail()).subscribe({
+            next: (res) => {
+                console.log(res.user);
+                this.loading.set(false);
+                this.toggleChNameScreen();
+            },
+            error: (err) => {
+                console.error(err);
+                this.loading.set(false);
+                this.errorMessage.set('Serverska greska');
+            }
+        });
+    }
+
     toggleChNameScreen() {
         this.showChNameScreen.update(v => !v);
         this.errorMessage.set('');
         this.newUsername.set('');
+    }
+
+    toggleChEmailScreen() {
+        this.showChEmailScreen.update(v => !v);
+        this.errorMessage.set('');
+        this.newEmail.set('');
     }
 
     onChPass(): void {
