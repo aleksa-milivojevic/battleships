@@ -2,16 +2,25 @@
     <app-sidebar></app-sidebar>
     <div class="container">
         <div class="bot" (click)="onBot()">
-            <label class="bot-title">Bot</label>
-            <label class="bot-desc">Play against a computer</label>
+            <img [src]="self()?.picture">
+            <div class="title-desc">
+                <label class="bot-title">Bot</label>
+                <label class="bot-desc">Play against a computer</label>
+            </div>
         </div>
         <div class="pvp" (click)="onPvP()">
-            <label class="pvp-title">PvP</label>
-            <label class="bot-desc">Play against a random person</label>
+            <img [src]="self()?.picture">
+            <div class="title-desc">
+                <label class="pvp-title">PvP</label>
+                <label class="bot-desc">Play against a random person</label>
+            </div>
         </div>
         <div class="challange" (click)="toggleOverlay()">
-            <label class="challange-title">Challange a friend!</label>
-            <label class="bot-desc">If they are online, challange them to a battle</label>
+            <img [src]="self()?.picture">
+            <div class="title-desc">
+                <label class="challange-title">Challange a friend!</label>
+                <label class="bot-desc">If they are online, challange them to a battle</label>
+            </div>
         </div>
     </div>
     <div class="container">
@@ -20,22 +29,16 @@
                 <div class="match">
                     @if(match.winner?.id === self()?.id) {
                         <div class="result-div">
-                                <label class="result">WIN</label>
+                                <label class="result-win">WIN</label>
                                 <label class="points">+{{ match.points }}</label>
                         </div>
-                        <div class="opp-div">
-                            <label class="vs">vs </label>
-                            <label class="opp">{{ match.looser?.username ??  "deleted" }}</label>
-                        </div>
+                        <label class="opp">{{ "vs " + (match.looser?.username ??  "deleted") }}</label>
                     } @else {
                         <div class="result-div">
-                            <label class="result">LOSS</label>
+                            <label class="result-loss">LOSS</label>
                             <label class="points">-{{ match.points }}</label>
                         </div>
-                        <div class="opp-div">
-                            <label class="vs">vs </label>
-                            <label class="opp">{{ match.winner?.username ?? "deleted" }}</label>
-                        </div>    
+                        <label class="opp">{{ "vs " + (match.winner?.username ?? "deleted") }}</label>    
                     }
                 </div>
             }
@@ -65,7 +68,6 @@
                                     <label class="online" style="color: greenyellow;">o</label>
                                 }
                             </div>
-                            <label class="score">{{ user.score }}</label>
                         </div>
                         <button class="challange-btn" [disabled]="!user.online" (click)="onChall(user.id)">chall</button>
                     </div>

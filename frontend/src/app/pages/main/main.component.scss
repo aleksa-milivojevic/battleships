@@ -1,6 +1,7 @@
 .content {
     min-width: 100vw;
     min-height: 100vh;
+    max-height: 100vh;
     display: flex;
     flex-direction: row;
     z-index: 0;
@@ -13,24 +14,51 @@
     margin: 0;
     padding: 5px;
     justify-content: center;
-    align-items: center;
+}
+
+img {
+    height: 60px;
+    aspect-ratio: 1 / 1;
+    border: 0px solid white;
+    border-radius: 50px;
 }
 
 .bot, .pvp, .challange {
     margin: 10px;
-    padding: 10px;
+    margin-left: 180px;
+    padding: 25px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 0px solid white;
+    border-radius: 40px;
+    background-color: #006CA5;
+    width: 70%;
+    box-shadow: 0px 0px 10px 2px rgb(0, 0, 0, 0.3);
+    transition: filter 0.2s ease;
+
+    &:hover {
+        filter: brightness(110%);
+        box-shadow: 0px 0px 10px 3px rgb(0, 0, 0, 0.4);
+    }
+}
+
+.title-desc {
+    margin-left: 20px;
     display: flex;
     flex-direction: column;
-    border: 2px solid white;
-    border-radius: 20px;
-    background-color: rgb(47, 47, 212);
-    width: 60%;
 }
 
 .bot-title, .pvp-title, .challange-title {
     font-weight: 700;
     color: white;
     font-size: 150%;
+    margin-bottom: 3px;
+}
+
+.bot-desc, .pvp-desc, .challange-desc {
+    color: white;
+    font-weight: 100;
 }
 
 app-sidebar {
@@ -54,84 +82,152 @@ app-sidebar {
 
 .search-div {
     margin: 0;
-    padding: 15px;
-    padding-top: 50px;
+    padding: 5px;
+    padding-top: 40px;
     padding-bottom: 30px;
-    border: 1px solid white;
-    border-radius: 20px;
+    border: 0px solid white;
+    border-radius: 40px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: rgb(47, 47, 212);
-    width: 30%;
+    background-color: #006CA5;
+    width: 27%;
     height: 70%;
 }
 
 form {
-    width: 80%;
+    width: 79%;
+    margin-bottom: 10px;
 }
 
 .search {
     width: 100%;
-    font-size: 120%;
-    border-radius: 10px;
-    padding-left: 7px;
-    padding-right: 5px;
+    padding: 7px;
+    padding-left: 12px;
+    font-size: 16px;
+    border: 0px solid white;
+    border-radius: 20px;
+    color: black;
+    background-color: white;
 }
 
 .user-list, .match-list {
     margin: 10px;
     padding: 10px;
-    padding-top: 2px;
-    background-color: rgb(15, 15, 117);
+    background-color: #006CA5;
     display: flex;
     flex-direction: column;
     width: 80%;
     height: 100%;
     min-width: fit-content;
     overflow-y: scroll;
-    border-top: 10px solid rgb(15, 15, 117);
-    border-bottom: 10px solid rgb(15, 15, 117);
+    border: 1px solid rgb(0, 0, 0, 0.3);
     border-radius: 20px;
+    box-shadow: inset 0px 0px 10px 2px rgb(0, 0, 0, 0.3);
 }
 
 .match-list {
-    height: 50%;
+    height: 52%;
+    max-height: 52%;
     width: 50%;
+    padding: 5px;
+    padding-left: 9px;
+    margin-left: 150px;
+    background-color: #006CA5;
+    box-shadow: inset 0px 0px 10px 2px rgb(0, 0, 0, 0.3);
+    border: 1px solid rgb(0, 0, 0, 0.3);
 }
 
-.user {
+// .user {
+//     width: 95%;
+//     margin: 5px;
+//     padding: 15px;
+//     display: flex;
+//     flex-direction: row;
+//     align-items: center;
+//     background-color: rgb(47, 47, 212);
+//     border: 0px solid white;
+//     border-radius: 15px;
+// }
+
+.match, .user {
     width: 95%;
     margin: 5px;
-    padding: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 15px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color: rgb(47, 47, 212);
+    background-color: #006CA5;
     border: 0px solid white;
-    border-radius: 10px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px 2px rgb(0, 0, 0, 0.3);
 }
 
-.match {
-    width: 95%;
-    margin: 5px;
-    padding: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
+.username {
+    font-size: 20px;
+    color: white;
+}
+
+.result-div {
+    width: 45%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    background-color: rgb(47, 47, 212);
-    border: 0px solid white;
-    border-radius: 10px;
+}
+
+.result-win {
+    color: rgb(255, 218, 34);
+    font-weight: 900;
+    font-size: 22px;
+}
+
+.result-loss {
+    color: rgb(187, 187, 187);
+    font-weight: 900;
+    font-size: 20px;
+}
+
+.points {
+    color: white;
+    margin-right: 0px;
+    margin-left: auto;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.opp {
+    margin-right: 0px;
+    margin-left: auto;
+    color: white;
 }
 
 .challange-btn {
+    margin-right: 10px;
     margin-left: auto;
-    height: fit-content;
+    font-size: 12px;
+    padding: 5px;
+    border-radius: 30px;
+    background-color: #006CA5;
+    transition: filter 0.1s ease;
+    color: white;
+    border: 2px solid white;
+    width: 20%;
+
+    &:enabled:hover {
+        filter: brightness(90%);
+        box-shadow: inset 0px 0px 5px 1px rgb(253, 253, 253, 0.8);
+    }
+
+    &:active {
+        filter: brightness(70%);
+        box-shadow: inset 0px 0px 10px 1px;
+    }
+
+    &:disabled {
+        filter: brightness(70%);
+        pointer-events: none;
+    }
 }
 
 .queue-div {
