@@ -90,7 +90,7 @@ img {
 }
 
 .input-div, .input-div-1, .input-div-2 {
-    padding-right: 5px;
+    padding-right: 2px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -111,7 +111,7 @@ img {
     width: fit-content;
 }
 
-.username, .email, .date, .password, .new-password {
+.username, .email, .date, .password, .new-password, .new-username, .new-email {
     padding: 7px;
     padding-left: 12px;
     font-size: 16px;
@@ -121,7 +121,7 @@ img {
     background-color: white;
 }
 
-.password, .new-password {
+.password, .new-password, .new-email, .new-username {
     margin-top: 10px;
     width: 80%;
 }
@@ -252,12 +252,6 @@ img {
     margin: 10px;
     padding: 0;
     width: 80%;
-}
-
-.new-username {
-    margin: 5px;
-    font-size: 95%;
-    width: 95%;
 }
 
 .fill {

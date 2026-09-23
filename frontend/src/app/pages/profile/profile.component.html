@@ -28,7 +28,7 @@
                         [(ngModel)]="newEmail"
                         [disabled]="!showChNameScreen()"> -->
                         <label class="email">{{ self()?.email }}</label>
-                        <button class="edit-btn">e</button>
+                        <button class="edit-btn" (click)="toggleChEmailScreen()">e</button>
                     </div>
                 </div>
             </div>
@@ -78,7 +78,12 @@
     <div class="overlay" (click)="toggleChEmailScreen()">
         <div class="overlay-div" (click)="$event.stopPropagation()">
             <input name="email" type="email" class="new-email" placeholder="New Email" [(ngModel)]="newEmail">
-            <label class="fill"></label>
+            @if (errorMessage() != '') {
+                <label class="error-msg">{{ errorMessage() }}</label>
+            }
+            @else {
+                <label class="fill"></label>
+            }
             <div class="overlay-btns">
                 <button class="cancel" [disabled]="loading()" (click)="toggleChEmailScreen()">Cancel</button>
                 <button class="confirm" [disabled]="!validEmail() || loading()" (click)="onChEmail()">Confirm</button>

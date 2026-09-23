@@ -140,6 +140,12 @@ export class UserService {
         if (!user) {
             throw new NotFoundException('user not found');
         }
+
+        const existing = await this.userRepository.findOneBy({ username: changeUsername.username });
+        if (existing) {
+            throw new BadRequestException('Username is taken');
+        }
+
         user.username = changeUsername.username;
         
         await this.userRepository.save(user);
@@ -152,6 +158,12 @@ export class UserService {
         if (!user) {
             throw new NotFoundException('user not found');
         }
+
+        const existing = await this.userRepository.findOneBy({ email: changeEmail.email });
+        if (existing) {
+            throw new BadRequestException('Email is already in use');
+        }
+        
         user.email = changeEmail.email;
         
         await this.userRepository.save(user);
