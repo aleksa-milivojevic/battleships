@@ -7,6 +7,15 @@
     z-index: 0;
 }
 
+.containers {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+}
+
 .container {
     display: flex;
     width: 50%;

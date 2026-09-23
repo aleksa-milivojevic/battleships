@@ -1,47 +1,49 @@
 <div class="content">
     <app-sidebar></app-sidebar>
-    <div class="container">
-        <div class="bot" (click)="onBot()">
-            <img [src]="self()?.picture">
-            <div class="title-desc">
-                <label class="bot-title">Bot</label>
-                <label class="bot-desc">Play against a computer</label>
-            </div>
-        </div>
-        <div class="pvp" (click)="onPvP()">
-            <img [src]="self()?.picture">
-            <div class="title-desc">
-                <label class="pvp-title">PvP</label>
-                <label class="bot-desc">Play against a random person</label>
-            </div>
-        </div>
-        <div class="challange" (click)="toggleOverlay()">
-            <img [src]="self()?.picture">
-            <div class="title-desc">
-                <label class="challange-title">Challange a friend!</label>
-                <label class="bot-desc">If they are online, challange them to a battle</label>
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="match-list" (scroll)="onScrollMatches($event)">
-            @for(match of matches(); track match.id) {
-                <div class="match">
-                    @if(match.winner?.id === self()?.id) {
-                        <div class="result-div">
-                                <label class="result-win">WIN</label>
-                                <label class="points">+{{ match.points }}</label>
-                        </div>
-                        <label class="opp">{{ "vs " + (match.looser?.username ??  "deleted") }}</label>
-                    } @else {
-                        <div class="result-div">
-                            <label class="result-loss">LOSS</label>
-                            <label class="points">-{{ match.points }}</label>
-                        </div>
-                        <label class="opp">{{ "vs " + (match.winner?.username ?? "deleted") }}</label>    
-                    }
+    <div class="containers">
+        <div class="container">
+            <div class="bot" (click)="onBot()">
+                <img [src]="self()?.picture">
+                <div class="title-desc">
+                    <label class="bot-title">Bot</label>
+                    <label class="bot-desc">Play against a computer</label>
                 </div>
-            }
+            </div>
+            <div class="pvp" (click)="onPvP()">
+                <img [src]="self()?.picture">
+                <div class="title-desc">
+                    <label class="pvp-title">PvP</label>
+                    <label class="bot-desc">Play against a random person</label>
+                </div>
+            </div>
+            <div class="challange" (click)="toggleOverlay()">
+                <img [src]="self()?.picture">
+                <div class="title-desc">
+                    <label class="challange-title">Challange a friend!</label>
+                    <label class="bot-desc">If they are online, challange them to a battle</label>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="match-list" (scroll)="onScrollMatches($event)">
+                @for(match of matches(); track match.id) {
+                    <div class="match">
+                        @if(match.winner?.id === self()?.id) {
+                            <div class="result-div">
+                                    <label class="result-win">WIN</label>
+                                    <label class="points">+{{ match.points }}</label>
+                            </div>
+                            <label class="opp">{{ "vs " + (match.looser?.username ??  "deleted") }}</label>
+                        } @else {
+                            <div class="result-div">
+                                <label class="result-loss">LOSS</label>
+                                <label class="points">-{{ match.points }}</label>
+                            </div>
+                            <label class="opp">{{ "vs " + (match.winner?.username ?? "deleted") }}</label>    
+                        }
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>
