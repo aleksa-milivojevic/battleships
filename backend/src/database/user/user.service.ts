@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, InternalServerErrorException, NotFound
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./user.entity";
 import { In, IsNull, LessThan, Like, Not, Repository } from "typeorm";
-import { ChangePasswordDto, ChangeUsernameDto, CreateUserDto, DeleteUserDto, FindAllParams, FindAllResponse, FindRestrictedParams, FindRestrictedResponse, LeaderboardParams, MultipleUserResponse, PictureDto, SingleUserResponse } from "./user.dto.params";
+import { ChangeEmailDto, ChangePasswordDto, ChangeUsernameDto, CreateUserDto, DeleteUserDto, FindAllParams, FindAllResponse, FindRestrictedParams, FindRestrictedResponse, LeaderboardParams, MultipleUserResponse, PictureDto, SingleUserResponse } from "./user.dto.params";
 import * as bcrypt from "bcrypt";
 import * as argon from "argon2";
 import { NestCloudinaryService } from "src/cloudinary/cloudinary.service";
@@ -141,6 +141,18 @@ export class UserService {
             throw new NotFoundException('user not found');
         }
         user.username = changeUsername.username;
+        
+        await this.userRepository.save(user);
+
+        return { user: user };
+    }
+
+    async changeEmail(changeEmail: ChangeEmailDto): Promise<SingleUserResponse> {
+        const user = await this.userRepository.findOneBy({ id: changeEmail.id });
+        if (!user) {
+            throw new NotFoundException('user not found');
+        }
+        user.email = changeEmail.email;
         
         await this.userRepository.save(user);
 

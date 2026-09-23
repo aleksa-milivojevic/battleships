@@ -52,6 +52,14 @@ export class ChangeUsernameDto {
     username: string;
 }
 
+export class ChangeEmailDto {
+    @IsNumberString()
+    id: string;
+
+    @IsNotEmpty()
+    email: string;
+}
+
 export class SingleUserResponse {
     user: SafeUserDto
 }

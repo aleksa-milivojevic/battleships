@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, NotImplementedException, Param, Post, Query, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { User } from "./user.entity";
-import { CreateUserDto, FindAllParams, FindAllResponse, FindOneParams, ChangeUsernameDto, SingleUserResponse, ChangePasswordDto, DeleteUserDto, LeaderboardParams, MultipleUserResponse, FindRestrictedParams, PictureDto } from "./user.dto.params";
+import { CreateUserDto, FindAllParams, FindAllResponse, FindOneParams, ChangeUsernameDto, SingleUserResponse, ChangePasswordDto, DeleteUserDto, LeaderboardParams, MultipleUserResponse, FindRestrictedParams, PictureDto, ChangeEmailDto } from "./user.dto.params";
 import { PassportJwtAuthGuard } from "src/auth/guards/passport-jwt.guard";
 import { FileInterceptor } from "@nestjs/platform-express";
 
@@ -39,6 +39,12 @@ export class UserController {
     @Post('chname')
     changeUsername(@Body() usernameDto: ChangeUsernameDto): Promise<SingleUserResponse> {
         return this.service.changeUsername(usernameDto);
+    }
+
+    @UseGuards(PassportJwtAuthGuard)
+    @Post('chname')
+    changeEmail(@Body() emailDto: ChangeEmailDto): Promise<SingleUserResponse> {
+        return this.service.changeEmail(emailDto);
     }
 
     @UseGuards(PassportJwtAuthGuard)
