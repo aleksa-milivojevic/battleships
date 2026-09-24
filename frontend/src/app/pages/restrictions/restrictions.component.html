@@ -12,6 +12,7 @@
             </div>
             <div class="user-list" (scroll)="onScroll($event)">
                 @if (!reportedOrRestricted()) {
+                    @if (reportedUsers().length > 0) {
                     @for(el of reportedUsers(); track el.user.id) {
                         <div class="user" (click)="selectUser(el)">
                             <div class="username-score">
@@ -24,8 +25,13 @@
                             </div>
                         </div>
                     }
+                    }
+                    @else {
+                        <label class="no-reported">There are no reported users currently.</label>
+                    }
                 }
                 @else {
+                    @if (restrictedUsers().length > 0) {
                     @for(el of restrictedUsers(); track el.id) {
                         <div class="user-2">
                             <div class="user-div">
@@ -43,32 +49,41 @@
                             </div>
                         </div>
                     }
+                    }
+                    @else {
+                        <label class="no-restricted">There are no restricted users currently.</label>
+                    }
                 }
             </div>
         </div>
         <div class="list-div">
             <div class="selected-user">
-                <div class="user-info">
-                    <div class="username-div">
-                        <img class="selected-pfp" [src]="selectedUser()?.picture" alt="PFP">
-                        <label class="selected-username">{{ selectedUser()?.username }}</label>
+                @if (selectedUser()) {
+                    <div class="user-info">
+                        <div class="username-div">
+                            <img class="selected-pfp" [src]="selectedUser()?.picture" alt="PFP">
+                            <label class="selected-username">{{ selectedUser()?.username }}</label>
+                        </div>
+                        <label class="score">{{ selectedUser()?.score }}</label>
                     </div>
-                    <label class="score">{{ selectedUser()?.score }}</label>
-                </div>
-                <div class="restriction-btns">
-                    <button class="ban-btn" [disabled]="selectedUser()?.banned || selectedUser()?.timeout || loading()" (click)="onBan(selectedUser()?.id!)">ban</button>
-                    <div class="timeout-div">
-                        <input
-                            type="number"
-                            class="duration"
-                            name="duration"
-                            [ngModel]="duration()"
-                            (ngModelChange)="duration.set($event)"
-                        >
-                        <label class="duration-unit">days</label>
-                        <button class="timeout-btn" [disabled]="selectedUser()?.banned || selectedUser()?.timeout || loading()" (click)="onTimeout(selectedUser()?.id!, duration())">timeout</button>
+                    <div class="restriction-btns">
+                        <button class="ban-btn" [disabled]="selectedUser()?.banned || selectedUser()?.timeout || loading()" (click)="onBan(selectedUser()?.id!)">ban</button>
+                        <div class="timeout-div">
+                            <input
+                                type="number"
+                                class="duration"
+                                name="duration"
+                                [ngModel]="duration()"
+                                (ngModelChange)="duration.set($event)"
+                            >
+                            <label class="duration-unit">days</label>
+                            <button class="timeout-btn" [disabled]="selectedUser()?.banned || selectedUser()?.timeout || loading()" (click)="onTimeout(selectedUser()?.id!, duration())">timeout</button>
+                        </div>
                     </div>
-                </div>
+                }
+                @else {
+                    <label class="no-sel-user">Select one user from reported users list.</label>
+                }
             </div>
             <div class="report-list">
                 @for(el of reportList(); track el.id) {

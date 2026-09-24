@@ -89,6 +89,12 @@ app-sidebar {
     color: white;
 }
 
+.no-sel-user, .no-reported, .no-restricted {
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
+}
+
 .selected-pfp {
     height: 60px;
 }
