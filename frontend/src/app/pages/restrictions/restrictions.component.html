@@ -16,27 +16,30 @@
                         <div class="user" (click)="selectUser(el)">
                             <div class="username-score">
                                 <div class="username-div">
+                                    <img [src]="el.user.picture" alt="PFP">
                                     <label class="username">{{ el.user.username }}</label>
+                                    <label class="score">{{ el.user.score }}</label>
                                 </div>
-                                <label class="score">{{ el.user.score }}</label>
+                                <label class="rep-num">Reports: {{ el.reports.length }}</label>
                             </div>
                         </div>
                     }
                 }
                 @else {
                     @for(el of restrictedUsers(); track el.id) {
-                        <div class="user">
-                            <div class="username-score">
-                                <div class="username-div">
-                                    <label class="username">{{ el.username }}</label>
+                        <div class="user-2">
+                            <div class="user-div">
+                                <img [src]="el.picture" alt="PFP">
+                                <div class="u-s">
+                                    <label class="username-2">{{ el.username }}</label>
+                                    <label class="score-2">{{ el.score }}</label>
                                 </div>
-                                <label class="score">{{ el.score }}</label>
                             </div>
                             <div class="restriction-type-div">
-                                <label class="restriction-type">{{ (el.banned) ? 'PERMANENTLY BANNED' : `TIMED OUT UNTIL ${parsedDate(el)}` }}</label>
+                                <label class="restriction-type" [class.b]="el.banned" [class.t]="!el.banned">{{ (el.banned) ? 'PERMANENTLY BANNED' : `TIMED OUT UNTIL\n${parsedDate(el)}` }}</label>
                             </div>
                             <div class="unrestrict-div">
-                                <button class="unrestrinct-btn" (click)="onUnrestrict(el.id)">unrestrict</button>
+                                <button class="unrestrict-btn" (click)="onUnrestrict(el.id)">unrestrict</button>
                             </div>
                         </div>
                     }
@@ -47,12 +50,13 @@
             <div class="selected-user">
                 <div class="user-info">
                     <div class="username-div">
+                        <img class="selected-pfp" [src]="selectedUser()?.picture" alt="PFP">
                         <label class="selected-username">{{ selectedUser()?.username }}</label>
                     </div>
                     <label class="score">{{ selectedUser()?.score }}</label>
                 </div>
                 <div class="restriction-btns">
-                    <button class="ban-btn" [disabled]="selectedUser()?.banned || selectedUser()?.timeout" (click)="onBan(selectedUser()?.id!)">ban</button>
+                    <button class="ban-btn" [disabled]="selectedUser()?.banned || selectedUser()?.timeout || loading()" (click)="onBan(selectedUser()?.id!)">ban</button>
                     <div class="timeout-div">
                         <input
                             type="number"
@@ -61,7 +65,8 @@
                             [ngModel]="duration()"
                             (ngModelChange)="duration.set($event)"
                         >
-                        <button class="timeout-btn" [disabled]="selectedUser()?.banned || selectedUser()?.timeout" (click)="onTimeout(selectedUser()?.id!, duration())">timeout</button>
+                        <label class="duration-unit">days</label>
+                        <button class="timeout-btn" [disabled]="selectedUser()?.banned || selectedUser()?.timeout || loading()" (click)="onTimeout(selectedUser()?.id!, duration())">timeout</button>
                     </div>
                 </div>
             </div>
@@ -69,15 +74,15 @@
                 @for(el of reportList(); track el.id) {
                     <div class="report">
                         <div class="report-info">
+                            <button class="messages-btn" [disabled]="el.type !== 'messages'" (click)="toggleReportMessages(el.id); selectReport(el.id)">{{ (selectedReport() === el.id && showReportMessages()) ? '▲' : '▼' }}</button>
+                            <label class="type-type">type:</label>
                             <label class="type">{{ el.type }}</label>
+                            <label class="by">reported by:</label>
                             <label class="source">{{ el.source?.username }}</label>
-                            @if (el.type === 'messages') {
-                                <button class="messages-btn" [disabled]="el.type !== 'messages'" (click)="toggleReportMessages(el.id); selectReport(el.id)">...</button>
-                            }
                         </div>
                         @if (selectedReport() === el.id && showReportMessages()) {
-                            <div class="msgs-div">
-                                <label class="msgs">{{ el.messages }}</label>
+                            <div class="msgs-div" [class.show]="selectedReport() === el.id && showReportMessages()">
+                                <label class="msgs">{{ el.messages.trim() }}</label>
                             </div>
                         }
                     </div>

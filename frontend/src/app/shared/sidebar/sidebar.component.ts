@@ -13,6 +13,8 @@ export class SidebarComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
 
+  self = this.authService.user;
+
   onLogout() {
     this.authService.logout().subscribe({
       next: () => {

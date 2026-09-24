@@ -9,6 +9,11 @@
         <div class="option" routerLink="/leaderboard">
             <label class="option-name">Leaderboard</label>
         </div>
+        @if (self()?.admin) {
+            <div class="option" routerLink="/restrictions">
+                <label class="option-name">Restrictions</label>
+            </div>
+        }
     </div>
     <div class="bottom-options">
         <div class="option"  (click)="onLogout()">

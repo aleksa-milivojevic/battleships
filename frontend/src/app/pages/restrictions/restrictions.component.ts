@@ -184,6 +184,7 @@ export class RestrctionsComponent implements OnInit {
     }
 
     parsedDate(user: User) {
+        console.log(user.timeout);
         return user.timeout?.toString().slice(0, 10).split('-').join('. ').concat('.');
     }
 }
