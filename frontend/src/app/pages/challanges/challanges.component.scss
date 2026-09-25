@@ -100,3 +100,25 @@ app-sidebar {
         filter: brightness(70%);
     }
 }
+
+.no-invites {
+    color: white;
+    white-space: pre-line;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.desc-div {
+    width: fit-content;
+    border: 0px solid rgb(0, 0, 0, 0.3);
+    border-radius: 20px;
+    box-shadow: inset 0px 0px 3px 1px rgb(0, 0, 0, 0.3);
+    color: white;
+    padding: 8px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-left: 30px;
+    margin-right: auto;
+}
