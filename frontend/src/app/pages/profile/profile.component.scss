@@ -121,6 +121,10 @@ img {
     background-color: white;
 }
 
+.username, .email {
+    overflow-x: scroll;
+}
+
 .password, .new-password, .new-email, .new-username {
     margin-top: 10px;
     width: 80%;

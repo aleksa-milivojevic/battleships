@@ -19,6 +19,9 @@ export class ProfileComponent implements OnInit {
     private router = inject(Router);
 
     private readonly emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    private readonly minPassLen = 5;
+    private readonly minNameLen = 3;
+    private readonly maxStringLen = 254;
 
     self = this.authService.user;
 
@@ -42,7 +45,8 @@ export class ProfileComponent implements OnInit {
     updatePictureValid = computed(() => this.file() !== null);
 
     validUsername = computed(() => {
-        return this.newUsername().length >= 3
+        return this.newUsername().length >= this.minNameLen &&
+        this.newUsername().length <= this.maxStringLen;
     })
 
     validEmail = computed(() => {
@@ -52,14 +56,18 @@ export class ProfileComponent implements OnInit {
     })
 
     validPass = computed(() => {
-        return this.password().length >= 5 && 
-        this.newPassword().length >= 5 && 
-        this.newPassword2().length >= 5 &&
+        return this.password().length >= this.minPassLen && 
+        this.newPassword().length >= this.minPassLen && 
+        this.newPassword2().length >= this.minPassLen &&
+        this.password().length <= this.maxStringLen && 
+        this.newPassword().length <= this.maxStringLen && 
+        this.newPassword2().length <= this.maxStringLen &&
         this.newPassword() === this.newPassword2();
     })
 
     validDel = computed(() => {
-        return this.delPassword().length >= 5;
+        return this.delPassword().length >= this.minPassLen &&
+        this.delPassword().length <= this.maxStringLen;
     })
 
     ngOnInit(): void {}
