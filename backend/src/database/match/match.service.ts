@@ -22,7 +22,7 @@ export class MatchService {
                 { looser: { id: params.user } }
             ],
             order: {
-                createdAt: 'ASC'
+                createdAt: 'DESC'
             }
         });
 
