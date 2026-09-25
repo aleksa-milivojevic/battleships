@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Report } from "./report.entity";
-import { Repository } from "typeorm";
+import { Not, Repository } from "typeorm";
 import { AddOneDto, FindAllParams, FindAllResponse, ReportedUser, ReportedUsersResponse } from "./report.dto";
 import { UserService } from "../user/user.service";
 
@@ -40,6 +40,11 @@ export class ReportService {
             relations: {
                 source: true,
                 reported: true
+            },
+            where: {
+                reported: {
+                    id: Not(params.id)
+                }
             }
         });
         if (!reports) throw new NotFoundException('no reports found');

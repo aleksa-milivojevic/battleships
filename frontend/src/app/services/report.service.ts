@@ -3,6 +3,7 @@ import { User } from "./user.service";
 import { Observable, tap } from "rxjs";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { environment } from "../../environments/environment.development";
+import { AuthService } from "./auth.service";
 
 export interface Report {
     id: string,
@@ -23,6 +24,9 @@ export interface ReportedUser {
 export class ReportService {
     private apiUrl = `${environment.apiUrl}/report`;
     private http = inject(HttpClient);
+    private authService = inject(AuthService);
+
+    private self = this.authService.user;
     
     private _reportedUsers = signal<ReportedUser[]>([]);
     readonly reportedUsers = this._reportedUsers.asReadonly();
@@ -30,7 +34,8 @@ export class ReportService {
     getAll(round: number = 1, count: number = 10): Observable<{ users: ReportedUser[], more: boolean }> {
         const params = new HttpParams()
             .set('round', round.toString())
-            .set('count', count.toString());
+            .set('count', count.toString())
+            .set('id', this.self()?.id!);
 
         return this.http.get<{ users: ReportedUser[], more: boolean }>(
             `${this.apiUrl}/get`,

@@ -8,6 +8,9 @@ export class FindAllParams {
 
     @IsNumber()
     count: number;
+
+    @IsNumberString()
+    id: string;
 }
 
 export class FindAllResponse {
