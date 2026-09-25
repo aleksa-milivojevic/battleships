@@ -158,7 +158,7 @@ export class MainComponent implements OnInit {
     this.botService.canLeave.set(false);
   }
 
-  exitPvP() {
+  leavePvP() {
     this.queueService.disconnect();
     this.toggleQueue();
   }

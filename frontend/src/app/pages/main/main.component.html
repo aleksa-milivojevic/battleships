@@ -80,9 +80,10 @@
 }
 
 @if(showQueueScreen()) {
-    <div class="overlay" (click)="toggleQueue()">
+    <div class="overlay" (click)="leavePvP()">
         <div class="queue-div" (click)="$event.stopPropagation()">
             <h1 class="queue-title">Waiting for a match...</h1>
+            <button class="leave-btn" (click)="leavePvP()">Leave queue</button>
         </div>
     </div>
 }
