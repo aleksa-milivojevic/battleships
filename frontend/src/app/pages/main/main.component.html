@@ -2,6 +2,9 @@
     <app-sidebar></app-sidebar>
     <div class="containers">
         <div class="container">
+            <div class="desc-div-l">
+                <label class="desc">Choose a game mode</label>
+            </div>
             <div class="bot" (click)="onBot()">
                 <img [src]="self()?.picture">
                 <div class="title-desc">
@@ -25,6 +28,9 @@
             </div>
         </div>
         <div class="container">
+            <div class="desc-div-r">
+                <label class="desc">Your match history</label>
+            </div>
             <div class="match-list" (scroll)="onScrollMatches($event)">
                 @for(match of matches(); track match.id) {
                     <div class="match">
