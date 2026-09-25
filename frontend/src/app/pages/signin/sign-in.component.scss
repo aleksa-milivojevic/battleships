@@ -66,8 +66,12 @@ label {
         filter: brightness(90%);
     }
 
+    &:active {
+        filter: brightness(70%);
+    }
+
     &:disabled {
-        filter: brightness(90%);
+        filter: brightness(70%);
         pointer-events: none;
     }
 }
@@ -86,6 +90,10 @@ label {
 
     &:hover {
         filter: brightness(80%);
+    }
+
+    &:active {
+        filter: brightness(70%);
     }
 
     &:disabled {
@@ -116,5 +124,5 @@ a {
     font-size: 16px;
     font-weight: 700;
     // color: white;
-    color: #EC1926;
+    color: #7A1C27;
 }
