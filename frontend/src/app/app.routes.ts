@@ -6,10 +6,10 @@ import { SigninComponent } from './pages/signin/sign-in.component';
 import { LeaderboardComponent } from './pages/leaderboard/leaderboard.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { AdminGuard, AnonGuard, BotGameGuard, GameGuard, UserGuard } from './guards/auth.guard';
-import { ChallangesComponent } from './pages/challanges/challanges.component';
 import { GameComponent } from './pages/game/game.component';
 import { BotGameComponent } from './pages/bot-game/bot-game.component';
 import { RestrctionsComponent } from './pages/restrictions/restrictions.component';
+import { ChallangesComponent } from './pages/challanges/challanges.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },

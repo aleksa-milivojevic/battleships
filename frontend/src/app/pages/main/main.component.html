@@ -22,7 +22,7 @@
             <div class="challange" (click)="toggleOverlay()">
                 <img [src]="self()?.picture">
                 <div class="title-desc">
-                    <label class="challange-title">Challange a friend!</label>
+                    <label class="challange-title">Challenge a friend!</label>
                     <label class="bot-desc">If they are online, challange them to a battle</label>
                 </div>
             </div>
@@ -72,12 +72,9 @@
                         <div class="username-score">
                             <div class="username-div">
                                 <label class="username">{{ user.username }}</label>
-                                @if(user.online) {
-                                    <label class="online" style="color: greenyellow;">o</label>
-                                }
                             </div>
                         </div>
-                        <button class="challange-btn" [disabled]="!user.online" (click)="onChall(user.id)">chall</button>
+                        <button class="challange-btn" [disabled]="!user.online" (click)="onChall(user.id)">challenge</button>
                     </div>
                 }
             </div>
