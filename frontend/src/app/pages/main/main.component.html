@@ -39,14 +39,30 @@
                                     <label class="result-win">WIN</label>
                                     <label class="points">+{{ match.points }}</label>
                             </div>
-                            <label class="opp">{{ "vs " + (match.looser?.username ??  "deleted") }}</label>
+                            <label class="opp"
+                                (mouseenter)="showInfo($event, match.looser!)"
+                                (mouseleave)="hideInfo()">{{ "vs " + (match.looser?.username ??  "deleted") }}</label>
                         } @else {
                             <div class="result-div">
                                 <label class="result-loss">LOSS</label>
                                 <label class="points">-{{ match.points }}</label>
                             </div>
-                            <label class="opp">{{ "vs " + (match.winner?.username ?? "deleted") }}</label>    
+                            <label class="opp"
+                                (mouseenter)="showInfo($event, match.winner!)"
+                                (mouseleave)="hideInfo()">{{ "vs " + (match.winner?.username ?? "deleted") }}</label>   
                         }
+                        <div class="hover-div"
+                            [style.top.px]="infoY()"
+                            [style.left.px]="infoX() - 240"
+                            [class.visible]="showingInfo()">
+                            <div class="pfp-username">
+                                <div class="pfp-div" [class.online]="hovered()?.online">
+                                    <img class="pfp" [src]="hovered()?.picture" alt="PFP">
+                                </div>
+                                <label class="hover-name">{{ hovered()?.username }}</label>
+                            </div>
+                            <label class="hover-score">{{ hovered()?.score }}</label>
+                        </div>
                     </div>
                 }
             </div>
@@ -69,10 +85,20 @@
             <div class="user-list" (scroll)="onScrollUsers($event)">
                 @for(user of users(); track user.id) {
                     <div class="user">
-                        <div class="username-score">
-                            <div class="username-div">
-                                <label class="username">{{ user.username }}</label>
+                        <label class="username"
+                                (mouseenter)="showInfo($event, user)"
+                                (mouseleave)="hideInfo()">{{ user.username }}</label>
+                        <div class="hover-div"
+                            [style.top.px]="infoY()"
+                            [style.left.px]="infoX()"
+                            [class.visible]="showingInfo()">
+                            <div class="pfp-username">
+                                <div class="pfp-div" [class.online]="hovered()?.online">
+                                    <img class="pfp" [src]="hovered()?.picture" alt="PFP">
+                                </div>
+                                <label class="hover-name">{{ hovered()?.username }}</label>
                             </div>
+                            <label class="hover-score">{{ hovered()?.score }}</label>
                         </div>
                         <button class="challange-btn" [disabled]="!user.online" (click)="onChall(user.id)">challenge</button>
                     </div>

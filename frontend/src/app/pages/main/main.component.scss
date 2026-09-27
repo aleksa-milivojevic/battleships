@@ -173,6 +173,10 @@ form {
     box-shadow: 0px 0px 10px 2px rgb(0, 0, 0, 0.3);
 }
 
+.user {
+    position: relative;
+}
+
 .username {
     font-size: 20px;
     color: white;
@@ -212,16 +216,18 @@ form {
 }
 
 .challange-btn {
-    margin-right: 10px;
+    margin-right: 0px;
     margin-left: auto;
     font-size: 12px;
     padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
     border-radius: 30px;
     background-color: #006CA5;
     transition: filter 0.1s ease;
     color: white;
     border: 2px solid white;
-    width: 20%;
+    width: fit-content;
 
     &:enabled:hover {
         filter: brightness(90%);
@@ -285,4 +291,66 @@ form {
 .desc-div-r {
     margin-bottom: 0px;
     margin-left: 160px;
+}
+
+.hover-div {
+    position: fixed;
+    z-index: 20;
+
+    top: 0;
+    left: 0;
+
+    min-width: 250px;
+    width: fit-content;
+    max-width: 400px;
+    padding: 20px;
+
+    background: #006CA5;
+    box-shadow: 0px 0px 10px 1px rgba(43, 43, 43, 0.2);
+    color: white;
+    border-radius: 20px;
+    border: 0px solid white;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    display: flex;
+    flex-direction: column;
+
+    &.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.pfp-username {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.pfp {
+    height: 60px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50px;
+    border: 0px solid greenyellow;
+
+    &.online {
+        border: 1px greenyellow
+    }
+}
+
+.hover-name {
+    font-size: 24px;
+    font-weight: 700;
+    margin-left: 15px;
+    overflow-x: scroll;
+}
+
+.hover-score {
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 24px;
 }

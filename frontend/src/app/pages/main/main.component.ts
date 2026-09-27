@@ -45,6 +45,11 @@ export class MainComponent implements OnInit {
 
   showQueueScreen = signal(false);
 
+  showingInfo = signal(false);
+  infoX = signal(0);
+  infoY = signal(0);
+  hovered = signal<User | null>(null);
+
   constructor() {
     effect(() => {
       this.search();
@@ -165,5 +170,17 @@ export class MainComponent implements OnInit {
 
   toggleQueue() {
     this.showQueueScreen.update(o => !o);
+  }
+
+  showInfo(event: MouseEvent, user: User) {
+    if (user === null) return;
+    this.hovered.set(user);
+    this.showingInfo.set(true);
+    this.infoX.set(event.clientX + 10);
+    this.infoY.set(event.clientY + 10);
+  }
+
+  hideInfo() {
+    this.showingInfo.set(false);
   }
 }
