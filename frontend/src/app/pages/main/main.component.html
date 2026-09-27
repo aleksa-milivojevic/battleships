@@ -51,18 +51,6 @@
                                 (mouseenter)="showInfo($event, match.winner!)"
                                 (mouseleave)="hideInfo()">{{ "vs " + (match.winner?.username ?? "deleted") }}</label>   
                         }
-                        <div class="hover-div"
-                            [style.top.px]="infoY()"
-                            [style.left.px]="infoX() - 240"
-                            [class.visible]="showingInfo()">
-                            <div class="pfp-username">
-                                <div class="pfp-div" [class.online]="hovered()?.online">
-                                    <img class="pfp" [src]="hovered()?.picture" alt="PFP">
-                                </div>
-                                <label class="hover-name">{{ hovered()?.username }}</label>
-                            </div>
-                            <label class="hover-score">{{ hovered()?.score }}</label>
-                        </div>
                     </div>
                 }
             </div>
@@ -88,18 +76,6 @@
                         <label class="username"
                                 (mouseenter)="showInfo($event, user)"
                                 (mouseleave)="hideInfo()">{{ user.username }}</label>
-                        <div class="hover-div"
-                            [style.top.px]="infoY()"
-                            [style.left.px]="infoX()"
-                            [class.visible]="showingInfo()">
-                            <div class="pfp-username">
-                                <div class="pfp-div" [class.online]="hovered()?.online">
-                                    <img class="pfp" [src]="hovered()?.picture" alt="PFP">
-                                </div>
-                                <label class="hover-name">{{ hovered()?.username }}</label>
-                            </div>
-                            <label class="hover-score">{{ hovered()?.score }}</label>
-                        </div>
                         <button class="challange-btn" [disabled]="!user.online" (click)="onChall(user.id)">challenge</button>
                     </div>
                 }
@@ -116,3 +92,16 @@
         </div>
     </div>
 }
+
+<div class="hover-div"
+    [style.top.px]="infoY()"
+    [style.left.px]="infoX() - 240"
+    [class.visible]="showingInfo()">
+    <div class="pfp-username">
+        <div class="pfp-div" [class.online]="hovered()?.online">
+            <img class="pfp" [src]="hovered()?.picture" alt="PFP">
+        </div>
+        <label class="hover-name">{{ hovered()?.username }}</label>
+    </div>
+    <label class="hover-score">{{ hovered()?.score }}</label>
+</div>
