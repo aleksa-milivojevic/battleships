@@ -1,6 +1,9 @@
+<div class="background">
+    <img class="background-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790612970/home-background_y73iw9.png" alt="<backgound-img>">
+</div>
 <div class="content">
     @if (banned()) {
-        <div class="restriction-div">
+        <div class="ban-div">
             <label class="restriction">
                 Your account has been permanently banned by a game administrator.
                 You will not be able to login into your account until (and if) it gets unbanned.
@@ -8,7 +11,7 @@
         </div>
     }
     @else if (timeout()) {
-        <div class="restriction-div">
+        <div class="timeout-div">
             <label class="restriction">
                 Your account has been timed out by a game administrator.
                 You will not be able to access your account until
@@ -16,10 +19,9 @@
             </label>
         </div>
     }
-    <h1 class="title">BATTLESHIPS</h1>
+    <img class="title" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790612979/title_z58crw.png" alt="<title>">
     <div class="btn-div">
         <button routerLink="/login" class="login">Log in</button>
         <button routerLink="/signin" class="signin">Sign in</button>
-        <p class="guest">Continue as Guest</p>
     </div>
 </div>
