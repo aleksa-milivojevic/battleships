@@ -54,11 +54,11 @@ export class AuthService {
         }
 
         const db_res = await this.userService.findOne(user.userId);
-        if (!db_res.user) throw new NotFoundException('user not found in sign');
-        if (db_res.user.banned) throw new BadRequestException('user is permanently banned');
+        if (!db_res.user) throw new NotFoundException('User not found');
+        if (db_res.user.banned) throw new BadRequestException('User is permanently banned');
         if (db_res.user.timeout !== null) {
             if (db_res.user.timeout > new Date()) {
-                throw new BadRequestException(`user is timed out until ${db_res.user.timeout.getDate()} ${db_res.user.timeout.getTime()}`);
+                throw new BadRequestException(`User is timed out until ${db_res.user.timeout.getDay()}.${db_res.user.timeout.getMonth()}.${db_res.user.timeout.getFullYear()}.`);
             }
             this.userService.expire(user.userId);
         }
