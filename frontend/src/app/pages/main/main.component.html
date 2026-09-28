@@ -98,8 +98,8 @@
     [style.left.px]="infoX() - 240"
     [class.visible]="showingInfo()">
     <div class="pfp-username">
-        <div class="pfp-div" [class.online]="hovered()?.online">
-            <img class="pfp" [src]="hovered()?.picture" alt="PFP">
+        <div class="pfp-div">
+            <img class="pfp" [class.online]="hovered()?.online" [src]="hovered()?.picture" alt="PFP">
         </div>
         <label class="hover-name">{{ hovered()?.username }}</label>
     </div>
