@@ -3,59 +3,153 @@
     cursor: not-allowed;
 }
 
+.background {
+    position: fixed;
+    z-index: 0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    width: 80%;
+    align-items: center;
+    justify-content: center;
+    overflow: clip;
+}
+
+.background-img {
+    width: 100%;
+}
+
 .content {
     min-width: 100vw;
     min-height: 100vh;
     display: flex;
     flex-direction: row;
-    z-index: 0;
 }
 
 .container {
     display: flex;
     width: 100%;
-    flex-direction: column;
+    flex-direction: row;
     margin: 0;
-    padding: 5px;
+    padding: 0px;
     justify-content: center;
     align-items: center;
 }
 
 .bottom-text {
-    height: 25%;
-    width: 100%;
+    background-color: #006CA5;
+    width: 20%;
+    height: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     margin: 0;
     padding: 0;
     justify-content: center;
     align-items: center;
+    box-shadow: 0px 0px 10px 4px rgb(0, 0, 0, 0.3);
 }
 
-.rules-div {
+.bot-info {
+    margin: 0;
+    padding: 30px;
+    padding-top: 50px;
+    height: 80%;
     display: flex;
     flex-direction: column;
-    margin-left: 100px;
-    margin-right: 100px;
+}
+
+.bot-profile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 20px;
+}
+
+.pfp {
+    height: 50px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50px;
+    text-align: center;
+    margin-right: 20px;
+}
+
+.bot-name {
+    color: white;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.info-div {
+    border: 1px solid rgb(0, 0, 0, 0.3);
+    box-shadow: inset 0px 0px 5px 1px rgb(0, 0, 0, 0.3);
+    border-radius: 20px;
+    height: 100%;
+    padding: 15px;
+    margin-top: 20px;
+    background-color: whitesmoke;
 }
 
 .btns {
     margin: 10px;
-    margin-left: auto;
-    padding: 20px;
-    padding-right: 75px;
+    padding-bottom: 20px;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 20%;
 }
 
-.ready-btn {
+.ready-btn, .surrender-btn, .back-btn {
     margin-bottom: auto;
+    background-color: #006CA5;
+    color: white;
+    border: 2px solid white;
+    border-radius: 20px;
+    padding: 5px;
+    width: 120px;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: white;
+        color: #006CA5;
+
+        &:active {
+            filter: brightness(70%);
+        }
+    }
+}
+
+.surrender-btn {
+    margin-bottom: 0;
+    color: #7A1C27;
+    border: 2px solid #7A1C27;
+
+    &:hover {
+        background-color: #7A1C27;
+        color: white;
+
+        &:active {
+            filter: brightness(70%);
+        }
+    }
+
+    &.game {
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+}
+
+.back-btn {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.field-err {
+    color: #7A1C27;
+    width: 80%;
 }
 
 .table-div, .tables {
     height: 100%;
-    width: 100%;
+    width: 80%;
     margin: 0;
     display: flex;
     justify-content: center;
@@ -63,6 +157,8 @@
 }
 
 .setup-table {
+    position: relative;
+    z-index: 1;
     width: 525px;
     max-width: 95%;
     aspect-ratio: 1/1;
@@ -70,8 +166,8 @@
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(10, 1fr);
-    background-color: #02367B;
-    box-shadow: 0px 0px 30px 30px #02367B;
+    background-color: #01588d;
+    box-shadow: 0px 0px 30px 30px #01588d;
     animation: scaleUp 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
@@ -79,16 +175,16 @@
     width: 100%;
     height: 100%;
     margin: 0px;
-    border: 1px solid rgb(170, 170, 170);
+    border: 1px solid rgb(221, 221, 221);
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
-    background-color: #02367B;
+    background-color: #01588d;
     transition: all 0.25s ease;
 
     &:hover {
-        border: 1px solid white;
+        border: 2px solid white;
         transform: scale(1.1);
     }
 
@@ -97,33 +193,71 @@
         justify-content: center;
         align-items: center;
     }
+
+    &.attacked {
+        filter: brightness(80%);
+    }
 }
 
 .square-mine {
     width: 100%;
     height: 100%;
     margin: 0px;
-    border: 1px solid black;
+    border: 1px solid rgb(221, 221, 221);
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
+    background-color: #01588d;
+    transition: all 0.25s ease;
+
+    &.attacked {
+        filter: brightness(80%);
+    }
 }
 
 .my-table, .opp-table {
+    position: relative;
+    z-index: 1;
     width: 525px;
     max-width: 95%;
     aspect-ratio: 1/1;
-    border: 2px solid black;
+    border: 1px solid rgb(170, 170, 170);
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(10, 1fr);
-    margin-left: 30px;
-    margin-right: 30px;
+    margin-left: 0;
+    margin-right: 0;
+    box-shadow: 0px 0px 30px 30px #01588d;
+    transition: all 0.7s ease;
 
     &.disabled {
-        width: 250px;
+        transform: scale(0.7);
     }
+}
+
+.attacked-div {
+    margin: 0;
+    padding: 0;
+    background-color: #02367B;
+    width: 100%;
+    height: 100%;
+}
+
+.ship {
+    width: 50px;
+    aspect-ratio: 1 / 1;
+
+    &.sunk {
+        filter: brightness(50%);
+    }
+}
+
+.ship-div {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 .overlay {
@@ -137,27 +271,51 @@
     height: 100vh;
     background-color: rgba(13, 13, 13, 0.318);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    color: white;
+    backdrop-filter: blur(3px);
 }
 
-.attacked-div {
-    margin: 0;
-    padding: 0;
-    background-color: rgba(101, 100, 100, 0.476);
-    width: 100%;
-    height: 100%;
+.title-div {
+    text-align: center;
 }
 
-.ship {
-    &.sunk {
-        color: grey;
+.surr-message {
+    font-size: 28px;
+}
+
+.victory {
+    color: rgb(255, 218, 34);
+}
+
+.defeat {
+    color: rgb(187, 187, 187);
+}
+
+.go-btns {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+.go-btn {
+    margin-top: 15px;
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    border-radius: 20px;
+    padding: 5px;
+    width: 170px;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: white;
+        color: black;
+
+        &:active {
+            filter: brightness(70%);
+        }
     }
-}
-
-.ship-div {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
 }
