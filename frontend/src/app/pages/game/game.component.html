@@ -2,56 +2,44 @@
     <div class="container">
         @if (setupPhase()) {
             <div class="table-div">
+                <div class="background">
+                    <img class="background-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790616364/better-background_lhd8ib.png" alt="<background-img>">
+                </div>
                 <div class="setup-table">
                     @for (row of field(); track $index; let i = $index) {
                         @for (col of row; track $index; let j = $index) {
                             <div class="square" (click)="toggleSquare(i,j)" [class.disabled]="gameOver()">
                                 @if (field()[i][j] == 1) {
-                                    <div>
-                                        <label class="ship">SHIP</label>
-                                    </div>
-                                }
-                                @else {
-                                    <div></div>
+                                    <img class="ship" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790678917/ship_uamyyw.png" alt="<ship>">
                                 }
                             </div>
                         }
                     }
                 </div>
             </div>
-            <div class="bottom-text">
-                <div class="rules-div">
-                    <label class="rules">4x 1 block ship</label>
-                    <label class="rules">3x 2 block ship</label>
-                    <label class="rules">2x 3 block ship</label>
-                    <label class="rules">1x 4 block ship</label>
+            @if (showReadyScreen()) {
+                <div class="ready-screen">
+                    <h1>Waiting for opponent...</h1>
                 </div>
-                <div class="btns">
-                    <button class="ready-btn" (click)="onReadyUp()" [disabled]="gameOver()">Ready Up</button>
-                    <label class="field-err">{{ fieldError() }}</label>
-                    @if (!gameOver()) {
-                        <button class="surrender-btn" (click)="onSurrender()" [disabled]="gameOver()">Surrender</button>
-                    }
-                    @else {
-                        <button class="back-btn" (click)="onBack()" [disabled]="!gameOver()">Back</button>
-                    }
-                </div>
-            </div>
+            }
         }
         @if (gamePhase()) {
             <div class="tables">
+                <div class="background">
+                    <img class="background-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790616364/better-background_lhd8ib.png" alt="<background-img>">
+                </div>
                 <div class="my-table" [class.disabled]="htmlMyMove()">
                     @for (row of field(); track $index; let i = $index) {
                         @for (col of row; track $index; let j = $index) {
-                            <div class="square-mine">
+                            <div class="square-mine" [class.attacked]="field()[i][j] < 0">
                                 <div class="ship-div">
                                     @if (field()[i][j] === 0) {
                                     }
-                                    @else if (field()[i][j] === -2) {
-                                        <div class="attacked-div"></div>
+                                    @else if (field()[i][j] === -1) {
+                                        <img class="ship" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790700083/sunk_ram34f.png" alt="<ship>">
                                     }
-                                    @else {
-                                        <label class="ship" [class.sunk]="field()[i][j] === -1">SHIP</label>
+                                    @else if (field()[i][j] === 1) {
+                                        <img class="ship" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790678917/ship_uamyyw.png" alt="<ship>">
                                     }
                                 </div>
                             </div>
@@ -61,15 +49,13 @@
                 <div class="opp-table" [class.disabled]="!htmlMyMove()">
                     @for (row of oppField(); track $index; let i = $index) {
                         @for (col of row; track $index; let j = $index) {
-                            <div class="square" (click)="onAttack(i,j)" [class.disabled]="gameOver() || !htmlMyMove() || oppField()[i][j] !== 0">
+                            <div class="square" (click)="onAttack(i,j)" [class.attacked]="oppField()[i][j] !== 0" [class.disabled]="gameOver() || !htmlMyMove() || oppField()[i][j] !== 0">
                                 <div class="ship-div">
                                     @if (oppField()[i][j] === 0) {}
                                     @else {
-                                        <div class="attacked-div">
                                         @if (oppField()[i][j] === 1) {
-                                            <label class="ship.sunk">SHIP</label>
+                                            <img class="ship" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790700083/sunk_ram34f.png" alt="<ship>">
                                         }
-                                        </div>
                                     }
                                 </div>
                             </div>
@@ -77,31 +63,28 @@
                     }
                 </div>
             </div>
-            <div class="bottom-text">
-                <div class="rules-div">
-                    <label class="rules">4x 1 block ship</label>
-                    <label class="rules">3x 2 block ship</label>
-                    <label class="rules">2x 3 block ship</label>
-                    <label class="rules">1x 4 block ship</label>
-                </div>
-                <div class="btns">
-                    @if (!gameOver()) {
-                        <button class="surrender-btn" (click)="onSurrender()" [disabled]="gameOver()">Surrender</button>
-                    }
-                    @else {
-                        <button class="back-btn" (click)="onBack()" [disabled]="!gameOver()">Back</button>
-                    }
-                </div>
-            </div>
         }
     </div>
-    <app-chat></app-chat>
+    <div class="side-bar">
+        <app-chat></app-chat>
+        <div class="btns">
+            @if (setupPhase()) {
+                <button class="ready-btn" (click)="onReadyUp()" [disabled]="gameOver() || imReady()">Ready Up</button>
+                <label class="field-err">{{ fieldError() }}</label>
+            }
+            @if (!gameOver()) {
+                <button class="surrender-btn" (click)="onSurrender()" [disabled]="gameOver()">Surrender</button>
+            }
+            @else {
+                <button class="back-btn" (click)="onBack()" [disabled]="!gameOver()">Back</button>
+            }
+        </div>
+    </div>
 </div>
 
 @if (gameOverScreen()) {
     <div class="overlay">
         <div class="title-div">
-            <h2>GAME OVER</h2>
             @if (win()) {
                 <h1>VICTORY</h1>
             }

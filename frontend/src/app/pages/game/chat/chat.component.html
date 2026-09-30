@@ -1,21 +1,23 @@
 <div class="main">
     <div class="opp-div">
         <div class="pts-div">
-            <label class="pts">+150\-150</label>
+            <label class="pts">Points for this match: +/- 150</label>
         </div>
         <div class="username-div">
-            <label class="opp-username">{{ opp()?.username || 'unknown' }}</label>
-            <div class="dropdown">
-                <button class="report-btn" (click)="toggleReportOptions()">report</button>
-                <div class="report-div" [class.hidden]="!showReportOptions()">
-                    <label class="report-option" [class.disabled]="cheatReported()" (click)="onReport()">cheating</label>
-                    <label class="report-option" [class.disabled]="msgReported()" (click)="onReport('messages')">vulgar chat</label>
-                </div>
+            <img class="pfp" [src]="opp()?.picture" alt="<pfp>">
+            <div class="opp-info">
+                <label class="opp-username">{{ opp()?.username || 'unknown' }}</label>
+                <label class="opp-score">{{ opp()?.score }}</label>
             </div>
         </div>
-        <div class="opp-info">
-            <label class="opp-score">{{ opp()?.score }}</label>
+        <div class="dropdown">
+            <button class="report-btn" (click)="toggleReportOptions()">report</button>
+            <div class="report-div" [class.hidden]="!showReportOptions()">
+                <label class="report-option" [class.disabled]="cheatReported()" (click)="onReport()">cheating</label>
+                <label class="report-option" [class.disabled]="msgReported()" (click)="onReport('messages')">vulgar chat</label>
+            </div>
         </div>
+        
         <div class="chat-div">
             @for (msg of messages(); track $index) {
                 @if ($index === 0 || messages()[$index - 1].author !== msg.author) {
@@ -26,7 +28,7 @@
         </div>
         <div class="input-div">
             <input type="text" name="message" placeholder="write a message..." [ngModel]="message()" (ngModelChange)="message.set($event)">
-            <button class="send-btn" (click)="sendMessage()" [disabled]="message() === ''">Send</button>
+            <img class="send-btn"(click)="sendMessage()" [class.disabled]="message() === ''" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790712682/send_ejv3u5.png" alt="<send>">
         </div>
     </div>
 </div>

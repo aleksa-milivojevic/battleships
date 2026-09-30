@@ -30,6 +30,9 @@ export class GameComponent implements OnInit {
     surrenderMessage = this.gameService.surrenderMessage;
     disconnected = this.gameService.disconnected;
     waiting = this.gameService.waiting;
+    imReady = this.gameService.imReady;
+
+    showReadyScreen = signal(false);
 
     htmlMyMove = signal(false);
     // htmlMyMove = signal(true);
@@ -43,16 +46,23 @@ export class GameComponent implements OnInit {
 
     constructor() {
         this.gameService.connect();
+        this.showReadyScreen.set(this.storage.getItem('READY_SCREEN') ?? this.showReadyScreen());
         this.field.set(this.storage.getItem('MY_FIELD') ?? this.field());
         this.oppField.set(this.storage.getItem('OPP_FIELD') ?? this.oppField());
         this.htmlMyMove.set(this.storage.getItem('FIRST') ?? false);
         effect(() => {
             this.myMove();
             if (!this.myMove()) {
-                this.onMyReport();
+                if (this.gameService.lastMove().result === 'hit')
+                    this.onOppMove();
+                else 
+                    this.onMyReport();
             }
             else {
-                this.onOppMove();
+                if (this.gameService.lastMove().result === 'hit')
+                    this.onMyReport();
+                else
+                    this.onOppMove();
             }
         });
         effect(() => {
@@ -64,6 +74,7 @@ export class GameComponent implements OnInit {
         effect(() => {
             this.gamePhase();
             if (this.gamePhase()) {
+                this.showReadyScreen.set(false);
                 this.htmlMyMove.set(this.gameService.myMove());
             }
         });
@@ -82,6 +93,8 @@ export class GameComponent implements OnInit {
     }
 
     onReadyUp() {
+        this.showReadyScreen.set(true);
+        this.storage.setItem('READY_SCREEN', true);
         this.gameService.readyUp(this.field());
         this.storage.setItem('MY_FIELD', this.field());
     }
