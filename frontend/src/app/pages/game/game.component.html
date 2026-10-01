@@ -5,6 +5,10 @@
                 <div class="background">
                     <img class="background-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790616364/better-background_lhd8ib.png" alt="<background-img>">
                 </div>
+                <div class="move-div">
+                    <label class="setup-title">Setup Phase</label>
+                    <label class="timer">{{ timer() + 's' }}</label>
+                </div>
                 <div class="setup-table">
                     @for (row of field(); track $index; let i = $index) {
                         @for (col of row; track $index; let j = $index) {
@@ -27,6 +31,15 @@
             <div class="tables">
                 <div class="background">
                     <img class="background-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790616364/better-background_lhd8ib.png" alt="<background-img>">
+                </div>
+                <div class="move-div">
+                    @if (myMove()) {
+                        <label class="my-move-title">Your Move</label>
+                    }
+                    @else {
+                        <label class="opp-move-title">Opponent's Move</label>
+                    }
+                    <label class="timer">{{ timer() + 's' }}</label>
                 </div>
                 <div class="my-table" [class.disabled]="htmlMyMove()">
                     @for (row of field(); track $index; let i = $index) {
@@ -73,7 +86,7 @@
                 <label class="field-err">{{ fieldError() }}</label>
             }
             @if (!gameOver()) {
-                <button class="surrender-btn" (click)="onSurrender()" [disabled]="gameOver()">Surrender</button>
+                <button class="surrender-btn" [class.game]="gamePhase()" (click)="onSurrender()" [disabled]="gameOver()">Surrender</button>
             }
             @else {
                 <button class="back-btn" (click)="onBack()" [disabled]="!gameOver()">Back</button>

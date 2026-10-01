@@ -1,4 +1,4 @@
-import { Component, OnInit, effect, inject, signal } from "@angular/core";
+import { Component, OnDestroy, OnInit, effect, inject, signal } from "@angular/core";
 import { GameService } from "../../services/sockets/game.service";
 import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -31,6 +31,7 @@ export class GameComponent implements OnInit {
     disconnected = this.gameService.disconnected;
     waiting = this.gameService.waiting;
     imReady = this.gameService.imReady;
+    timer = this.gameService.timer;
 
     showReadyScreen = signal(false);
 
@@ -50,30 +51,31 @@ export class GameComponent implements OnInit {
         this.field.set(this.storage.getItem('MY_FIELD') ?? this.field());
         this.oppField.set(this.storage.getItem('OPP_FIELD') ?? this.oppField());
         this.htmlMyMove.set(this.storage.getItem('FIRST') ?? false);
+
         effect(() => {
-            this.myMove();
-            if (!this.myMove()) {
-                if (this.gameService.lastMove().result === 'hit')
+            const move = this.myMove();
+            if (!move) {
+                if (this.gameService.lastMove().result !== 'miss')
                     this.onOppMove();
                 else 
                     this.onMyReport();
             }
             else {
-                if (this.gameService.lastMove().result === 'hit')
+                if (this.gameService.lastMove().result !== 'miss')
                     this.onMyReport();
                 else
                     this.onOppMove();
             }
         });
         effect(() => {
-            this.gameOver();
-            if (this.gameOver()) {
+            const game = this.gameOver();
+            if (game) {
                 this.showGameOverScreen();
             }
         });
         effect(() => {
-            this.gamePhase();
-            if (this.gamePhase()) {
+            const phase = this.gamePhase();
+            if (phase) {
                 this.showReadyScreen.set(false);
                 this.htmlMyMove.set(this.gameService.myMove());
             }
@@ -179,6 +181,8 @@ export class GameComponent implements OnInit {
     toGameScreen() {
         this.gameService.disconnect();
         this.gameOverScreen.set(false);
+        this.showReadyScreen.set(false);
+        this.storage.removeItem('READY_SCREEN');
     }
 
     toMainScreen() {
@@ -196,11 +200,14 @@ export class GameComponent implements OnInit {
         this.gameService.canLeave.set(true);
         this.router.navigate(['/main']);
         this.gameService.canEnter.set(false);
+        this.showReadyScreen.set(false);
         this.clearLocal();
     }
 
     clearLocal() {
         this.storage.removeItem('OPP_FIELD');
         this.storage.removeItem('MY_FIELD');
+        this.storage.removeItem('READY_SCREEN');
     }
+
 }

@@ -44,9 +44,17 @@ export class GameService {
     canEnter = signal(false);
     canLeave = signal(true);
 
+    private readonly setupTime = 180;
+    private readonly moveTime = 60; 
+    private _timer = signal<number | null>(null);
+    timer = this._timer.asReadonly();
+    private isRunning = signal(false);
+    private intervalId: number | null = null;
+
     constructor() {
         this.canEnter.set(this.storage.getItem<boolean>('GAME_CAN_ENTER') ?? this.canEnter());
         this.canLeave.set(this.storage.getItem<boolean>('GAME_CAN_LEAVE') ?? this.canLeave());
+
         effect(() => {
             this.canEnter();
             this.storage.setItem('GAME_CAN_ENTER', this.canEnter());
@@ -91,6 +99,17 @@ export class GameService {
         this.lastMove.set(this.storage.getItem<{ result: string, coords: number[] }>('LAST_MOVE') ?? { result: '', coords: [] });
         this.disconnected.set(this.storage.getItem('DISCONNECT') ?? false);
         this.waiting.set(this.storage.getItem('WAIT') ?? false);
+
+        this.isRunning.set(this.storage.getItem('IS_RUNNING') ?? this.isRunning());
+        this.intervalId = this.storage.getItem('INTERVAL_ID');
+
+        this._timer.set(this.storage.getItem('TIMER') ?? this.setupTime);
+        setTimeout(() => this.startTimer(), 2000);
+
+        effect(() => {
+            this._timer();
+            this.storage.setItem('TIMER', this._timer());
+        })
 
         this.socket.on('id-req',
             () => {
@@ -172,6 +191,7 @@ export class GameService {
         this.socket.off('reconnect');
         this.socket.off('exception');
         this.socket.off('points');
+        this.stopTimer();
         console.log('disconnect');
         this.socket.disconnect();
     }
@@ -186,11 +206,13 @@ export class GameService {
         this.storage.setItem('IM_READY', true);
         this.socket.emit('ready', { field });
         this.fieldError.set('');
+        this.stopTimer();
         if (this.oppReady()) {
             this.setup.set(false);
             this.storage.setItem('SETUP', false);
             this.game.set(true);
             this.storage.setItem('GAME', true);
+            this.resetTimer();
         }
     }
 
@@ -202,6 +224,7 @@ export class GameService {
             this.storage.setItem('SETUP', false);
             this.game.set(true);
             this.storage.setItem('GAME', true);
+            this.resetTimer();
         }
     }
 
@@ -209,17 +232,21 @@ export class GameService {
         console.log('attack: ', data.result, data.coords);
         this.lastMove.set({ result: data.result, coords: data.coords });
         this.storage.setItem('LAST_MOVE', { result: data.result, coords: data.coords });
+        this.resetTimer();
         if (data.result === 'miss') {
             this.myMove.set(true);
             this.storage.setItem('FIRST', true);    
         }
         if (data.result === 'game-end') {
+            this.stopTimer();
             this.gameOver.set(true);
             this.storage.setItem('GAME_OVER', true);
         }
+        
     }
 
     myAttack(coords: number[]) {
+        this.stopTimer();
         this.socket.emit('attack', { coords });
     }
 
@@ -227,11 +254,13 @@ export class GameService {
         console.log('report: ', data.result, data.coords);
         this.lastMove.set({ result: data.result, coords: data.coords });
         this.storage.setItem('LAST_MOVE', { result: data.result, coords: data.coords });
+        this.resetTimer();
         if (data.result === 'miss') {
             this.myMove.set(false);
             this.storage.setItem('FIRST', false);
         }
         if (data.result === 'game-end') {
+            this.stopTimer();
             this.gameOver.set(true);
             this.storage.setItem('GAME_OVER', true);
             this.win.set(true);
@@ -240,6 +269,7 @@ export class GameService {
     }
 
     surrender() {
+        this.stopTimer();
         this.myMove.set(false);
         this.storage.setItem('FIRST', false);
         this.gameOver.set(true);
@@ -250,6 +280,7 @@ export class GameService {
     }
 
     oppSurrender() {
+        this.stopTimer();
         this.gameOver.set(true);
         this.storage.setItem('GAME_OVER', true);
         this.win.set(true);
@@ -287,6 +318,7 @@ export class GameService {
         this.storage.removeItem('LAST_MOVE');
         this.storage.removeItem('DISCONNECT');
         this.storage.removeItem('WAIT');
+        this.storage.removeItem('TIMER');
     }
 
     back() {
@@ -302,6 +334,7 @@ export class GameService {
         this.surrenderMessage.set('');
         this.disconnected.set(false);
         this.waiting.set(false);
+        this._timer.set(null);
         this.clear();
     }
 
@@ -319,6 +352,7 @@ export class GameService {
     }
 
     oppDisconnect() {
+        this.stopTimer();
         this.socket.emit('opp-disconnect');
         this.waiting.set(false);
         this.storage.setItem('WAIT', false);
@@ -337,5 +371,41 @@ export class GameService {
         if (this.win()) user.score += points; 
         else user.score -= points;
         this.storage.setItem('SELF', user);
+    }
+
+    startTimer() {
+        if (this.isRunning() || this._timer() === null) return;
+
+        this.isRunning.set(true);
+    
+        this.intervalId = setInterval(() => {
+            this._timer.update((time) => {
+                if (time! <= 1) {
+                    this.stopTimer();
+                    if (this.myMove()) {
+                        this.surrender();
+                    }
+                    return 0;
+                }
+                return time! - 1;
+            });
+        }, 1000);
+    }
+
+    stopTimer() {
+        if (!this.isRunning()) return;
+
+        this.isRunning.set(false);
+        
+        if (this.intervalId !== null) {
+            clearInterval(this.intervalId);
+            this.intervalId = null;
+        }
+    }
+
+    resetTimer(): void {
+        this.stopTimer();
+        this._timer.set(this.moveTime);
+        this.startTimer();
     }
 }
