@@ -32,6 +32,9 @@ export class ChatComponent implements OnInit, OnDestroy {
     msgReported = signal(false);
     cheatReported = signal(false);
 
+    winPts = signal(0);
+    lossPts = signal(0);
+
     constructor() {
         this.self.set(this.storage.getItem<User>('SELF'));
         this.oppId.set(this.storage.getItem<string>('OPP'));
@@ -53,6 +56,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.userService.getFromList([this.oppId()!]).subscribe({
             next: (res) => {
                 this.opp.set(res.users[0]);
+                this.calculatePts();
             },
             error: (err) => {
                 console.error(err);
@@ -95,5 +99,25 @@ export class ChatComponent implements OnInit, OnDestroy {
                 this.showReportOptions.set(false);
             }
         });
+    }
+
+    calculatePts() {
+        let diff = Math.abs(this.self()!.score - this.opp()!.score);
+        let win = 0, loss = 0;
+        if (this.self()!.score >= this.opp()!.score) {
+            if (diff <= 1000) {win = 150; loss = 150}
+            else if (diff <= 2000) {win = 100; loss = 100}
+            else if (diff <= 3000) {win = 50; loss = 50}
+        }
+        else {
+            if (diff <= 1000) {win = 150; loss = 150}
+            else if (diff <= 2000) {win = 200; loss = 200}
+            else if (diff <= 3000) {win = 250; loss = 250}
+        }
+
+        if (this.self()!.score < loss) loss = this.self()!.score;
+
+        this.winPts.set(win);
+        this.lossPts.set(loss);
     }
 }

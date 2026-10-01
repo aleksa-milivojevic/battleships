@@ -1,7 +1,7 @@
 <div class="main">
     <div class="opp-div">
         <div class="pts-div">
-            <label class="pts">Points for this match: +/- 150</label>
+            <label class="pts">{{ 'Points for this match: +' + winPts() + '/-' + lossPts() }}</label>
         </div>
         <div class="username-div">
             <img class="pfp" [src]="opp()?.picture" alt="<pfp>">

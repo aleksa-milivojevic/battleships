@@ -3,6 +3,7 @@ import {  } from "ngx-socket-io";
 import { StorageService } from "../storage.service";
 import { User } from "../user.service";
 import { io, Socket } from "socket.io-client";
+import { AuthService } from "../auth.service";
 
 @Injectable({
     providedIn: 'root'
@@ -14,6 +15,7 @@ export class GameService {
     });
 
     private storage = inject(StorageService);
+    private authService = inject(AuthService);
 
     private self = signal<string | undefined>(undefined);
 
@@ -370,7 +372,7 @@ export class GameService {
         if (!user) return;
         if (this.win()) user.score += points; 
         else user.score -= points;
-        this.storage.setItem('SELF', user);
+        this.authService.updateSelf(user);
     }
 
     startTimer() {
