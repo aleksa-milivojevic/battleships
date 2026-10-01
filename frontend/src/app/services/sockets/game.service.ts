@@ -371,7 +371,10 @@ export class GameService {
         const user = this.storage.getItem<User>('SELF');
         if (!user) return;
         if (this.win()) user.score += points; 
-        else user.score -= points;
+        else {
+            if (user.score <= points) user.score = 0;
+            else user.score -= points;
+        }
         this.authService.updateSelf(user);
     }
 

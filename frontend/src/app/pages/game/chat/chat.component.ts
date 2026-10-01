@@ -106,13 +106,13 @@ export class ChatComponent implements OnInit, OnDestroy {
         let win = 0, loss = 0;
         if (this.self()!.score >= this.opp()!.score) {
             if (diff <= 1000) {win = 150; loss = 150}
-            else if (diff <= 2000) {win = 100; loss = 100}
-            else if (diff <= 3000) {win = 50; loss = 50}
+            else if (diff <= 2000) {win = 100; loss = 200}
+            else if (diff <= 3000) {win = 50; loss = 250}
         }
         else {
             if (diff <= 1000) {win = 150; loss = 150}
-            else if (diff <= 2000) {win = 200; loss = 200}
-            else if (diff <= 3000) {win = 250; loss = 250}
+            else if (diff <= 2000) {win = 200; loss = 100}
+            else if (diff <= 3000) {win = 250; loss = 50}
         }
 
         if (this.self()!.score < loss) loss = this.self()!.score;
