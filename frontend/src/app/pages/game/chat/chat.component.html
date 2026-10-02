@@ -7,7 +7,10 @@
             <img class="pfp" [src]="opp()?.picture" alt="<pfp>">
             <div class="opp-info">
                 <label class="opp-username">{{ opp()?.username || 'unknown' }}</label>
-                <label class="opp-score">{{ opp()?.score }}</label>
+                <div class="score-div">
+                    <label class="opp-score">{{ opp()?.score }}</label>
+                    <img class="trophy" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950377/trophy_mxczir.png" alt="<trophy>">
+                </div>
             </div>
         </div>
         <div class="dropdown">

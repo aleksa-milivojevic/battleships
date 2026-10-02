@@ -103,14 +103,37 @@ app-sidebar {
     height: 60px;
 }
 
+.name-score {
+    display: flex;
+    flex-direction: column;
+}
+
 .selected-username {
     margin-left: 15px;
     font-weight: 700;
 }
 
+.sel-score-trophy {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.sel-trophy {
+    height: 27px;
+    aspect-ratio: 1 / 1;
+}
+
 .score {
     display: flex;
     align-items: center;
+}
+
+.trophy {
+    height: 25px;
+    aspect-ratio: 1 / 1;
+    margin-left: 5px;
 }
 
 .user-list, .report-list {
@@ -188,7 +211,7 @@ img {
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 50%;
+    width: 60%;
 }
 
 .user-div {
@@ -210,8 +233,23 @@ img {
     font-weight: 700;
 }
 
+.score-trophy-2 {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
 .score-2 {
     margin-left: 15px;
+}
+
+.trophy-2 {
+    height: 15px;
+    aspect-ratio: 1 / 1;
+    margin-left: 5px;
 }
 
 .restriction-type-div {
@@ -251,6 +289,19 @@ img {
     background-color: #006CA5;
     color: white;
     font-weight: 300;
+    transition: all 0.25s ease;
+
+    &:hover {
+        color: #006CA5;
+        background-color: white;
+        filter: brightness(90%)
+    }
+
+    &:active {
+        color: #006CA5;
+        background-color: white;
+        filter: brightness(70%);
+    }
 }
 
 .username {

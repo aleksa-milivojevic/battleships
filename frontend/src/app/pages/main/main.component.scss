@@ -182,8 +182,14 @@ form {
     color: white;
 }
 
+// .match {
+//     padding: 10px;
+//     padding-left: 15px;
+//     padding-right: 15px;
+// }
+
 .result-div {
-    width: 45%;
+    width: 57%;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -202,11 +208,27 @@ form {
 }
 
 .points {
+    margin-left: auto;
+    margin-right: 0px;
     color: white;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.points-div {
     margin-right: 0px;
     margin-left: auto;
-    font-size: 18px;
-    font-weight: 700;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+}
+
+.trophy {
+    margin-right: 0px;
+    height: 30px;
+    aspect-ratio: 1 / 1;
+    margin-left: 5px;
 }
 
 .opp {
@@ -303,7 +325,7 @@ form {
     min-width: 250px;
     width: fit-content;
     max-width: 400px;
-    padding: 20px;
+    padding: 10px;
 
     background: #006CA5;
     box-shadow: 0px 0px 10px 2px rgb(0, 0, 0, 0.3);
@@ -328,6 +350,7 @@ form {
     display: flex;
     flex-direction: row;
     align-items: center;
+    padding: 10px;
 }
 
 .pfp {
@@ -348,9 +371,22 @@ form {
     overflow-x: hidden;
 }
 
+.score-div {
+    margin: 0px;
+    padding-left: auto;
+    padding-right: auto;
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
 .hover-score {
-    margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 24px;
+    font-size: 26px;
+}
+
+.hover-trophy {
+    height: 30px;
+    aspect-ratio: 1 / 1;
 }

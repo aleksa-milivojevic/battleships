@@ -25,7 +25,7 @@ app-sidebar {
     margin: 10px;
     padding: 10px;
     padding-top: 10px;
-    padding-right: 5px;
+    padding-right: 7px;
     background-color: #006CA5;
     display: flex;
     flex-direction: column;
@@ -81,6 +81,12 @@ app-sidebar {
     color: white;
 }
 
+.trophy {
+    height: 28px;
+    aspect-ratio: 1 / 1;
+    margin-left: 5px;
+}
+
 .username {
     margin-left: 10px; 
     color: white;
@@ -105,4 +111,10 @@ app-sidebar {
 
 .rank-3 {
     color: rgb(205, 127, 50);
+}
+
+.rank-img {
+    height: 40px;
+    aspect-ratio: 1 / 1;
+    margin-right: 13px;
 }

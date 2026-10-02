@@ -37,7 +37,10 @@
                         @if(match.winner?.id === self()?.id) {
                             <div class="result-div">
                                     <label class="result-win">WIN</label>
-                                    <label class="points">+{{ match.points }}</label>
+                                    <div class="points-div">
+                                        <label class="points">+{{ match.points }}</label>
+                                        <img class="trophy" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950377/trophy_mxczir.png" alt="<trophy>">
+                                    </div>
                             </div>
                             <label class="opp"
                                 (mouseenter)="showInfo($event, match.looser!)"
@@ -45,7 +48,10 @@
                         } @else {
                             <div class="result-div">
                                 <label class="result-loss">LOSS</label>
-                                <label class="points">-{{ match.points }}</label>
+                                <div class="points-div">
+                                    <label class="points">-{{ match.points }}</label>
+                                    <img class="trophy" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950377/trophy_mxczir.png" alt="<trophy>">
+                                </div>
                             </div>
                             <label class="opp"
                                 (mouseenter)="showInfo($event, match.winner!)"
@@ -103,5 +109,8 @@
         </div>
         <label class="hover-name">{{ hovered()?.username }}</label>
     </div>
-    <label class="hover-score">{{ hovered()?.score }}</label>
+    <div class="score-div">
+        <label class="hover-score">{{ hovered()?.score }}</label>
+        <img class="hover-trophy" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950377/trophy_mxczir.png" alt="<trophy>">
+    </div>
 </div>

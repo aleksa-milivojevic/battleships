@@ -20,6 +20,7 @@
                                     <img [src]="el.user.picture" alt="PFP">
                                     <label class="username">{{ el.user.username }}</label>
                                     <label class="score">{{ el.user.score }}</label>
+                                    <img class="trophy" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950377/trophy_mxczir.png" alt="<trophy>">
                                 </div>
                                 <label class="rep-num">Reports: {{ el.reports.length }}</label>
                             </div>
@@ -38,7 +39,10 @@
                                 <img [src]="el.picture" alt="PFP">
                                 <div class="u-s">
                                     <label class="username-2">{{ el.username }}</label>
-                                    <label class="score-2">{{ el.score }}</label>
+                                    <div class="score-trophy-2">
+                                        <label class="score-2">{{ el.score }}</label>
+                                        <img class="trophy-2" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950377/trophy_mxczir.png" alt="<trophy>">
+                                    </div>
                                 </div>
                             </div>
                             <div class="restriction-type-div">
@@ -62,9 +66,14 @@
                     <div class="user-info">
                         <div class="username-div">
                             <img class="selected-pfp" [src]="selectedUser()?.picture" alt="PFP">
-                            <label class="selected-username">{{ selectedUser()?.username }}</label>
+                            <div class="name-score">
+                                <label class="selected-username">{{ selectedUser()?.username }}</label>
+                                <div class="sel-score-trophy">
+                                    <label class="score">{{ selectedUser()?.score }}</label>
+                                    <img class="sel-trophy" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950377/trophy_mxczir.png" alt="<trophy>">
+                                </div>
+                            </div>
                         </div>
-                        <label class="score">{{ selectedUser()?.score }}</label>
                     </div>
                     <div class="restriction-btns">
                         <button class="ban-btn" [disabled]="selectedUser()?.banned || selectedUser()?.timeout || loading()" (click)="onBan(selectedUser()?.id!)">ban</button>

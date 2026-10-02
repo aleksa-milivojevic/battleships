@@ -50,6 +50,7 @@
 .opp-username {
     font-size: 160%;
     overflow: hidden;
+    font-weight: 700;
 }
 
 .opp-info {
@@ -60,6 +61,24 @@
     margin: 0;
     padding: 0;
     margin-left: 10px;
+}
+
+.opp-score {
+    font-size: 120%;
+}
+
+.score-div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.trophy {
+    height: 20px;
+    aspect-ratio: 1 / 1;
+    margin-left: 5px;
 }
 
 .chat-div {
