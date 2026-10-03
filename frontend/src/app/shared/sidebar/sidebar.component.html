@@ -1,29 +1,50 @@
 <div class="sidebar">
     <div class="top-options">
         <div class="option" routerLink="/main">
-            <label class="option-name">Home</label>
+            <div class="img-div">
+                <img class="option-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950447/challange_tlzrss.png" alt="<option>">
+            </div>
+            <label class="option-name">Battle</label>
         </div>
         <div class="option" routerLink="/challanges">
+            <div class="img-div">
+                <img class="option-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950437/main_xjzmn3.png" alt="<option>">
+            </div>
             <label class="option-name">Challenges</label>
         </div>
         <div class="option" routerLink="/leaderboard">
+            <div class="img-div">
+                <img class="option-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950443/leaderboard_bbod4w.png" alt="<option>">
+            </div>
             <label class="option-name">Leaderboard</label>
         </div>
         @if (self()?.admin) {
             <div class="option" routerLink="/restrictions">
+                <div class="img-div">
+                    <img class="option-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950657/restrictions_smj9gc.png" alt="<option>">
+                </div>
                 <label class="option-name">Restrictions</label>
             </div>
         }
     </div>
     <div class="bottom-options">
-        <div class="option"  (click)="onLogout()">
-            <label class="option-name">Logout</label>
-        </div>
         <div class="option">
-            <label class="option-name">Language</label>
+            <div class="img-div">
+                <img class="option-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950427/settings_sipset.png" alt="<option>">
+            </div>    
+            <label class="option-name">Settings</label>
         </div>
         <div class="option" routerLink="/profile">
+            <div class="img-div">
+                <img class="option-img" [class.profile]="true" [src]="self()?.picture" alt="<option>">
+            </div>
             <label class="option-name">My Profile</label>
+        </div>
+        <div class="option"  (click)="onLogout()">
+            <div class="img-div">
+                <img class="option-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950431/logout_qwlzhs.png" alt="<option>">
+            </div>
+            <label class="option-name">Logout</label>
         </div>
     </div>
 </div>
