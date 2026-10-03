@@ -196,7 +196,7 @@ img {
     padding: 0;
     display: flex;
     flex-direction: column;
-    width: 30%;
+    width: 25%;
 }
 
 .password-btn, .delete-btn {
@@ -205,7 +205,7 @@ img {
     padding: 8px;
     border-radius: 30px;
     background-color: #006CA5;
-    transition: filter 0.1s ease;
+    transition: all 0.1s ease;
 
     &:hover {
         filter: brightness(90%);
@@ -221,11 +221,8 @@ img {
     border: 1px solid white;
 
     &:hover {
-        box-shadow: inset 0px 0px 5px 1px rgb(253, 253, 253, 0.8);
-    }
-
-    &:active {
-        box-shadow: inset 0px 0px 10px 1px;
+        color: #006CA5;
+        background-color: white;
     }
 }
 
@@ -234,11 +231,8 @@ img {
     border: 1px solid #7A1C27;
 
     &:hover {
-        box-shadow: inset 0px 0px 5px 1px #7a1c27d2;
-    }
-
-    &:active {
-        box-shadow: inset 0px 0px 10px 1px;
+        color: white;
+        background-color: #7A1C27;
     }
 }
 
@@ -297,14 +291,10 @@ img {
     border-radius: 30px;
     font-size: 16px;
     cursor: pointer;
-    transition: filter 0.2s ease;
+    transition: all 0.15s ease;
 
     &:hover {
         filter: brightness(90%);
-    }
-
-    &:active {
-        filter: brightness(70%);
     }
 
     &:disabled {
@@ -318,21 +308,25 @@ img {
     background-color: #006CA5;
 
     &:hover {
-        box-shadow: inset 0px 0px 5px 1px rgb(253, 253, 253, 0.8);
+        background-color: white;
+        color: #006CA5;
     }
 
     &:active {
-        box-shadow: inset 0px 0px 10px 1px;
+        background-color: white;
+        color: #006CA5;
+        filter: brightness(70%);
     }
 }
 
 .confirm {
     background-color: white;
-    border: 2px solid black;
-    color: black;
+    border: 2px solid white;
+    color: #006CA5;
 
-    &:enabled:hover {
-        box-shadow: inset 0px 0px 5px 1px rgba(0, 0, 0, 0.3);
+    &:hover {
+        color: white;
+        background-color: #006CA5;
     }
 
     &:active {
