@@ -1,7 +1,7 @@
 <div class="content">
     <app-sidebar></app-sidebar>
     <div class="container">
-        <div class="list-div">
+        <div class="list-div" [class.left]="true">
             <div class="selector-div">
                 <div class="reported-div" [class.selected]="!reportedOrRestricted()" (click)="reportedOrRestricted.set(false)">
                     <label>reported</label>
@@ -60,7 +60,7 @@
                 }
             </div>
         </div>
-        <div class="list-div">
+        <div class="list-div" [class.right]="true">
             <div class="selected-user">
                 @if (selectedUser()) {
                     <div class="user-info">

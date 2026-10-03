@@ -1,6 +1,7 @@
 .content {
     min-width: 100vw;
     min-height: 100vh;
+    max-height: 100vh;
     display: flex;
     flex-direction: row;
     z-index: 0;
@@ -12,6 +13,7 @@ app-sidebar {
 
 .container {
     display: flex;
+    flex: 1;
     width: 100%;
     flex-direction: row;
     margin: 0;
@@ -28,6 +30,16 @@ app-sidebar {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    &.left {
+        padding-right: 0px;
+        padding-left: 40px;
+    }
+
+    &.right {
+        padding-left: 0px;
+        padding-right: 40px;
+    }
 }
 
 .selector-div {
