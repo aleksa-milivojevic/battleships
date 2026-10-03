@@ -23,6 +23,7 @@
     margin: 0;
     padding: 5px;
     justify-content: center;
+    transform: scale(1.1);
 }
 
 img {
@@ -294,6 +295,18 @@ form {
     color: white;
     font-size: 16px;
     background-color: #006CA5;
+    transition: all 0.25s ease;
+
+    &:hover {
+        color: #006CA5;
+        background-color: white;
+    }
+
+    &:active {
+        color: #006CA5;
+        background-color: white;
+        filter: brightness(90%);
+    }
 }
 
 .desc-div-l, .desc-div-r {
