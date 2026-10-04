@@ -21,11 +21,8 @@
     width: 100%;
 }
 
-.bottom-options {
-    margin-top: auto;
-}
-
 .option {
+    margin: 2px;
     padding: 5px;
     padding-right: 10px;
     width: 100%;
@@ -38,6 +35,11 @@
     &:hover {
         filter: brightness(90%);
     }
+}
+
+.fill {
+    margin: 2px;
+    height: 95px;
 }
 
 .img-div {
