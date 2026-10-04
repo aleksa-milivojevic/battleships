@@ -33,20 +33,20 @@ export class UserService {
         }
     }
 
-    async getLeaderboard(params: LeaderboardParams): Promise<FindAllResponse> {
-        let users = await this.userRepository.find({
-            order: {
-                score: 'DESC'
-            }
-        });
+    // async getLeaderboard(params: LeaderboardParams): Promise<FindAllResponse> {
+    //     let users = await this.userRepository.find({
+    //         order: {
+    //             score: 'DESC'
+    //         }
+    //     });
 
-        users = users.slice((params.round-1)*params.count, params.round*params.count);
+    //     users = users.slice((params.round-1)*params.count, params.round*params.count);
 
-        return {
-            users: users,
-            more: users.length === params.count
-        }
-    }
+    //     return {
+    //         users: users,
+    //         more: users.length === params.count
+    //     }
+    // }
 
     async findOne(id: string): Promise<SingleUserResponse> {
         const user = await this.userRepository.findOneBy({ id });
@@ -401,5 +401,20 @@ export class UserService {
         }
 
         return { url: result.secure_url };
+    }
+
+    async getLeaderboard(count: number): Promise<{ users: User[], more: boolean }> {
+        let users = await this.userRepository.find({
+            order: {
+                score: 'DESC'
+            }
+        });
+
+        let list = users.slice(0, count);
+
+        return {
+            users: list,
+            more: !(count >= users.length)
+        }
     }
 }

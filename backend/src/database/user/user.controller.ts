@@ -19,8 +19,8 @@ export class UserController {
 
     @UseGuards(PassportJwtAuthGuard)
     @Get('leaderboard')
-    getLeaderboard(@Query() params: LeaderboardParams): Promise<FindAllResponse> {
-        return this.service.getLeaderboard(params);
+    getLeaderboard(@Query('count') count: number): Promise<{ users: User[], more: boolean }> {
+        return this.service.getLeaderboard(count);
     }
 
     @UseGuards(PassportJwtAuthGuard)

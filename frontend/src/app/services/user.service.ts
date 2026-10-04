@@ -1,8 +1,9 @@
 import { Injectable, inject, signal } from "@angular/core";
 import { environment } from "../../environments/environment.development";
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { Observable, tap } from "rxjs";
+import { Observable, Subscription, filter, map, merge, skip, switchMap, tap, timer, withLatestFrom } from "rxjs";
 import { AuthService } from "./auth.service";
+import { toObservable } from "@angular/core/rxjs-interop";
 
 export interface User {
     id: string,
@@ -40,6 +41,16 @@ export class UserService {
         }
     }
 
+    private leaderboardSub?: Subscription;
+    private leaderboardCount = signal(10);
+    private count$ = toObservable(this.leaderboardCount).pipe(skip(1));
+    private _leaderboard = signal<User[]>([]);
+    readonly leaderboard = this._leaderboard.asReadonly();
+    private _more = signal(true);
+    private more$ = toObservable(this._more);
+    readonly more = this._more.asReadonly();
+    leaderboardLoading = signal(false);
+
     getAllUsers(id: string, round: number = 1, count: number = 10, search: string = ''): Observable<{ users: User[], more: boolean }> {
         const params = new HttpParams()
             .set('id', id)
@@ -62,24 +73,24 @@ export class UserService {
         );
     }
 
-    getLeaderboard(round: number = 1, count: number = 10): Observable<{ users: User[], more: boolean }> {
-        const params = new HttpParams()
-            .set('round', round.toString())
-            .set('count', count.toString());
+    // getLeaderboard(round: number = 1, count: number = 10): Observable<{ users: User[], more: boolean }> {
+    //     const params = new HttpParams()
+    //         .set('round', round.toString())
+    //         .set('count', count.toString());
         
-        return this.http.get<{ users: User[], more: boolean }>(
-            `${this.apiUrl}/leaderboard`,
-            { params: params }
-        ).pipe(
-            tap(res => {
-                if (round == 1) {
-                    this._users.set(res.users || [])
-                } else {
-                    this._users.update(current => [...current, ...res.users || []])
-                }
-            })
-        )
-    }
+    //     return this.http.get<{ users: User[], more: boolean }>(
+    //         `${this.apiUrl}/leaderboard`,
+    //         { params: params }
+    //     ).pipe(
+    //         tap(res => {
+    //             if (round == 1) {
+    //                 this._users.set(res.users || [])
+    //             } else {
+    //                 this._users.update(current => [...current, ...res.users || []])
+    //             }
+    //         })
+    //     )
+    // }
 
     changeUsername(id: string, username: string): Observable<{ user: User }> {
         return this.http.post<{user: User}>(
@@ -158,5 +169,48 @@ export class UserService {
                 this.authService.updateSelf(copy);
             })
         );
+    }
+
+    getLeaderboard() {
+        this.leaderboardSub?.unsubscribe();
+
+        this.leaderboardSub = merge(
+            timer(0, 5000).pipe(map(() => this.leaderboardCount())),
+            this.count$
+        ).pipe(
+            // withLatestFrom(this.more$),
+            // filter(([_, more]) => more),
+            // map(([count]) => count),
+            switchMap(count => {
+                this.leaderboardLoading.set(true);
+                return this.http.get<{ users: User[], more: boolean }>(
+                        `${this.apiUrl}/leaderboard`,
+                        { params: { count } }
+                    )
+            })
+        ).subscribe({
+            next: (res) => {
+                this._leaderboard.set(res.users);
+                this._more.set(res.more);
+                console.log(res);
+                this.leaderboardLoading.set(false);
+            },
+            error: (err) => {
+                console.error(err.error);
+                this.leaderboardLoading.set(false);
+            }
+        });
+    }
+
+    increaseLeaderboardCount() {
+        this.leaderboardCount.update(count => count + 10);
+    }
+
+    resetLeaderboardCount() {
+        this.leaderboardCount.set(10);
+    }
+
+    unsubLeaderboard() {
+        this.leaderboardSub?.unsubscribe();
     }
 }
