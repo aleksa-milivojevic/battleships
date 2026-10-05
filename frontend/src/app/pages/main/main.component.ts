@@ -1,4 +1,4 @@
-import { Component, OnInit, effect, inject, signal, untracked } from '@angular/core';
+import { Component, OnInit, WritableSignal, effect, inject, signal, untracked } from '@angular/core';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { FormsModule } from "@angular/forms";
 import { User, UserService } from '../../services/user.service';
@@ -30,7 +30,7 @@ export class MainComponent implements OnInit {
   readonly count = 10;
 
   overlay = signal(false);
-  search = signal('');
+  search = signal<string | null>(null);
   u_round = signal(1);
   u_more = signal(true);
   loading = signal(false);
@@ -56,7 +56,8 @@ export class MainComponent implements OnInit {
       this.search();
 
       untracked(() => {
-        this.reloadUsers()
+        if (this.search() !== null)
+          this.reloadUsers()
       });
     });
   }
@@ -73,11 +74,11 @@ export class MainComponent implements OnInit {
   }
 
   loadUsers() {
-    if (this.loading() || !this.u_more()) return;
+    if (this.loading() || !this.u_more() || this.search() === null) return;
 
     this.loading.set(true);
 
-    this.userService.getAllUsers(this.self()?.id!, this.u_round(), this.count,  this.search()).subscribe({
+    this.userService.getAllUsers(this.self()?.id!, this.u_round(), this.count,  this.search() ?? '').subscribe({
       next: (res) => {
         this.u_round.update(r => r + 1);
         this.users.update(current => [...current, ...res.users]);
@@ -107,7 +108,12 @@ export class MainComponent implements OnInit {
 
   toggleOverlay() {
     this.overlay.update(o => !o);
-    if (this.overlay()) this.loadUsers();
+    if (this.overlay()) {
+      this.search.set('');
+    }
+    else {
+      this.search.set(null);
+    }
   }
 
   reloadMatches() {
