@@ -38,7 +38,8 @@ export class MatchService {
         const match = await this.matchRepository.create({
             winner: { id: addDto.winner },
             looser: { id: addDto.looser },
-            points: addDto.points
+            wpts: addDto.wpts,
+            lpts: addDto.lpts
         });
 
         if (!(await this.matchRepository.save(match)))

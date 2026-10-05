@@ -8,7 +8,8 @@ export interface Match {
     id: string,
     winner: User | null,
     looser: User | null,
-    points: number,
+    wpts: number,
+    lpts: number,
     createdAt: Date
 }
 
@@ -40,13 +41,6 @@ export class MatchService {
                 }
                 console.log(res);
             })
-        );
-    }
-
-    saveMatch(winner: string, looser: string, points: number): Observable<Match> {
-        return this.http.post<Match>(
-            `${this.apiUrl}/add`,
-            { winner: winner, looser: looser, points: points }
         );
     }
 }

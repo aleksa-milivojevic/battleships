@@ -20,7 +20,15 @@ export class Match {
         nullable: false,
         default: 150
     })
-    points: number;
+    wpts: number;
+
+    @Column({
+        type: "int",
+        unsigned: true,
+        nullable: false,
+        default: 150
+    })
+    lpts: number;
 
     @Column({
         type: "timestamp",

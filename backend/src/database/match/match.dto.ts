@@ -25,5 +25,8 @@ export class AddOneDto {
     readonly looser: string;
 
     @IsNumber()
-    readonly points: number;
+    readonly wpts: number;
+
+    @IsNumber()
+    readonly lpts: number;
 }

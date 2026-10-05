@@ -186,7 +186,7 @@ export class GameService {
     async saveMatch(wId: string, lId: string) {
         const winner = (await this.userService.findOne(wId)).user;
         const looser = (await this.userService.findOne(lId)).user;
-        let points = 150;
+        let w = 150, l = 150;
 
         if (!winner || !looser) {
             throw new BadRequestException('Player not found');
@@ -195,19 +195,21 @@ export class GameService {
         let diff = Math.abs(winner.score - looser.score);
 
         if (winner.score >= looser.score) {
-            if (diff <= 1000) points = 150;
-            else if (diff <= 2000) points = 100;
-            else if (diff <= 3000) points = 50;
+            if (diff <= 1000) w = 150;
+            else if (diff <= 2000) w = 100;
+            else if (diff <= 3000) w = 50;
         }
         else {
-            if (diff <= 1000) points = 150;
-            else if (diff <= 2000) points = 200;
-            else if (diff <= 3000) points = 250;
+            if (diff <= 1000) w = 150;
+            else if (diff <= 2000) w = 200;
+            else if (diff <= 3000) w = 250;
         }
-        
-        await this.matchService.addOne({ winner: wId, looser: lId, points: points });
-        await this.userService.updateScores(wId, lId, points);
 
-        return points;
+        if (looser.score <= w) l = looser.score;
+        
+        await this.matchService.addOne({ winner: wId, looser: lId, wpts: w, lpts: l });
+        await this.userService.updateScores(wId, lId, w);
+
+        return w;
     }
 }
