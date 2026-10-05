@@ -82,7 +82,7 @@
                         <label class="username"
                                 (mouseenter)="showInfo($event, user)"
                                 (mouseleave)="hideInfo()">{{ user.username }}</label>
-                        <button class="challange-btn" [disabled]="!user.online" (click)="onChall(user.id)">challenge</button>
+                        <button class="challange-btn" [disabled]="!user.online || isChallanged(user.id)" (click)="onChall(user.id)">challenge</button>
                     </div>
                 }
             </div>

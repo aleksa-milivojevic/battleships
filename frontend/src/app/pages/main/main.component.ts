@@ -40,6 +40,7 @@ export class MainComponent implements OnInit {
   m_more = signal(true);
 
   users = signal<User[]>([]);
+  challanged = signal<string[]>([]);
 
   matches = signal<Match[]>([]);
 
@@ -150,6 +151,8 @@ export class MainComponent implements OnInit {
 
   onChall(id: string) {
     this.challangeService.sendInvite(id);
+    this.challanged.update(list => [...list, id]);
+    setTimeout(() => this.challanged.update(list => list.filter(el => el !== id)), 5000);
   }
 
   onPvP() {
@@ -182,5 +185,9 @@ export class MainComponent implements OnInit {
 
   hideInfo() {
     this.showingInfo.set(false);
+  }
+
+  isChallanged(id: string) {
+    return this.challanged().findIndex(el => el === id) >= 0;
   }
 }
