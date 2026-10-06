@@ -34,11 +34,9 @@ export class ChallangeGateway implements OnGatewayConnection, OnGatewayDisconnec
         if (targets) {
             targets.forEach(target => {
                 let ctarget = this.utc.get(target);
-                ctarget?.emit('disconnection', { source: id });
+                if (ctarget) ctarget.emit('disconnection', { source: id });
             });
         }
-
-        this.userService.setOffline(id);
 
         this.ctu.delete(client.id);
         this.utc.delete(id!);
