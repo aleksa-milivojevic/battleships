@@ -60,7 +60,7 @@ export class AuthService {
             if (db_res.user.timeout > new Date()) {
                 throw new BadRequestException(`User is timed out until ${db_res.user.timeout.getDay()}.${db_res.user.timeout.getMonth()}.${db_res.user.timeout.getFullYear()}.`);
             }
-            this.userService.expire(user.userId);
+            await this.userService.expire(user.userId);
         }
 
         const accessToken = await this.jwtService.signAsync(tokenPayload);
