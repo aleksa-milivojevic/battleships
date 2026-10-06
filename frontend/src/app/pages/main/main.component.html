@@ -82,7 +82,11 @@
                         <label class="username"
                                 (mouseenter)="showInfo($event, user)"
                                 (mouseleave)="hideInfo()">{{ user.username }}</label>
-                        <button class="challange-btn" [disabled]="!user.online || isChallanged(user.id)" (click)="onChall(user.id)">challenge</button>
+                        <img class="challange-btn"
+                         src="https://res.cloudinary.com/drjisyvve/image/upload/v1791302333/2026_10_06_0tx_Kleki_ycuaex.png" 
+                         alt="<challange>"
+                        (click)="onChall(user.id)"
+                        [class.disabled]="!user.online || isChallanged(user.id)">
                     </div>
                 }
             </div>

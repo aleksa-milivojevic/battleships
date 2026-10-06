@@ -243,28 +243,24 @@ form {
 .challange-btn {
     margin-right: 0px;
     margin-left: auto;
-    font-size: 12px;
     padding: 5px;
     padding-left: 10px;
     padding-right: 10px;
     border-radius: 30px;
     background-color: #006CA5;
     transition: filter 0.1s ease;
-    color: white;
-    border: 2px solid white;
-    width: fit-content;
+    height: 25px;
+    width: 60px;
 
-    &:enabled:hover {
+    &:hover {
         filter: brightness(90%);
-        box-shadow: inset 0px 0px 5px 1px rgb(253, 253, 253, 0.8);
     }
 
     &:active {
         filter: brightness(70%);
-        box-shadow: inset 0px 0px 10px 1px;
     }
 
-    &:disabled {
+    &.disabled {
         filter: brightness(70%);
         pointer-events: none;
     }
