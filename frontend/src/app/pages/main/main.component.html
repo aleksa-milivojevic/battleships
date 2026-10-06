@@ -36,7 +36,7 @@
                     <div class="match">
                         @if(match.winner?.id === self()?.id) {
                             <div class="result-div">
-                                    <label class="result-win">WIN</label>
+                                    <img class="result-win" src="https://res.cloudinary.com/drjisyvve/image/upload/v1791302326/2026_10_06_0tt_Kleki_szo1zx.png" alt="<win>">
                                     <div class="points-div">
                                         <label class="points">+{{ match.wpts }}</label>
                                         <img class="trophy" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950377/trophy_mxczir.png" alt="<trophy>">
@@ -47,7 +47,7 @@
                                 (mouseleave)="hideInfo()">{{ "vs " + (match.looser?.username ??  "deleted") }}</label>
                         } @else {
                             <div class="result-div">
-                                <label class="result-loss">LOSS</label>
+                                <img class="result-loss" src="https://res.cloudinary.com/drjisyvve/image/upload/v1791302330/2026_10_06_0tv_Kleki_f4zzhf.png" alt="<loss>">
                                 <div class="points-div">
                                     <label class="points">-{{ match.lpts }}</label>
                                     <img class="trophy" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950377/trophy_mxczir.png" alt="<trophy>">
