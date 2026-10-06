@@ -28,7 +28,6 @@ export class AuthService implements OnDestroy {
     private http = inject(HttpClient);
     private storage = inject(StorageService);
     private router = inject(Router);
-    private challangeService = inject(ChallangeService);
     private restrictionService = inject(RestrictionService);
     
     private platformId = inject(PLATFORM_ID);
@@ -49,7 +48,6 @@ export class AuthService implements OnDestroy {
         effect(() => {
             this._user();
             if (this._user()?.online) {
-                this.challangeService.connect();
                 this.restrictionService.connect();
             }
         });
@@ -93,7 +91,6 @@ export class AuthService implements OnDestroy {
     private handleAuthResponse(user: User): void {
         this._user.set(user);
         this.storage.setItem('SELF', this._user());
-        this.challangeService.updateSelf(user.id);
         this.startRefreshTimer();
         console.log(this._user());
     }
@@ -106,7 +103,6 @@ export class AuthService implements OnDestroy {
             tap(res => this.handleAuthResponse(res.user))
         ).pipe(
             tap(res => {
-                    // this.challangeService.listen();
                     this.setOnline().subscribe();
                 }
             )
@@ -139,7 +135,6 @@ export class AuthService implements OnDestroy {
             tap(() => this.clearLocal())
         ).pipe(
             tap(() => {
-                    this.challangeService.disconnect();
                     this.restrictionService.disconnect();
                     this.storage.removeAll();
                 }

@@ -66,8 +66,13 @@ export class ChallangeGateway implements OnGatewayConnection, OnGatewayDisconnec
             throw new NotFoundException('user not online');
         }
 
-        this.interactions.get(data.source)?.push(data.target);
-        this.interactions.get(data.target)?.push(data.source);
+        let srcInt = this.interactions.get(data.source);
+        let tarInt = this.interactions.get(data.target);
+        if (srcInt !== undefined && srcInt.findIndex(el => el === data.target) === -1)
+            srcInt.push(data.target);
+
+        if (tarInt !== undefined && tarInt.findIndex(el => el === data.source) === -1)
+            tarInt.push(data.source);
 
         console.log(this.interactions);
 

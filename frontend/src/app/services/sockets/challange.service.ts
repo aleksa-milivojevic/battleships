@@ -1,9 +1,11 @@
-import { Injectable, inject, signal } from "@angular/core";
+import { Injectable, effect, inject, signal } from "@angular/core";
 import {  } from "ngx-socket-io";
 import { StorageService } from "../storage.service";
 import { User } from "../user.service";
 import { io, Socket } from "socket.io-client";
 import { Router } from "@angular/router";
+import { GameService } from "./game.service";
+import { AuthService } from "../auth.service";
 
 @Injectable({
     providedIn: 'root'
@@ -15,14 +17,24 @@ export class ChallangeService {
     });
     private storage = inject(StorageService);
     private router = inject(Router);
+    private gameService = inject(GameService);
+    private authService = inject(AuthService);
 
-    private self = signal(this.storage.getItem<User>('SELF')?.id);
+    private self = this.authService.user;
 
     private _invites = signal<string[]>(this.storage.getItem<string[]>('INVITES') ?? []);
     readonly invites = this._invites.asReadonly();
 
     constructor() {
-        
+        effect(() => {
+            this.self();
+            if (this.self()) {
+                this.connect();
+            }
+            else {
+                this.disconnect();
+            }
+        })
     }
 
     listen() {
@@ -51,7 +63,7 @@ export class ChallangeService {
         this.socket.on('disconnection',
             data => {
                 console.log('disconnection heard');
-                this.eraseInvite(data);
+                this.eraseInvite(data.source);
             }
         )
     }
@@ -67,24 +79,25 @@ export class ChallangeService {
     }
 
     disconnect() {
+        if (this.socket.disconnected) return;
         console.log('disconnect');
         this.clear();
         this.socket.disconnect();
     }
 
     sendId() {
-        console.log('id-response sent', this.self());
-        this.socket.emit('id-response', { id: this.self() });
+        console.log('id-response sent', this.self()?.id);
+        this.socket.emit('id-response', { id: this.self()?.id });
     }
 
     sendInvite(target: string) {
         console.log('invite sent');
-        this.socket.emit('invite', { source: this.self(), target: target });
+        this.socket.emit('invite', { source: this.self()?.id, target: target });
     }
 
     sendAccept(target: string) {
-        console.log('accept sent', this.self(), " ", target);
-        this.socket.emit('accept', { source: this.self(), target: target });
+        console.log('accept sent', this.self()?.id, " ", target);
+        this.socket.emit('accept', { source: this.self()?.id, target: target });
     }
 
     handleInvite(source: string) {
@@ -99,7 +112,9 @@ export class ChallangeService {
         this.storage.setItem('OPP', data.source);
         this.storage.setItem('FIRST', data.myMove);
         this.eraseInvite(data.source);
+        this.gameService.canEnter.set(true);
         this.router.navigate(['/game']);
+        this.gameService.canLeave.set(false);
     }
 
     eraseInvite(source: string) {
@@ -112,13 +127,7 @@ export class ChallangeService {
         this.socket.off('accept');
         this.socket.off('disconnection');
         this._invites.set([]);
-        this.self.set('');
         this.storage.removeItem('INVITES');
         console.log('clear');
-    }
-
-    updateSelf(id: string) {
-        this.self.set(id);
-        console.log('chall service updated to ', this.self());
     }
 }
