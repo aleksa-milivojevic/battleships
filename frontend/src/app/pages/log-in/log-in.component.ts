@@ -43,6 +43,7 @@ export class LoginComponent {
             },
             error: (err) => {
                 this.isLoading.set(false);
+                console.log(err.error);
                 this.errorMessage.set(err.error.message ?? "Sorry, an error has occurred. Try again in a bit.");
                 this.form.get('password')?.setValue('');
             }

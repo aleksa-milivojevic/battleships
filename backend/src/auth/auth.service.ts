@@ -58,9 +58,10 @@ export class AuthService {
         if (db_res.user.banned) throw new BadRequestException('User is permanently banned');
         if (db_res.user.timeout !== null) {
             if (db_res.user.timeout > new Date()) {
-                throw new BadRequestException(`User is timed out until ${db_res.user.timeout.getDay()}.${db_res.user.timeout.getMonth()}.${db_res.user.timeout.getFullYear()}.`);
+                throw new BadRequestException(`User is timed out until ${db_res.user.timeout.getDate()}.${db_res.user.timeout.getMonth() + 1}.${db_res.user.timeout.getFullYear()}. at ${db_res.user.timeout.getHours()}:${db_res.user.timeout.getMinutes()}`);
             }
             await this.userService.expire(user.userId);
+            db_res.user.timeout = null;
         }
 
         const accessToken = await this.jwtService.signAsync(tokenPayload);
