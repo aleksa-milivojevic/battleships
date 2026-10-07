@@ -280,10 +280,8 @@ export class BotService {
                     result = 'hit';
                     this.crossCorners(x, y);
                     console.log('post corners');
-                    this.printAround(x, y)
                     this.setNextMoves(x, y);
                     console.log('post moves');
-                    this.printAround(x, y)
                 }
             }
             else if (this._oppField()[x][y] === 0) {

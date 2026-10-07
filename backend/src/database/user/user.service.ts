@@ -305,8 +305,8 @@ export class UserService {
         }
 
         let date = new Date();
-        // date.setHours(date.getHours() + duration * 24);
-        date.setMinutes(date.getMinutes() + duration);
+        date.setHours(date.getHours() + duration * 24);
+        // date.setMinutes(date.getMinutes() + duration);
 
         const result = await this.userRepository.update({ id: targetId }, { timeout: date });
         if (result.affected !== 1) {
