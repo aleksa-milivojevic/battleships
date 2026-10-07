@@ -18,6 +18,7 @@ export class BotService {
     private _field = signal<number[][]>(Array.from({ length: 10 }, () => Array(10).fill(0)));
     readonly field = this._field.asReadonly();
 
+    // 1 ship, 0 sea, -1 sunk, -2 miss
     private _oppField = signal<number[][]>([]);
 
     private nextMove = signal<{ x: number, y: number, axis: number }[]>([]);
@@ -278,7 +279,11 @@ export class BotService {
                 else {
                     result = 'hit';
                     this.crossCorners(x, y);
+                    console.log('post corners');
+                    this.printAround(x, y)
                     this.setNextMoves(x, y);
+                    console.log('post moves');
+                    this.printAround(x, y)
                 }
             }
             else if (this._oppField()[x][y] === 0) {
@@ -302,15 +307,24 @@ export class BotService {
                 this._oppField.update(field => {let f = field.map(row => [...row]); f[x][y] = -1; return f });
                 if (this.gameOver(this._oppField())) result = 'game-end';
                 else {
+                    this.crossCorners(x, y);
                     result = 'hit';
                     this.nextMove.update(list => list.filter(m => m.axis === axis));
-                    if (axis) {
-                        if (this._oppField()[x][y-1] >= 0) this.nextMove.update(list => { return [...list, { x: x, y: y-1, axis: 1 }]});
-                        if (this._oppField()[x][y+1] >= 0) this.nextMove.update(list => { return [...list, { x: x, y: y+1, axis: 1 }]});
+                    if (!axis) {
+                        if (y - 1 >= 0 && this._oppField()[x][y-1] >= 0) {
+                            this.nextMove.update(list => { return [...list, { x: x, y: y-1, axis: 0 }]});
+                        }
+                        if (y + 1 <= this.fieldDim && this._oppField()[x][y+1] >= 0) {
+                            this.nextMove.update(list => { return [...list, { x: x, y: y+1, axis: 0 }]});
+                        }
                     }
                     else {
-                        if (this._oppField()[x-1][y] >= 0) this.nextMove.update(list => { return [...list, { x: x-1, y: y, axis: 0 }]});
-                        if (this._oppField()[x+1][y] >= 0) this.nextMove.update(list => { return [...list, { x: x+1, y: y, axis: 0 }]});
+                        if (x - 1 >= 0 && this._oppField()[x-1][y] >= 0) {
+                            this.nextMove.update(list => { return [...list, { x: x-1, y: y, axis: 1 }]});
+                        }
+                        if (x + 1 <= this.fieldDim && this._oppField()[x+1][y] >= 0) {
+                            this.nextMove.update(list => { return [...list, { x: x+1, y: y, axis: 1 }]});
+                        }
                     }
                 }
             }

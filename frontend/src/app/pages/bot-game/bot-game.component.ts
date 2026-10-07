@@ -105,7 +105,6 @@ export class BotGameComponent implements OnInit {
     }
 
     botMove() {
-        console.log('bot');
         this.botAgain.set(false);
         let attack = this.bot.attack();
         let x = attack.coords.x;
@@ -137,7 +136,6 @@ export class BotGameComponent implements OnInit {
     }
 
     onAttack(x: number, y: number) {
-        console.log('me');
         let report = this.bot.regiterAttack(x, y);
         if (report === 'hit') {
             this.oppField.update(field => {
