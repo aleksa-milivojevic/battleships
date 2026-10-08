@@ -146,6 +146,7 @@ export class BotService {
         while (success < 2) {
             let x = Math.floor(Math.random() * 10);
             let y = Math.floor(Math.random() * 10);
+            if (this.isTaken(x, y, taken)) continue;
 
             let bot1 = this.isTaken(x+1, y, taken), bot2 = this.isTaken(x+2, y, taken);
             let top1 = this.isTaken(x-1, y, taken), top2 = this.isTaken(x-2, y, taken);
