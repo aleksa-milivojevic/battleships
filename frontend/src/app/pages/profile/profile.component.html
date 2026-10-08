@@ -14,7 +14,9 @@
                         [(ngModel)]="newUsername"
                         [disabled]="!showChNameScreen()"> -->
                         <label class="username">{{ self()?.username }}</label>
-                        <button class="edit-btn" (click)="toggleChNameScreen()">e</button>
+                        <div class="edit-btn">
+                            <img class="edit-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1791479845/2026_10_08_0w4_Kleki_ouwdau.png" alt="<e>" (click)="toggleChNameScreen()">
+                        </div>
                     </div>
                 </div>
                 <div class="email-div">
@@ -28,13 +30,17 @@
                         [(ngModel)]="newEmail"
                         [disabled]="!showChNameScreen()"> -->
                         <label class="email">{{ self()?.email }}</label>
-                        <button class="edit-btn" (click)="toggleChEmailScreen()">e</button>
+                        <div class="edit-btn">
+                            <img class="edit-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1791479845/2026_10_08_0w4_Kleki_ouwdau.png" alt="<e>" (click)="toggleChEmailScreen()">
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="pfp">
                 <img [src]="self()?.picture" alt="PFP">
-                <button class="edit-pfp-btn" (click)="toggleUpdatePicture()">e</button>
+                <div class="edit-pfp-btn">
+                    <img class="edit-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1791479845/2026_10_08_0w4_Kleki_ouwdau.png" alt="<e>" (click)="toggleUpdatePicture()">
+                </div>
             </div>
         </div>
         <div class="score-block">
