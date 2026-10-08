@@ -60,104 +60,114 @@
 
 @if (showChNameScreen()) {
     <div class="overlay" (click)="toggleChNameScreen()">
-        <div class="overlay-div" (click)="$event.stopPropagation()">
-            <input name="username" type="text" class="new-username" placeholder="New Username" [(ngModel)]="newUsername">
-            @if (!validUsername() && newUsername().length > 0) {
-                <label class="error-msg">Username must be at least 3 characters</label>
-            } @else {
-                <label class="fill"></label>
-            }
-            <div class="overlay-btns">
-                <button class="cancel" [disabled]="loading()" (click)="toggleChNameScreen()">Cancel</button>
-                <button class="confirm" [disabled]="!validUsername() || loading()" (click)="onChName()">Confirm</button>
+        <form (ngSubmit)="onChName()">
+            <div class="overlay-div" (click)="$event.stopPropagation()">
+                <input name="username" type="text" class="new-username" placeholder="New Username" [(ngModel)]="newUsername">
+                @if (!validUsername() && newUsername().length > 0) {
+                    <label class="error-msg">Username must be at least 3 characters</label>
+                } @else {
+                    <label class="fill"></label>
+                }
+                <div class="overlay-btns">
+                    <button type="button" class="cancel" [disabled]="loading()" (click)="toggleChNameScreen()">Cancel</button>
+                    <button type="submit" class="confirm" [disabled]="!validUsername() || loading()">Confirm</button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 }
 
 @if (showChEmailScreen()) {
     <div class="overlay" (click)="toggleChEmailScreen()">
-        <div class="overlay-div" (click)="$event.stopPropagation()">
-            <input name="email" type="email" class="new-email" placeholder="New Email" [(ngModel)]="newEmail">
-            @if (errorMessage() != '') {
-                <label class="error-msg">{{ errorMessage() }}</label>
-            }
-            @else {
-                <label class="fill"></label>
-            }
-            <div class="overlay-btns">
-                <button class="cancel" [disabled]="loading()" (click)="toggleChEmailScreen()">Cancel</button>
-                <button class="confirm" [disabled]="!validEmail() || loading()" (click)="onChEmail()">Confirm</button>
+        <form (ngSubmit)="onChEmail()">
+            <div class="overlay-div" (click)="$event.stopPropagation()">
+                <input name="email" type="email" class="new-email" placeholder="New Email" [(ngModel)]="newEmail">
+                @if (errorMessage() != '') {
+                    <label class="error-msg">{{ errorMessage() }}</label>
+                }
+                @else {
+                    <label class="fill"></label>
+                }
+                <div class="overlay-btns">
+                    <button type="button" class="cancel" [disabled]="loading()" (click)="toggleChEmailScreen()">Cancel</button>
+                    <button type="submit" class="confirm" [disabled]="!validEmail() || loading()">Confirm</button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 }
 
 @if (showChPassScreen()) {
     <div class="overlay" (click)="toggleChPassScreen()">
-        <div class="overlay-div" (click)="$event.stopPropagation()">
-            <input name="password" type="password" class="password" placeholder="current password" [(ngModel)]="password">
-            <input name="newPassword" type="password" class="new-password" placeholder="new password" [(ngModel)]="newPassword">
-            <input name="newPassword2" type="password" class="new-password" placeholder="confirm password" [(ngModel)]="newPassword2">
-            @if (!validPass() && password().length > 0 && newPassword().length > 0 && newPassword() === newPassword2()) {
-                <label class="error-msg">Passwords must be at least 5 characters</label>
-            } @else if (!validPass() && newPassword().length >= 5 && newPassword2().length >= 5) {
-                <label class="error-msg">New passwords must match</label>
-            } @else if (errorMessage() !== '') {
-                <label class="error-msg">{{ errorMessage() }}</label>
-            } @else {
-                <label class="fill"></label>
-            }
-            <div class="overlay-btns">
-                <button class="cancel" [disabled]="loading()" (click)="toggleChPassScreen()">Cancel</button>
-                <button class="confirm" [disabled]="!validPass() || loading()" (click)="onChPass()">Confirm</button>
+        <form (ngSubmit)="onChPass()">
+            <div class="overlay-div" (click)="$event.stopPropagation()">
+                <input name="password" type="password" class="password" placeholder="current password" [(ngModel)]="password">
+                <input name="newPassword" type="password" class="new-password" placeholder="new password" [(ngModel)]="newPassword">
+                <input name="newPassword2" type="password" class="new-password" placeholder="confirm password" [(ngModel)]="newPassword2">
+                @if (!validPass() && password().length > 0 && newPassword().length > 0 && newPassword() === newPassword2()) {
+                    <label class="error-msg">Passwords must be at least 5 characters</label>
+                } @else if (!validPass() && newPassword().length >= 5 && newPassword2().length >= 5) {
+                    <label class="error-msg">New passwords must match</label>
+                } @else if (errorMessage() !== '') {
+                    <label class="error-msg">{{ errorMessage() }}</label>
+                } @else {
+                    <label class="fill"></label>
+                }
+                <div class="overlay-btns">
+                    <button type="button" class="cancel" [disabled]="loading()" (click)="toggleChPassScreen()">Cancel</button>
+                    <button type="submit" class="confirm" [disabled]="!validPass() || loading()">Confirm</button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 }
 
 @if (showDelScreen()) {
     <div class="overlay" (click)="toggleDelScreen()">
-        <div class="overlay-div" (click)="$event.stopPropagation()">
-            <input name="password" type="password" class="password" placeholder="password" [(ngModel)]="delPassword">
-            @if (errorMessage() !== '') {
-                <label class="error-msg">{{ errorMessage() }}</label>
-            } @else {
-                <label class="fill"></label>
-            }
-            <div class="overlay-btns">
-                <button class="cancel" [disabled]="loading()" (click)="toggleDelScreen()">Cancel</button>
-                <button class="confirm" [disabled]="!validDel() || loading()" (click)="onDel()">Confirm</button>
+        <form (ngSubmit)="onDel()">
+            <div class="overlay-div" (click)="$event.stopPropagation()">
+                <input name="password" type="password" class="password" placeholder="password" [(ngModel)]="delPassword">
+                @if (errorMessage() !== '') {
+                    <label class="error-msg">{{ errorMessage() }}</label>
+                } @else {
+                    <label class="fill"></label>
+                }
+                <div class="overlay-btns">
+                    <button type="button" class="cancel" [disabled]="loading()" (click)="toggleDelScreen()">Cancel</button>
+                    <button type="submit" class="confirm" [disabled]="!validDel() || loading()">Confirm</button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 }
 
 @if (showUpdatePicture()) {
-    <div class="overlay">
-        <div class="overlay-dialog">
-            <div class="input-fields">
-                <div class="drop-zone" 
-                    [class.drop-zone--hover]="isHovered()"
-                    (dragover)="onDragOver($event)"
-                    (dragleave)="onDragLeave()"placeholder
-                    (drop)="onDrop($event)"
-                    (click)="fileInput.click()">
+    <div class="overlay" (click)="toggleUpdatePicture()">
+        <form class="img-form" (ngSubmit)="onUpdatePicture()">
+            <div class="overlay-dialog"  (click)="$event.stopPropagation()">
+                <div class="input-fields">
+                    <div class="drop-zone" 
+                        [class.drop-zone--hover]="isHovered()"
+                        (dragover)="onDragOver($event)"
+                        (dragleave)="onDragLeave()"placeholder
+                        (drop)="onDrop($event)"
+                        (click)="fileInput.click()">
 
-                    @if (!imagePreview()) {
-                        <span class="drop-text">Drop a picture</span>
-                    } @else {
-                        <img [src]="imagePreview()" alt="Pregled slike" class="image-preview">
-                    }
+                        @if (!imagePreview()) {
+                            <span class="drop-text">Drop a picture</span>
+                        } @else {
+                            <img [src]="imagePreview()" alt="Pregled slike" class="image-preview">
+                        }
 
-                    <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+                        <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+                    </div>
+                    @if (errorMessage().length > 0) {<p class="error-message">{{ errorMessage() }}</p>}
                 </div>
-                @if (errorMessage().length > 0) {<p class="error-message">{{ errorMessage() }}</p>}
+                <div class="button-field">
+                    <button type="button" class="cancel" (click)="toggleUpdatePicture(); errorMessage.set('')">Cancel</button>
+                    <button type="submit" [ngClass]="loading() ? 'loading' : 'confirm'" [disabled]="!updatePictureValid()">{{loading() ? 'Confirming...' : 'Confirm' }}</button>
+                </div>
             </div>
-            <div class="button-field">
-                <button class="cancel" (click)="toggleUpdatePicture(); errorMessage.set('')">Cancel</button>
-                <button [ngClass]="loading() ? 'loading' : 'confirm'" (click)="onUpdatePicture()" [disabled]="!updatePictureValid()">{{loading() ? 'Confirming...' : 'Confirm' }}</button>
-            </div>
-        </div>
+        </form>
     </div>
 }
