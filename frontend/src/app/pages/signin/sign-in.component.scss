@@ -86,10 +86,14 @@ label {
     transition: filter 0.2s ease;
 
     &:hover {
+        color: white;
+        background-color: #0496C7;
         filter: brightness(90%);
     }
 
     &:active {
+        color: white;
+        background-color: #0496C7;
         filter: brightness(70%);
     }
 
