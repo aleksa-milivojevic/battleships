@@ -132,6 +132,7 @@ export class BotGameComponent implements OnInit {
                 return f;
             })
             this.gameOver.set(true);
+            this.oppField.set(this.bot.getGOField());
         }
     }
 
@@ -140,14 +141,14 @@ export class BotGameComponent implements OnInit {
         if (report === 'hit') {
             this.oppField.update(field => {
                 let f = field.map(row => [...row]);
-                f[x][y] = 1;
+                f[x][y] = -1;
                 return f;
             })
         }
         else if (report === 'miss') {
             this.oppField.update(field => {
                 let f = field.map(row => [...row]);
-                f[x][y] = -1;
+                f[x][y] = -2;
                 return f;
             })
             this.myMove.set(false);
@@ -155,7 +156,7 @@ export class BotGameComponent implements OnInit {
         else if (report === 'game-end') {
             this.oppField.update(field => {
                 let f = field.map(row => [...row]);
-                f[x][y] = 1;
+                f[x][y] = -1;
                 return f;
             })
             this.gameOver.set(true);

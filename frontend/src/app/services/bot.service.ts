@@ -259,6 +259,8 @@ export class BotService {
             if (this.gameOver(this._field())) return 'game-end';
             return 'hit'
         }
+        else if (this._field()[x][y] === 0)
+            this._field.update(field => { let f = field.map(row => [...row]); f[x][y] = -2; return f });
         return 'miss';
     }
 
@@ -531,5 +533,9 @@ export class BotService {
         this._field.set([]);
         this._oppField.set([]);
         this.nextMove.set([]);
+    }
+
+    getGOField() {
+        return this._field();
     }
 }
