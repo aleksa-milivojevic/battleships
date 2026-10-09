@@ -29,6 +29,7 @@ export class BotGameComponent implements OnInit {
     oppField = signal<number[][]>(Array.from({ length: 10 }, () => Array(10).fill(0)));
 
     constructor() {
+        this.setupPhase.set(this.storage.getItem('PHASE') ?? this.setupPhase());
         this.field.set(this.storage.getItem('MY_FIELD') ?? this.field());
         this.oppField.set(this.storage.getItem('OPP_FIELD') ?? this.oppField());
         this.myMove.set(this.storage.getItem('MY_MOVE') ?? true);
@@ -82,6 +83,10 @@ export class BotGameComponent implements OnInit {
             if (this.botAgain()) {
                 setTimeout(() => this.botMove(), 1000);
             }
+        });
+        effect(() => {
+            this.setupPhase();
+            this.storage.setItem('PHASE', this.setupPhase());
         })
     }
 
@@ -194,5 +199,6 @@ export class BotGameComponent implements OnInit {
         this.storage.removeItem('WIN');
         this.storage.removeItem('FIELD_ERR');
         this.storage.removeItem('SURR_MSG');
+        this.storage.removeItem('PHASE');
     }
 }

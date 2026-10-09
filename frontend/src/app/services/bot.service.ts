@@ -27,6 +27,8 @@ export class BotService {
     canLeave = signal(true);
 
     constructor() {
+        this._field.set(this.storage.getItem('BOT_FIELD') ?? this._field());
+        this._oppField.set(this.storage.getItem('BOT_OPP_FIELD') ?? this._oppField());
         this.canEnter.set(this.storage.getItem<boolean>('BOT_CAN_ENTER') ?? this.canEnter());
         this.canLeave.set(this.storage.getItem<boolean>('BOT_CAN_LEAVE') ?? this.canLeave());
         effect(() => {
