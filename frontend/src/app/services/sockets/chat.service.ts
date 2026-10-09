@@ -76,6 +76,8 @@ export class ChatService {
             console.warn('Chat socket already disconnected');
         }
         this.socket.disconnect();
+        this.storage.removeItem('MESSAGES');
+        this.messages.set([]);
     }
 
     idResponse() {
