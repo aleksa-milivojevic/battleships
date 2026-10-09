@@ -53,6 +53,8 @@ export class GameService {
     private isRunning = signal(false);
     private intervalId: number | null = null;
 
+    goField = signal<number[][] | null>(null);
+
     constructor() {
         this.canEnter.set(this.storage.getItem<boolean>('GAME_CAN_ENTER') ?? this.canEnter());
         this.canLeave.set(this.storage.getItem<boolean>('GAME_CAN_LEAVE') ?? this.canLeave());
@@ -174,6 +176,13 @@ export class GameService {
             (data) => {
                 console.log('points heard');
                 this.updateScore(data.points);
+            }
+        )
+
+        this.socket.on('opp-field',
+            (data) => {
+                console.log('field heard');
+                this.goField.set(data.field);
             }
         )
 

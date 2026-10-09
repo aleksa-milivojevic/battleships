@@ -42,7 +42,7 @@ export class GameComponent implements OnInit {
 
     // 1 ship, 0 empty, -1 sunk, -2 miss
     field = signal<number[][]>(Array.from({ length: 10 }, () => Array(10).fill(0)));
-    // 1 hit, 0 not attacked, -1 miss
+    // 1 ship, 0 not attacked, -1 hit, -2 miss
     oppField = signal<number[][]>(Array.from({ length: 10 }, () => Array(10).fill(0)));
 
     constructor() {
@@ -71,6 +71,7 @@ export class GameComponent implements OnInit {
             const game = this.gameOver();
             if (game) {
                 this.showGameOverScreen();
+                this.oppField.set(this.gameService.goField() ?? this.oppField());
             }
         });
         effect(() => {
@@ -141,7 +142,7 @@ export class GameComponent implements OnInit {
             console.log('updating opp field: ', result, coords);
             this.oppField.update(field => {
                 let f = field.map(row => [...row]);
-                f[x][y] = 1;
+                f[x][y] = -1;
                 return f;
             });
         }
@@ -149,7 +150,7 @@ export class GameComponent implements OnInit {
             console.log('updating opp field: ', result, coords);
             this.oppField.update(field => {
                 let f = field.map(row => [...row]);
-                f[x][y] = -1;
+                f[x][y] = -2;
                 return f;
             });
             this.htmlMyMove.set(false);
@@ -158,7 +159,7 @@ export class GameComponent implements OnInit {
             console.log('updating opp field: ', result, coords);
             this.oppField.update(field => {
                 let f = field.map(row => [...row]);
-                f[x][y] = 1;
+                f[x][y] = -1;
                 return f;
             });
         }

@@ -97,13 +97,15 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
         
         const result = this.gameService.getAttackResult(
             coords,
-            this.clients.get(id)?.field!
+            this.clients.get(opp)?.field!
         );
 
         this.clients.get(opp)?.socket?.emit('attack', { result, coords });
         client.emit('report', { result, coords });
 
         if (result === 'game-end') {
+            this.clients.get(opp)?.socket?.emit('opp-field', { field: this.clients.get(id)?.field });
+
             const points = await this.gameService.saveMatch(id, opp);
             this.clients.get(opp)?.socket?.emit('points', { points });
             client.emit('points', { points });

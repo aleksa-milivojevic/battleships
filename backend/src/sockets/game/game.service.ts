@@ -167,9 +167,12 @@ export class GameService {
     getAttackResult(coords: number[], field: number[][]): string {
         console.log(coords);
         if (field[coords[0]][coords[1]] === 1) {
-            field[coords[0]][coords[1]] = 0;
+            field[coords[0]][coords[1]] = -1;
             if (this.gameOver(field)) return 'game-end';
             return 'hit';
+        }
+        else if (field[coords[0]][coords[1]] === 0) {
+            field[coords[0]][coords[1]] = -2;
         }
         return 'miss';
     }
@@ -177,7 +180,7 @@ export class GameService {
     gameOver(field): boolean {
         for (let i = 0; i < this.fieldDim; i++) {
             for (let j = 0; j < this.fieldDim; j++) {
-                if (field[i][j]) return false;
+                if (field[i][j] === 1) return false;
             }
         }
         return true;
