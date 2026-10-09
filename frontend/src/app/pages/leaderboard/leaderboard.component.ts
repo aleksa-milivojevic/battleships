@@ -2,12 +2,13 @@ import { Component, OnDestroy, OnInit, inject, signal } from "@angular/core";
 import { SidebarComponent } from "../../shared/sidebar/sidebar.component";
 import { User, UserService } from "../../services/user.service";
 import { AuthService } from "../../services/auth.service";
+import { FooterComponent } from "../../shared/footer/footer.component";
 
 
 @Component({
     selector: 'app-home',
     standalone: true,
-    imports: [SidebarComponent],
+    imports: [SidebarComponent, FooterComponent],
     templateUrl: './leaderboard.component.html',
     styleUrl: './leaderboard.component.scss',
 })

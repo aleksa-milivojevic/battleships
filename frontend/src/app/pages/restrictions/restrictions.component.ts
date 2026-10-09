@@ -5,11 +5,12 @@ import { SidebarComponent } from "../../shared/sidebar/sidebar.component";
 import { StorageService } from "../../services/storage.service";
 import { Report, ReportService, ReportedUser } from "../../services/report.service";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { FooterComponent } from "../../shared/footer/footer.component";
 
 @Component({
     selector: 'app-restrictions',
     standalone: true,
-    imports: [SidebarComponent, FormsModule, ReactiveFormsModule],
+    imports: [SidebarComponent, FormsModule, ReactiveFormsModule, FooterComponent],
     templateUrl: './restrictions.component.html',
     styleUrl: './restrictions.component.scss'
 })

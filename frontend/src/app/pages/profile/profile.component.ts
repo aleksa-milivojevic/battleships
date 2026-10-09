@@ -5,11 +5,12 @@ import { AuthService } from "../../services/auth.service";
 import { UserService } from "../../services/user.service";
 import { Router } from "@angular/router";
 import { CommonModule } from "@angular/common";
+import { FooterComponent } from "../../shared/footer/footer.component";
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [SidebarComponent, FormsModule, ReactiveFormsModule, CommonModule],
+  imports: [SidebarComponent, FormsModule, ReactiveFormsModule, CommonModule, FooterComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })

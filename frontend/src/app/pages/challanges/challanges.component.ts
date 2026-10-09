@@ -2,11 +2,12 @@ import { Component, OnInit, effect, inject, signal } from "@angular/core";
 import { ChallangeService } from "../../services/sockets/challange.service";
 import { SidebarComponent } from "../../shared/sidebar/sidebar.component";
 import { User, UserService } from "../../services/user.service";
+import { FooterComponent } from "../../shared/footer/footer.component";
 
 @Component({
   selector: 'app-challanges',
   standalone: true,
-  imports: [SidebarComponent],
+  imports: [SidebarComponent, FooterComponent],
   templateUrl: './challanges.component.html',
   styleUrl: './challanges.component.scss',
 })
