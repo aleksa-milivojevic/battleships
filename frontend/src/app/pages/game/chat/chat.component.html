@@ -29,9 +29,11 @@
                 <label [ngClass]="(msg.author) ? 'opp-msg' : 'my-msg'">{{ msg.text }}</label>
             }
         </div>
-        <div class="input-div">
-            <input type="text" name="message" placeholder="write a message..." [ngModel]="message()" (ngModelChange)="message.set($event)">
-            <img class="send-btn"(click)="sendMessage()" [class.disabled]="message() === ''" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790712682/send_ejv3u5.png" alt="<send>">
-        </div>
+        <form (ngSubmit)="sendMessage()">
+            <div class="input-div">
+                    <input type="text" name="message" placeholder="write a message..." [ngModel]="message()" (ngModelChange)="message.set($event)">
+                    <img type="submit" class="send-btn" [class.disabled]="message() === ''" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790712682/send_ejv3u5.png" alt="<send>">
+            </div>
+        </form>
     </div>
 </div>
