@@ -94,8 +94,10 @@ app-sidebar {
 }
 
 .rank {
-    margin-left: 5px;
     margin-right: 20px;
+    text-align: center;
+    max-width: 45px;
+    min-width: 45px;
     font-size: 110%;
     font-weight: 900;
     color: white;
@@ -116,7 +118,8 @@ app-sidebar {
 .rank-img {
     height: 40px;
     aspect-ratio: 1 / 1;
-    margin-right: 13px;
+    margin-right: 20px;
+    margin-left: 3px;
 }
 
 .desc-div {
