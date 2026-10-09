@@ -1,0 +1,76 @@
+.footer {
+    min-height: 150px;
+    max-height: 150px;
+    min-width: 100vw;
+    max-width: 100vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: #01588b;
+    box-shadow: inset 0px 0px 2px 1px rgb(0, 0, 0, 0.3);
+}
+
+.img-holder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    width: 100px;
+    border-radius: 50px;
+    border: 0px solid black;
+    transition: all 0.25s ease;
+    margin-left: 170px;
+    margin-right: auto;
+    background-color: #01588b;
+
+    &:hover {
+        filter: brightness(90%);
+    }
+}
+
+.logo {
+    height: 75px;
+    width: 75px;
+    border-radius: 50px;
+}
+
+.mark-div {
+    margin: 0;
+    padding: 0;
+    width: fit-content;
+}
+
+.mark {
+    font-size: 20px;
+    color: white;
+}
+
+.info {
+    margin-right: 190px;
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.info-img {
+    height: 40px;
+    width: 40px;
+    margin: 5px;
+    background-color: white;
+    border-radius: 50px;
+    padding: 3px;
+    transition: all 0.25s ease;
+
+    &:hover {
+        filter: brightness(90%);
+    }
+
+    &:hover {
+        filter: brightness(70%);
+    }
+}
+
+.info-img-gmail {
+    padding: 5px;
+}

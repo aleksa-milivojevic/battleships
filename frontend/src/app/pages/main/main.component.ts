@@ -1,4 +1,4 @@
-import { Component, OnInit, WritableSignal, effect, inject, signal, untracked } from '@angular/core';
+import { Component, OnInit, effect, inject, signal, untracked } from '@angular/core';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { FormsModule } from "@angular/forms";
 import { User, UserService } from '../../services/user.service';
@@ -8,11 +8,12 @@ import { ChallangeService } from '../../services/sockets/challange.service';
 import { QueueService } from '../../services/sockets/queue.service';
 import { Router } from '@angular/router';
 import { BotService } from '../../services/bot.service';
+import { FooterComponent } from '../../shared/footer/footer.component';
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [SidebarComponent, FormsModule],
+  imports: [SidebarComponent, FormsModule, FooterComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })
