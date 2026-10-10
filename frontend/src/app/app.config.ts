@@ -10,6 +10,8 @@ import { QueueService } from './services/sockets/queue.service';
 import { GameService } from './services/sockets/game.service';
 import { BotService } from './services/bot.service';
 import { RestrictionService } from './services/sockets/restriction.service';
+import { provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,6 +28,14 @@ export const appConfig: ApplicationConfig = {
     QueueService,
     GameService,
     BotService,
-    RestrictionService
+    RestrictionService,
+    provideTranslateService({
+      lang: 'en',
+      fallbackLang: 'en',
+      loader: provideTranslateHttpLoader({
+        prefix: '/i18n/',
+        suffix: '.json'
+      })
+    }),
   ]
 };

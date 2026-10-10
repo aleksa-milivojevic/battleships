@@ -2,7 +2,7 @@
     <app-sidebar></app-sidebar>
     <div class="container">
         <div class="desc-div">
-            <label class="desc">Challenges</label>
+            <label class="desc">{{ "challanges" | translate }}</label>
         </div>
         <div class="invite-list">
             @if (invites().length > 0) {
@@ -16,12 +16,12 @@
                             <img class="trophy" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950377/trophy_mxczir.png" alt="<trophy>">
                         </div>
                     </div>
-                    <button class="accept" (click)="acceptInvite(invite.id)">Accept</button>
+                    <button class="accept" (click)="acceptInvite(invite.id)">{{ 'accept' | translate }}</button>
                 </div>
             }
             }
             @else {
-                <label class="no-invites">{{ 'When another player challenges you to a match,\nthe invitation will show up here.\n Currently there are no challenges sent your way.' }}</label>
+                <label class="no-invites">{{ 'challanges-info' | translate }}</label>
             }
         </div>
     </div>

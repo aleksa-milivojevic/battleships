@@ -1,7 +1,7 @@
 <div class="main">
     <div class="opp-div">
         <div class="pts-div">
-            <label class="pts">{{ 'Points for this match:\n+' + winPts() + '/-' + lossPts() }}</label>
+            <label class="pts">{{ ('match-points' | translate) + '\n+' + winPts() + '/-' + lossPts() }}</label>
         </div>
         <div class="username-div">
             <img class="pfp" [src]="opp()?.picture" alt="<pfp>">
@@ -14,10 +14,10 @@
             </div>
         </div>
         <div class="dropdown">
-            <button class="report-btn" (click)="toggleReportOptions()">report</button>
+            <button class="report-btn" (click)="toggleReportOptions()">{{ 'report' | translate }}</button>
             <div class="report-div" [class.hidden]="!showReportOptions()">
-                <label class="report-option" [class.disabled]="cheatReported()" (click)="onReport()">cheating</label>
-                <label class="report-option" [class.disabled]="msgReported()" (click)="onReport('messages')">vulgar chat</label>
+                <label class="report-option" [class.disabled]="cheatReported()" (click)="onReport()">{{ "cheating" | translate }}</label>
+                <label class="report-option" [class.disabled]="msgReported()" (click)="onReport('messages')">{{ 'vulgar-chat' | translate }}</label>
             </div>
         </div>
         

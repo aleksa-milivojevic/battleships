@@ -3,12 +3,13 @@ import { SidebarComponent } from "../../shared/sidebar/sidebar.component";
 import { User, UserService } from "../../services/user.service";
 import { AuthService } from "../../services/auth.service";
 import { FooterComponent } from "../../shared/footer/footer.component";
+import { TranslatePipe } from "@ngx-translate/core";
 
 
 @Component({
     selector: 'app-home',
     standalone: true,
-    imports: [SidebarComponent, FooterComponent],
+    imports: [SidebarComponent, FooterComponent, TranslatePipe],
     templateUrl: './leaderboard.component.html',
     styleUrl: './leaderboard.component.scss',
 })

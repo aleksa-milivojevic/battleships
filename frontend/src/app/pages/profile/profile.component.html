@@ -4,7 +4,7 @@
         <div class="user-top">
             <div class="username-email-div">
                 <div class="username-div">
-                    <label class="username-lbl">username:</label>
+                    <label class="username-lbl">{{ 'username' | translate }}</label>
                     <div class="input-div">
                         <!-- <input
                         name="username"
@@ -44,22 +44,22 @@
             </div>
         </div>
         <div class="score-block">
-            <label class="score-lbl">Your score:</label>
+            <label class="score-lbl">{{ 'ur-score' | translate }}</label>
             <div class="score-div">
                 <label class="score">{{ self()?.score ?? 0 }}</label>
                 <img class="trophy" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950377/trophy_mxczir.png" alt="<trophy>">
             </div>
         </div>
         <div class="date-div">
-            <label class="date-lbl">Joined the seas:</label>
+            <label class="date-lbl">{{ 'joined' | translate }}</label>
             <div class="input-div-2">
                 <!-- <label class="date">{{ self()?.createdAt!.getDay() + "." + self()?.createdAt!.getMonth() + "." + self()?.createdAt!.getFullYear() + "." }}</label> -->
                 <label class="date">{{ getCreatedAt() }}</label>
             </div>
         </div>
         <div class="btns">
-            <button class="password-btn" (click)="toggleChPassScreen()">Change password</button>
-            <button class="delete-btn" (click)="toggleDelScreen()">Delete account</button>
+            <button class="password-btn" (click)="toggleChPassScreen()">{{ 'ch-pass' | translate }}</button>
+            <button class="delete-btn" (click)="toggleDelScreen()">{{ 'del-acc' | translate }}</button>
         </div>
     </div>
 </div>
@@ -69,15 +69,15 @@
     <div class="overlay" (click)="toggleChNameScreen()">
         <form (ngSubmit)="onChName()">
             <div class="overlay-div" (click)="$event.stopPropagation()">
-                <input name="username" type="text" class="new-username" placeholder="New Username" [(ngModel)]="newUsername">
+                <input name="username" type="text" class="new-username" [placeholder]="('new-name' | translate)" [(ngModel)]="newUsername">
                 @if (!validUsername() && newUsername().length > 0) {
-                    <label class="error-msg">Username must be at least 3 characters</label>
+                    <label class="error-msg">{{ '3-char-err' | translate }}</label>
                 } @else {
                     <label class="fill"></label>
                 }
                 <div class="overlay-btns">
-                    <button type="button" class="cancel" [disabled]="loading()" (click)="toggleChNameScreen()">Cancel</button>
-                    <button type="submit" class="confirm" [disabled]="!validUsername() || loading()">Confirm</button>
+                    <button type="button" class="cancel" [disabled]="loading()" (click)="toggleChNameScreen()">{{ 'cancel' | translate }}</button>
+                    <button type="submit" class="confirm" [disabled]="!validUsername() || loading()">{{ 'confirm' | translate }}</button>
                 </div>
             </div>
         </form>
@@ -88,16 +88,16 @@
     <div class="overlay" (click)="toggleChEmailScreen()">
         <form (ngSubmit)="onChEmail()">
             <div class="overlay-div" (click)="$event.stopPropagation()">
-                <input name="email" type="email" class="new-email" placeholder="New Email" [(ngModel)]="newEmail">
+                <input name="email" type="email" class="new-email" [placeholder]="('new-email' | translate)" [(ngModel)]="newEmail">
                 @if (errorMessage() != '') {
-                    <label class="error-msg">{{ errorMessage() }}</label>
+                    <label class="error-msg">{{ errorMessage() | translate }}</label>
                 }
                 @else {
                     <label class="fill"></label>
                 }
                 <div class="overlay-btns">
-                    <button type="button" class="cancel" [disabled]="loading()" (click)="toggleChEmailScreen()">Cancel</button>
-                    <button type="submit" class="confirm" [disabled]="!validEmail() || loading()">Confirm</button>
+                    <button type="button" class="cancel" [disabled]="loading()" (click)="toggleChEmailScreen()">{{ 'cancel' | translate }}</button>
+                    <button type="submit" class="confirm" [disabled]="!validEmail() || loading()">{{ 'confirm' | translate }}</button>
                 </div>
             </div>
         </form>
@@ -108,21 +108,21 @@
     <div class="overlay" (click)="toggleChPassScreen()">
         <form (ngSubmit)="onChPass()">
             <div class="overlay-div" (click)="$event.stopPropagation()">
-                <input name="password" type="password" class="password" placeholder="current password" [(ngModel)]="password">
-                <input name="newPassword" type="password" class="new-password" placeholder="new password" [(ngModel)]="newPassword">
-                <input name="newPassword2" type="password" class="new-password" placeholder="confirm password" [(ngModel)]="newPassword2">
+                <input name="password" type="password" class="password" [placeholder]="('curr-pass' | translate)" [(ngModel)]="password">
+                <input name="newPassword" type="password" class="new-password" [placeholder]="('new-pass' | translate)" [(ngModel)]="newPassword">
+                <input name="newPassword2" type="password" class="new-password" [placeholder]="('confirm-pass' | translate)" [(ngModel)]="newPassword2">
                 @if (!validPass() && password().length > 0 && newPassword().length > 0 && newPassword() === newPassword2()) {
-                    <label class="error-msg">Passwords must be at least 5 characters</label>
+                    <label class="error-msg">{{ 'pass-err' | translate }}</label>
                 } @else if (!validPass() && newPassword().length >= 5 && newPassword2().length >= 5) {
-                    <label class="error-msg">New passwords must match</label>
+                    <label class="error-msg">{{ 'pass-err-2' | translate }}</label>
                 } @else if (errorMessage() !== '') {
-                    <label class="error-msg">{{ errorMessage() }}</label>
+                    <label class="error-msg">{{ errorMessage() | translate }}</label>
                 } @else {
                     <label class="fill"></label>
                 }
                 <div class="overlay-btns">
-                    <button type="button" class="cancel" [disabled]="loading()" (click)="toggleChPassScreen()">Cancel</button>
-                    <button type="submit" class="confirm" [disabled]="!validPass() || loading()">Confirm</button>
+                    <button type="button" class="cancel" [disabled]="loading()" (click)="toggleChPassScreen()">{{ 'cancel' | translate }}</button>
+                    <button type="submit" class="confirm" [disabled]="!validPass() || loading()">{{ 'confirm' | translate }}</button>
                 </div>
             </div>
         </form>
@@ -133,15 +133,15 @@
     <div class="overlay" (click)="toggleDelScreen()">
         <form (ngSubmit)="onDel()">
             <div class="overlay-div" (click)="$event.stopPropagation()">
-                <input name="password" type="password" class="password" placeholder="password" [(ngModel)]="delPassword">
+                <input name="password" type="password" class="password" [placeholder]="('password' | translate)" [(ngModel)]="delPassword">
                 @if (errorMessage() !== '') {
-                    <label class="error-msg">{{ errorMessage() }}</label>
+                    <label class="error-msg">{{ errorMessage() | translate }}</label>
                 } @else {
                     <label class="fill"></label>
                 }
                 <div class="overlay-btns">
-                    <button type="button" class="cancel" [disabled]="loading()" (click)="toggleDelScreen()">Cancel</button>
-                    <button type="submit" class="confirm" [disabled]="!validDel() || loading()">Confirm</button>
+                    <button type="button" class="cancel" [disabled]="loading()" (click)="toggleDelScreen()">{{ 'cancel' | translate }}</button>
+                    <button type="submit" class="confirm" [disabled]="!validDel() || loading()">{{ 'confirm' | translate }}</button>
                 </div>
             </div>
         </form>
@@ -161,18 +161,18 @@
                         (click)="fileInput.click()">
 
                         @if (!imagePreview()) {
-                            <span class="drop-text">Drop a picture</span>
+                            <span class="drop-text">{{ 'drop-pic' | translate }}</span>
                         } @else {
                             <img [src]="imagePreview()" alt="Pregled slike" class="image-preview">
                         }
 
                         <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none;">
                     </div>
-                    @if (errorMessage().length > 0) {<p class="error-message">{{ errorMessage() }}</p>}
+                    @if (errorMessage().length > 0) {<p class="error-message">{{ errorMessage() | translate }}</p>}
                 </div>
                 <div class="button-field">
-                    <button type="button" class="cancel" (click)="toggleUpdatePicture(); errorMessage.set('')">Cancel</button>
-                    <button type="submit" [ngClass]="loading() ? 'loading' : 'confirm'" [disabled]="!updatePictureValid()">{{loading() ? 'Confirming...' : 'Confirm' }}</button>
+                    <button type="button" class="cancel" (click)="toggleUpdatePicture(); errorMessage.set('')">{{ 'cancel' | translate  }}</button>
+                    <button type="submit" [ngClass]="loading() ? 'loading' : 'confirm'" [disabled]="!updatePictureValid()">{{ 'confirm' | translate }}</button>
                 </div>
             </div>
         </form>

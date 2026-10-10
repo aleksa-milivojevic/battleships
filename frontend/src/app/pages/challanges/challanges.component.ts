@@ -3,11 +3,12 @@ import { ChallangeService } from "../../services/sockets/challange.service";
 import { SidebarComponent } from "../../shared/sidebar/sidebar.component";
 import { User, UserService } from "../../services/user.service";
 import { FooterComponent } from "../../shared/footer/footer.component";
+import { TranslatePipe } from "@ngx-translate/core";
 
 @Component({
   selector: 'app-challanges',
   standalone: true,
-  imports: [SidebarComponent, FooterComponent],
+  imports: [SidebarComponent, FooterComponent, TranslatePipe],
   templateUrl: './challanges.component.html',
   styleUrl: './challanges.component.scss',
 })

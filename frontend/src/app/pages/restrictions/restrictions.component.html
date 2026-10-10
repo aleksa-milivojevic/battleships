@@ -4,10 +4,10 @@
         <div class="list-div" [class.left]="true">
             <div class="selector-div">
                 <div class="reported-div" [class.selected]="!reportedOrRestricted()" (click)="reportedOrRestricted.set(false)">
-                    <label>reported</label>
+                    <label>{{ 'reported' | translate }}</label>
                 </div>
                 <div class="restricted-div" [class.selected]="reportedOrRestricted()" (click)="reportedOrRestricted.set(true)">
-                    <label>restricted</label>
+                    <label>{{ 'restricted' | translate }}</label>
                 </div>
             </div>
             <div class="user-list" (scroll)="onScroll($event)">
@@ -22,13 +22,13 @@
                                     <label class="score">{{ el.user.score }}</label>
                                     <img class="trophy" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950377/trophy_mxczir.png" alt="<trophy>">
                                 </div>
-                                <label class="rep-num">Reports: {{ el.reports.length }}</label>
+                                <label class="rep-num">{{ ('reports' | translate) + el.reports.length }}</label>
                             </div>
                         </div>
                     }
                     }
                     @else {
-                        <label class="no-reported">There are no reported users currently.</label>
+                        <label class="no-reported">{{ "no-reps" | translate }}</label>
                     }
                 }
                 @else {
@@ -46,16 +46,16 @@
                                 </div>
                             </div>
                             <div class="restriction-type-div">
-                                <label class="restriction-type" [class.b]="el.banned" [class.t]="!el.banned">{{ (el.banned) ? 'PERMANENTLY BANNED' : `TIMED OUT UNTIL\n${parsedDate(el)}` }}</label>
+                                <label class="restriction-type" [class.b]="el.banned" [class.t]="!el.banned">{{ (el.banned) ? ('perma-ban' | translate) : ((`timed-out` | translate) + `\n${parsedDate(el)}`) }}</label>
                             </div>
                             <div class="unrestrict-div">
-                                <button class="unrestrict-btn" (click)="onUnrestrict(el.id)">unrestrict</button>
+                                <button class="unrestrict-btn" (click)="onUnrestrict(el.id)">{{ 'unrestrict' | translate }}</button>
                             </div>
                         </div>
                     }
                     }
                     @else {
-                        <label class="no-restricted">There are no restricted users currently.</label>
+                        <label class="no-restricted">{{ 'no-res' | translate }}</label>
                     }
                 }
             </div>
@@ -76,7 +76,7 @@
                         </div>
                     </div>
                     <div class="restriction-btns">
-                        <button class="ban-btn" [disabled]="selectedUser()?.banned || selectedUser()?.timeout || loading()" (click)="onBan(selectedUser()?.id!)">ban</button>
+                        <button class="ban-btn" [disabled]="selectedUser()?.banned || selectedUser()?.timeout || loading()" (click)="onBan(selectedUser()?.id!)">{{ 'ban' | translate }}</button>
                         <div class="timeout-div">
                             <input
                                 type="number"
@@ -85,13 +85,13 @@
                                 [ngModel]="duration()"
                                 (ngModelChange)="duration.set($event)"
                             >
-                            <label class="duration-unit">days</label>
-                            <button class="timeout-btn" [disabled]="selectedUser()?.banned || selectedUser()?.timeout || loading()" (click)="onTimeout(selectedUser()?.id!, duration())">timeout</button>
+                            <label class="duration-unit">{{ 'days' | translate }}</label>
+                            <button class="timeout-btn" [disabled]="selectedUser()?.banned || selectedUser()?.timeout || loading()" (click)="onTimeout(selectedUser()?.id!, duration())">{{ 'timeout' | translate }}</button>
                         </div>
                     </div>
                 }
                 @else {
-                    <label class="no-sel-user">Select one user from reported users list.</label>
+                    <label class="no-sel-user">{{ 'sel-user' | translate }}</label>
                 }
             </div>
             <div class="report-list">
@@ -99,9 +99,9 @@
                     <div class="report">
                         <div class="report-info">
                             <button class="messages-btn" [disabled]="el.type !== 'messages'" (click)="toggleReportMessages(el.id); selectReport(el.id)">{{ (selectedReport() === el.id && showReportMessages()) ? '▲' : '▼' }}</button>
-                            <label class="type-type">type:</label>
+                            <label class="type-type">{{ 'type' | translate }}</label>
                             <label class="type">{{ el.type }}</label>
-                            <label class="by">reported by:</label>
+                            <label class="by">{{ 'rep-src' | translate }}</label>
                             <label class="source">{{ el.source?.username }}</label>
                         </div>
                         @if (selectedReport() === el.id && showReportMessages()) {

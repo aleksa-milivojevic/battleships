@@ -5,11 +5,12 @@ import { StorageService } from "../../../services/storage.service";
 import { NgClass } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { ReportService } from "../../../services/report.service";
+import { TranslatePipe } from "@ngx-translate/core";
 
 @Component({
     selector: 'app-chat',
     standalone: true,
-    imports: [NgClass, FormsModule],
+    imports: [NgClass, FormsModule, TranslatePipe],
     templateUrl: './chat.component.html',
     styleUrl: './chat.component.scss'
 })
@@ -60,7 +61,7 @@ export class ChatComponent implements OnInit, OnDestroy {
             },
             error: (err) => {
                 console.error(err);
-                this.errorMessage.set('Could not load opp info');
+                this.errorMessage.set('opp-info-err');
             }
         });
     }

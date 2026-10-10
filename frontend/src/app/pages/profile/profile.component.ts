@@ -6,11 +6,12 @@ import { UserService } from "../../services/user.service";
 import { Router } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { FooterComponent } from "../../shared/footer/footer.component";
+import { TranslatePipe } from "@ngx-translate/core";
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [SidebarComponent, FormsModule, ReactiveFormsModule, CommonModule, FooterComponent],
+  imports: [SidebarComponent, FormsModule, ReactiveFormsModule, CommonModule, FooterComponent, TranslatePipe],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
@@ -87,7 +88,7 @@ export class ProfileComponent implements OnInit {
             error: (err) => {
                 console.error(err);
                 this.loading.set(false);
-                this.errorMessage.set(err.error.message ?? 'Sorry, an error has occured. Try again in a bit.');
+                this.errorMessage.set(err.error.message ?? 'sorry');
             }
         });
     }
@@ -106,7 +107,7 @@ export class ProfileComponent implements OnInit {
             error: (err) => {
                 console.error(err);
                 this.loading.set(false);
-                this.errorMessage.set(err.error.message ?? 'Sorry, an error has occured. Try again in a bit.');
+                this.errorMessage.set(err.error.message ?? 'sorry');
             }
         });
     }
@@ -137,7 +138,7 @@ export class ProfileComponent implements OnInit {
             error: (err) => {
                 console.error(err);
                 this.loading.set(false);
-                this.errorMessage.set(err.error.message ?? 'Sorry, an error has occured. Try again in a bit');
+                this.errorMessage.set(err.error.message ?? 'sorry');
             }
         })
     }
@@ -162,7 +163,7 @@ export class ProfileComponent implements OnInit {
             },
             error: (err) => {
                 console.error(err);
-                this.errorMessage.set(err.message);
+                this.errorMessage.set(err.error.message ?? 'sorry');
                 this.loading.set(false);
             }
         })
@@ -230,7 +231,7 @@ export class ProfileComponent implements OnInit {
             error: (err) => {
                 this.loading.set(false);
                 console.error(err);
-                this.errorMessage.set(err.message);
+                this.errorMessage.set(err.error.message ?? 'sorry');
             }
         });
     }

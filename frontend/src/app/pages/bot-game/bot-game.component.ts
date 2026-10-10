@@ -2,12 +2,12 @@ import { Component, OnInit, effect, inject, signal } from "@angular/core";
 import { BotService } from "../../services/bot.service";
 import { StorageService } from "../../services/storage.service";
 import { Router } from "@angular/router";
-import { ignoreElements } from "rxjs";
+import { TranslatePipe } from "@ngx-translate/core";
 
 @Component({
     selector: 'app-bot-game',
     standalone: true,
-    imports: [],
+    imports: [TranslatePipe],
     templateUrl: './bot-game.component.html',
     styleUrl: './bot-game.component.scss'
 })
@@ -103,7 +103,7 @@ export class BotGameComponent implements OnInit {
 
     onReadyUp() {
         if (!this.bot.setOppField(this.field())) {
-            this.fieldError.set('Field is not valid');
+            this.fieldError.set('field-not-valid');
             return;
         }
         this.setupPhase.set(false);
@@ -175,7 +175,7 @@ export class BotGameComponent implements OnInit {
 
     onSurrender() {
         this.gameOver.set(true);
-        this.surrenderMessage.set('You have surrendered');
+        this.surrenderMessage.set('you-have-surrendered');
     }
 
     toggleGameOverScreen() {

@@ -4,11 +4,12 @@ import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
 import { StorageService } from "../../services/storage.service";
 import { ChatComponent } from "./chat/chat.component";
+import { TranslatePipe } from "@ngx-translate/core";
 
 @Component({
     selector: 'app-game',
     standalone: true,
-    imports: [FormsModule, ChatComponent],
+    imports: [FormsModule, ChatComponent, TranslatePipe],
     templateUrl: './game.component.html',
     styleUrl: './game.component.scss'
 })

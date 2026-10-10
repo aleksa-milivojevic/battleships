@@ -1,17 +1,19 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from "@angular/router";
 import { AuthService } from '../../services/auth.service';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, TranslatePipe],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
 })
 export class SidebarComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
+  private translation = inject(TranslateService);
 
   self = this.authService.user;
 
@@ -27,5 +29,15 @@ export class SidebarComponent {
         console.error(err);
       }
     });
+  }
+
+  toggleLanguage() {
+    const currentLanguage = this.translation.currentLang();
+    if (currentLanguage === 'sr') {
+      this.translation.use('en');
+    }
+    else {
+      this.translation.use('sr');
+    }
   }
 }

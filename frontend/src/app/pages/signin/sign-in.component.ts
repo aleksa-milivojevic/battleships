@@ -2,11 +2,12 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sign-in',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, TranslatePipe],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.scss',
 })
@@ -31,12 +32,12 @@ export class SigninComponent {
     onSignin(): void {
         console.log(this.form.value);
         if (this.form.invalid)  {
-            this.errorMessage.set("Invalid credentials");
+            this.errorMessage.set("invalid-creds");
             return;
         }
 
         if (this.form.get('password')?.value !== this.form.get('password2')?.value) {
-            this.errorMessage.set("Passwords must match");
+            this.errorMessage.set("pass-err-3");
             return;
         }
 
@@ -50,7 +51,7 @@ export class SigninComponent {
             },
             error: (err) => {
                 this.isLoading.set(false);
-                this.errorMessage.set(err.message);
+                this.errorMessage.set(err.error.message ?? 'sorry');
                 this.form.get('password')?.setValue('');
                 this.form.get('password2')?.setValue('');
             }

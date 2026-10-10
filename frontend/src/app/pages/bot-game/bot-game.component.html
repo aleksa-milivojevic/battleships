@@ -6,7 +6,7 @@
                     <img class="background-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790616364/better-background_lhd8ib.png" alt="<background-img>">
                 </div>
                 <div class="move-div">
-                    <label class="setup-title">Setup Phase</label>
+                    <label class="setup-title">{{ "setup-phase" | translate }}</label>
                 </div>
                 <div class="setup-table">
                     @for (row of field(); track $index; let i = $index) {
@@ -27,17 +27,17 @@
                         <label class="bot-name">Robert</label>
                     </div>
                     <div class="info-div">
-                        <label class="info">{{'You are playing a game against a computer. This game will not be saved within your match history, nor will it be counted towards your account score.' }}</label>
+                        <label class="info">{{ 'bot-game-info' | translate }}</label>
                     </div>
                 </div>
                 <div class="btns">
                     @if (!gameOver()) {
-                        <button class="ready-btn" (click)="onReadyUp()" [disabled]="gameOver()">Ready Up</button>
-                        <label class="field-err">{{ fieldError() }}</label>
-                        <button class="surrender-btn" (click)="onSurrender()" [disabled]="gameOver()">Surrender</button>
+                        <button class="ready-btn" (click)="onReadyUp()" [disabled]="gameOver()">{{ 'ready-up' | translate }}</button>
+                        <label class="field-err">{{ fieldError() | translate }}</label>
+                        <button class="surrender-btn" (click)="onSurrender()" [disabled]="gameOver()">{{ "surrender" | translate }}</button>
                     }
                     @else {
-                        <button class="back-btn" (click)="toMainScreen()" [disabled]="!gameOver()">Back</button>
+                        <button class="back-btn" (click)="toMainScreen()" [disabled]="!gameOver()">{{ 'back' | translate }}</button>
                     }
                 </div>
             </div>
@@ -49,10 +49,10 @@
                 </div>
                 <div class="move-div">
                     @if (myMove()) {
-                        <label class="my-move-title">Your Move</label>
+                        <label class="my-move-title">{{ 'your-move' | translate }}</label>
                     }
                     @else {
-                        <label class="roberts-move-title">Robert's Move</label>
+                        <label class="roberts-move-title">{{ "roberts-move" | translate }}</label>
                     }
                 </div>
                 <div class="my-table" [class.disabled]="myMove()">
@@ -101,15 +101,15 @@
                         <label class="bot-name">Robert</label>
                     </div>
                     <div class="info-div">
-                        <label class="info">{{'You are playing a game against a computer. This game will not be saved within your match history, nor will it be counted towards your account score.' }}</label>
+                        <label class="info">{{ 'bot-game-info' | translate }}</label>
                     </div>
                 </div>
                 <div class="btns">
                     @if (!gameOver()) {
-                        <button class="surrender-btn" [class.game]="true" (click)="onSurrender()" [disabled]="gameOver()">Surrender</button>
+                        <button class="surrender-btn" [class.game]="true" (click)="onSurrender()" [disabled]="gameOver()">{{ "surrender" | translate }}</button>
                     }
                     @else {
-                        <button class="back-btn" (click)="toMainScreen()" [disabled]="!gameOver()">Back</button>
+                        <button class="back-btn" (click)="toMainScreen()" [disabled]="!gameOver()">{{ 'back' | translate }}</button>
                     }
                 </div>
             </div>
@@ -126,11 +126,11 @@
             @else {
                 <img class="game-res" src="https://res.cloudinary.com/drjisyvve/image/upload/v1791102898/defeat_pjhcsl.png" alt="<defeat>">
             }
-            <h3 class="surr-msg">{{ surrenderMessage() }}</h3>
+            <h3 class="surr-msg">{{ surrenderMessage() | translate }}</h3>
         </div>
         <div class="go-btns">
-            <button class="go-btn" (click)="toggleGameOverScreen()">Back To Game Screen</button>
-            <button class="go-btn" (click)="toMainScreen()">Back To Main Screen</button>
+            <button class="go-btn" (click)="toggleGameOverScreen()">{{ 'back-to-game-screen' | translate }}</button>
+            <button class="go-btn" (click)="toMainScreen()">{{ 'back-to-main-screen' | translate }}</button>
         </div>
     </div>
 }

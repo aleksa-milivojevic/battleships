@@ -4,23 +4,21 @@
 <div class="content">
     <form [formGroup]="form" (ngSubmit)="onLogin()">
         <div class="container">
-            <!-- <label for="email"><b>Email</b></label> -->
-            <input type="text" placeholder="Enter Email" formControlName="email" required>
+            <input type="text" [placeholder]="('enter-email' | translate)" formControlName="email" required>
 
-            <!-- <label for="password"><b>Password</b></label> -->
-            <input type="password" placeholder="Enter Password" formControlName="password" required>
+            <input type="password" [placeholder]="('enter-pass' | translate)" formControlName="password" required>
 
             <div class="err-div">
                 @if(errorMessage() !== "") {
-                    <label class="err-msg">{{ errorMessage() }}</label>
+                    <label class="err-msg">{{ errorMessage() | translate }}</label>
                 }
             </div>
             
             <div class="btns">
-                <button type="submit" [class.loading]="isLoading()" [disabled]="form.invalid || isLoading()" class="submitbtn">{{ isLoading() ? 'Logging in' : 'Log in'}}</button>
-                <button routerLink="/home" type="button" [disabled]="isLoading()" class="cancelbtn">Back</button>
+                <button type="submit" [class.loading]="isLoading()" [disabled]="form.invalid || isLoading()" class="submitbtn">{{ isLoading() ? ('logging-in' | translate) : ('log-in' | translate )}}</button>
+                <button routerLink="/home" type="button" [disabled]="isLoading()" class="cancelbtn">{{ 'back' | translate }}</button>
             </div>
-            <span class="psw">Don't have an account? <a routerLink="/signin">Sign up</a>!</span>
+            <span class="psw">{{ 'no-acc-q' | translate }}<a routerLink="/signin">{{ 'sign-in' | translate}}</a>!</span>
         </div>
     </form>
 </div>

@@ -9,11 +9,12 @@ import { QueueService } from '../../services/sockets/queue.service';
 import { Router } from '@angular/router';
 import { BotService } from '../../services/bot.service';
 import { FooterComponent } from '../../shared/footer/footer.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [SidebarComponent, FormsModule, FooterComponent],
+  imports: [SidebarComponent, FormsModule, FooterComponent, TranslatePipe],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })

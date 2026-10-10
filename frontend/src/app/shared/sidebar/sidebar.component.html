@@ -4,26 +4,26 @@
             <div class="img-div">
                 <img class="option-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950447/challange_tlzrss.png" alt="<option>">
             </div>
-            <label class="option-name">Battle</label>
+            <label class="option-name">{{ 'battle' | translate }}</label>
         </div>
         <div class="option" routerLink="/challanges">
             <div class="img-div">
                 <img class="option-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1791102873/challanges_dnogbo.png" alt="<option>">
             </div>
-            <label class="option-name">Challenges</label>
+            <label class="option-name">{{ 'challanges' | translate }}</label>
         </div>
         <div class="option" routerLink="/leaderboard">
             <div class="img-div">
                 <img class="option-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950443/leaderboard_bbod4w.png" alt="<option>">
             </div>
-            <label class="option-name">Leaderboard</label>
+            <label class="option-name">{{ 'leaderboard' | translate }}</label>
         </div>
         @if (self()?.admin) {
             <div class="option" routerLink="/restrictions">
                 <div class="img-div">
                     <img class="option-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950657/restrictions_smj9gc.png" alt="<option>">
                 </div>
-                <label class="option-name">Restrictions</label>
+                <label class="option-name">{{ 'restrictions' | translate }}</label>
             </div>
         }
         @else {
@@ -31,23 +31,23 @@
         }
     </div>
     <div class="bottom-options">
-        <div class="option">
+        <div class="option" (click)="toggleLanguage()">
             <div class="img-div">
                 <img class="option-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950427/settings_sipset.png" alt="<option>">
             </div>    
-            <label class="option-name">Settings</label>
+            <label class="option-name">{{ 'settings' | translate }}</label>
         </div>
         <div class="option" routerLink="/profile">
             <div class="img-div">
                 <img class="option-img" [class.profile]="true" [src]="self()?.picture" alt="<option>">
             </div>
-            <label class="option-name">My Profile</label>
+            <label class="option-name">{{ 'my-profile' | translate }}</label>
         </div>
         <div class="option"  (click)="onLogout()">
             <div class="img-div">
                 <img class="option-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950431/logout_qwlzhs.png" alt="<option>">
             </div>
-            <label class="option-name">Logout</label>
+            <label class="option-name">{{ 'logout' | translate }}</label>
         </div>
     </div>
 </div>

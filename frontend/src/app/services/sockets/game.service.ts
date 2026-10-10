@@ -285,7 +285,7 @@ export class GameService {
         this.storage.setItem('FIRST', false);
         this.gameOver.set(true);
         this.storage.setItem('GAME_OVER', true);
-        this.surrenderMessage.set('You Have Surrendered');
+        this.surrenderMessage.set('u-surr');
         this.storage.setItem('SURR_MSG', this.surrenderMessage());
         this.socket.emit('surrender');
     }
@@ -296,7 +296,7 @@ export class GameService {
         this.storage.setItem('GAME_OVER', true);
         this.win.set(true);
         this.storage.setItem('WIN', true);
-        this.surrenderMessage.set('Opponent Surrendered');
+        this.surrenderMessage.set('opp-surr');
         this.storage.setItem('SURR_MSG', this.surrenderMessage());
     }
 
@@ -308,7 +308,7 @@ export class GameService {
         }
         if (data.message.endsWith('Opponent')) {
             console.log(data.message);
-            this.surrenderMessage.set('You disconnected');
+            this.surrenderMessage.set('u-disc');
             this.storage.setItem('SURR_MSG', this.surrenderMessage());
             this.disconnected.set(true);
             this.storage.setItem('DISCONNECT', true);
@@ -371,7 +371,7 @@ export class GameService {
         this.storage.setItem('GAME_OVER', true);
         this.win.set(true);
         this.storage.setItem('WIN', true);
-        this.surrenderMessage.set('Opponent Disconnected');
+        this.surrenderMessage.set('opp-disc');
         this.storage.setItem('SURR_MSG', this.surrenderMessage());
     }
 

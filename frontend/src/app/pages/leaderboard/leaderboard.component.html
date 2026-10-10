@@ -2,7 +2,7 @@
     <app-sidebar></app-sidebar>
     <div class="container">
         <div class="desc-div">
-            <label class="desc">Live Leaderboard!</label>
+            <label class="desc">{{ 'live-leaderboard' | translate }}</label>
         </div>
         <div class="list-container" (scroll)="onScroll($event)">
             @for(user of leaderboard(); track $index) {

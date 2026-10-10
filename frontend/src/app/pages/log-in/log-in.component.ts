@@ -2,11 +2,12 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-log-in',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, TranslatePipe],
   templateUrl: './log-in.component.html',
   styleUrl: './log-in.component.scss',
 })
@@ -29,7 +30,7 @@ export class LoginComponent {
     onLogin(): void {
         console.log(this.form.value);
         if (this.form.invalid)  {
-            this.errorMessage.set("Invalid credentials");
+            this.errorMessage.set("invalid-creds");
             return;
         }
 
@@ -44,7 +45,7 @@ export class LoginComponent {
             error: (err) => {
                 this.isLoading.set(false);
                 console.log(err.error);
-                this.errorMessage.set(err.error.message ?? "Sorry, an error has occurred. Try again in a bit.");
+                this.errorMessage.set(err.error.message ?? "sorry");
                 this.form.get('password')?.setValue('');
             }
         });

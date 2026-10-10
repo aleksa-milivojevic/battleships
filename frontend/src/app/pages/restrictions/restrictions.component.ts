@@ -6,11 +6,12 @@ import { StorageService } from "../../services/storage.service";
 import { Report, ReportService, ReportedUser } from "../../services/report.service";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FooterComponent } from "../../shared/footer/footer.component";
+import { TranslatePipe } from "@ngx-translate/core";
 
 @Component({
     selector: 'app-restrictions',
     standalone: true,
-    imports: [SidebarComponent, FormsModule, ReactiveFormsModule, FooterComponent],
+    imports: [SidebarComponent, FormsModule, ReactiveFormsModule, FooterComponent, TranslatePipe],
     templateUrl: './restrictions.component.html',
     styleUrl: './restrictions.component.scss'
 })

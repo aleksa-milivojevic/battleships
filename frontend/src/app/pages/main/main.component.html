@@ -3,33 +3,33 @@
     <div class="containers">
         <div class="container">
             <div class="desc-div-l">
-                <label class="desc">Choose a game mode</label>
+                <label class="desc">{{ 'choose-mode' | translate }}</label>
             </div>
             <div class="bot" (click)="onBot()">
                 <img src="https://res.cloudinary.com/drjisyvve/image/upload/v1791102868/bot_v0osql.png" alt="<bot>">
                 <div class="title-desc">
-                    <label class="bot-title">Bot</label>
-                    <label class="bot-desc">Play against a computer</label>
+                    <label class="bot-title">{{ 'bot' | translate }}</label>
+                    <label class="bot-desc">{{ 'bot-desc' | translate }}</label>
                 </div>
             </div>
             <div class="pvp" (click)="onPvP()">
                 <img src="https://res.cloudinary.com/drjisyvve/image/upload/v1791109483/pvp_nwj64a.png" alt="<pvp>">
                 <div class="title-desc">
                     <label class="pvp-title">PvP</label>
-                    <label class="bot-desc">Play against a random person</label>
+                    <label class="bot-desc">{{ 'pvp-desc' | translate }}</label>
                 </div>
             </div>
             <div class="challange" (click)="toggleOverlay()">
                 <img src="https://res.cloudinary.com/drjisyvve/image/upload/v1791102879/invite_ldtwdp.png" alt="<chall>">
                 <div class="title-desc">
-                    <label class="challange-title">Challenge a friend!</label>
-                    <label class="bot-desc">If they are online, challange them to a battle</label>
+                    <label class="challange-title">{{ 'chall-a-friend' | translate }}</label>
+                    <label class="bot-desc">{{ "chall-desc" | translate }}</label>
                 </div>
             </div>
         </div>
         <div class="container">
             <div class="desc-div-r">
-                <label class="desc">Your match history</label>
+                <label class="desc">{{ 'ur-match-his' | translate }}</label>
             </div>
             <div class="match-list" (scroll)="onScrollMatches($event)">
                 @for(match of matches(); track match.id) {
@@ -73,7 +73,7 @@
                     [ngModel]="search()"
                     (ngModelChange)="search.set($event)"
                     class="search"
-                    placeholder="username"
+                    [placeholder]="('username' | translate)"
                 >
             </form>
             <div class="user-list" (scroll)="onScrollUsers($event)">
@@ -97,8 +97,7 @@
 @if(showQueueScreen()) {
     <div class="overlay" (click)="leavePvP()">
         <div class="queue-div" (click)="$event.stopPropagation()">
-            <h1 class="queue-title">Waiting for a match...</h1>
-            <button class="leave-btn" (click)="leavePvP()">Leave queue</button>
+            <h1 class="queue-title">{{ 'q-wait' | translate }}</h1>
         </div>
     </div>
 }

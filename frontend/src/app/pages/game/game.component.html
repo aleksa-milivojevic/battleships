@@ -6,7 +6,7 @@
                     <img class="background-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790616364/better-background_lhd8ib.png" alt="<background-img>">
                 </div>
                 <div class="move-div">
-                    <label class="setup-title">Setup Phase</label>
+                    <label class="setup-title">{{ 'setup-phase' | translate }}</label>
                     <label class="timer">{{ timer() + 's' }}</label>
                 </div>
                 <div class="setup-table">
@@ -23,7 +23,7 @@
             </div>
             @if (showReadyScreen()) {
                 <div class="ready-screen">
-                    <h1>Waiting for opponent...</h1>
+                    <h1>{{ 'waiting' | translate }}</h1>
                 </div>
             }
         }
@@ -34,10 +34,10 @@
                 </div>
                 <div class="move-div">
                     @if (myMove()) {
-                        <label class="my-move-title">Your Move</label>
+                        <label class="my-move-title">{{ "your-move" | translate }}</label>
                     }
                     @else {
-                        <label class="opp-move-title">Opponent's Move</label>
+                        <label class="opp-move-title">{{ 'opps-move' | translate }}</label>
                     }
                     <label class="timer">{{ timer() + 's' }}</label>
                 </div>
@@ -83,14 +83,14 @@
         <app-chat></app-chat>
         <div class="btns">
             @if (setupPhase()) {
-                <button class="ready-btn" (click)="onReadyUp()" [disabled]="gameOver() || imReady()">Ready Up</button>
-                <label class="field-err">{{ fieldError() }}</label>
+                <button class="ready-btn" (click)="onReadyUp()" [disabled]="gameOver() || imReady()">{{ 'ready-up' | translate }}</button>
+                <label class="field-err">{{ fieldError() | translate}}</label>
             }
             @if (!gameOver()) {
-                <button class="surrender-btn" [class.game]="gamePhase()" (click)="onSurrender()" [disabled]="gameOver()">Surrender</button>
+                <button class="surrender-btn" [class.game]="gamePhase()" (click)="onSurrender()" [disabled]="gameOver()">{{ 'surrender' | translate }}</button>
             }
             @else {
-                <button class="back-btn" (click)="onBack()" [disabled]="!gameOver()">Back</button>
+                <button class="back-btn" (click)="onBack()" [disabled]="!gameOver()">{{ 'back' | translate }}</button>
             }
         </div>
     </div>
@@ -105,11 +105,11 @@
             @else {
                 <img class="game-res" src="https://res.cloudinary.com/drjisyvve/image/upload/v1791102898/defeat_pjhcsl.png" alt="<defeat>">
             }
-            <h3 class="surr-msg">{{ surrenderMessage() }}</h3>
+            <h3 class="surr-msg">{{ surrenderMessage() | translate }}</h3>
         </div>
         <div class="go-btns">
-            <button class="go-btn" (click)="toGameScreen()">Back To Game Screen</button>
-            <button class="go-btn" (click)="toMainScreen()">Back To Main Screen</button>
+            <button class="go-btn" (click)="toGameScreen()">{{ 'back-to-game-screen' | translate }}</button>
+            <button class="go-btn" (click)="toMainScreen()">{{ 'back-to-main-screen' | translate }}</button>
         </div>
     </div>
 }
@@ -117,7 +117,7 @@
 @if (waiting()) {
     <div class="overlay">
         <div class="waiting-div">
-            <h1>Waiting for opponent to reconnect...</h1>
+            <h1>{{ 'reconnect-wait' | translate }}</h1>
         </div>
     </div>
 }
@@ -125,8 +125,8 @@
 @if (disconnected()) {
     <div class="overlay">
         <div class="waiting-div">
-            <h1 style="color: white">You have been disconnected.</h1>
-            <button class="go-btn" (click)="toMainScreen()">Back To Main Screen</button>
+            <h1 style="color: white">{{ 'disconnected' | translate }}</h1>
+            <button class="go-btn" (click)="toMainScreen()">{{ 'back-to-main-screen' | translate }}</button>
         </div>
     </div>
 }
