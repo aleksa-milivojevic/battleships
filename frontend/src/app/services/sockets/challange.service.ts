@@ -27,8 +27,8 @@ export class ChallangeService {
 
     constructor() {
         effect(() => {
-            this.self();
-            if (this.self()) {
+            const self = this.self();
+            if (self) {
                 this.connect();
             }
             else {

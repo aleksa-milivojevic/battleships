@@ -179,10 +179,12 @@ export class AuthService implements OnDestroy {
             { id: this._user()?.id }
         ).pipe(
             tap(() => {
-                const uu = ({ ...this._user()!, online: true });
-                console.log("NOVI USER");
-                console.log(uu);
-                this.updateSelf(uu);
+                // const uu = ({ ...this._user()!, online: true });
+                // console.log("NOVI USER");
+                // console.log(uu);
+                // this.updateSelf(uu);
+                this.user()!.online = true;
+                this.storage.setItem('SELF', this.user());
             })
         )
     }
