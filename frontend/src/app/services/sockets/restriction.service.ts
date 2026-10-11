@@ -49,7 +49,6 @@ export class RestrictionService {
 
         this.listen();
         this.socket.connect();
-        console.log('rs connected:', this.socket.connected);
     }
 
     listen() {

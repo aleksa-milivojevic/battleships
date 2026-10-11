@@ -47,7 +47,7 @@ export class AuthService implements OnDestroy {
     constructor() {
         effect(() => {
             this._user();
-            if (this._user()?.online) {
+            if (this._user()) {
                 this.restrictionService.connect();
             }
         });
@@ -115,6 +115,8 @@ export class AuthService implements OnDestroy {
             { email: credentials.email, username: credentials.username, password: credentials.password }
         ).pipe(
             tap(res => this.handleAuthResponse(res.user))
+        ).pipe(
+            tap(() => this.setOnline().subscribe())
         )
     }
 
