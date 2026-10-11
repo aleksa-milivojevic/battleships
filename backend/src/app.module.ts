@@ -16,6 +16,7 @@ import { GameModule } from './sockets/game/game.module';
 import { ChatModule } from './sockets/chat/chat.module';
 import { RestrictionModule } from './sockets/restriction/restriction.module';
 import { NestCloudinaryModule } from './cloudinary/cloudinary.module';
+import { NestMailerModule } from './mailer/mailer.module';
 
 @Module({
   imports: [
@@ -41,7 +42,8 @@ import { NestCloudinaryModule } from './cloudinary/cloudinary.module';
     GameModule,
     ChatModule,
     RestrictionModule,
-    NestCloudinaryModule
+    NestCloudinaryModule,
+    NestMailerModule
   ],
   controllers: [AppController],
   providers: [AppService],
