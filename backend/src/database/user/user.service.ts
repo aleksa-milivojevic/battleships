@@ -293,10 +293,17 @@ export class UserService {
             throw new UnauthorizedException('You have no admin priviledges');
         }
 
+        const target = (await this.findOne(targetId)).user;
+        if (!target) {
+            throw new BadRequestException('Target user not found');
+        }
+        
         const result = await this.userRepository.update({ id: targetId }, { banned: false });
         if (result.affected !== 1) {
             throw new InternalServerErrorException(`Rows affected: ${result.affected}`);
         }
+
+        this.mailerService.mailUnrestrictInformation(target.email);
     }
 
     async timeout(adminId: string, targetId: string, duration: number) {
@@ -333,10 +340,17 @@ export class UserService {
             throw new UnauthorizedException('You have no admin priviledges');
         }
 
+        const target = (await this.findOne(targetId)).user;
+        if (!target) {
+            throw new BadRequestException('Target user not found');
+        }
+
         const result = await this.userRepository.update({ id: targetId }, { timeout: null });
         if (result.affected !== 1) {
             throw new InternalServerErrorException(`Rows affected: ${result.affected}`);
         }
+
+        this.mailerService.mailUnrestrictInformation(target.email);
     }
 
     async expire(targetId: string) {

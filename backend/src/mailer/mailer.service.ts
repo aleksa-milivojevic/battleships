@@ -48,6 +48,27 @@ export class NestMailerService {
         }
     }
 
+    async mailUnrestrictInformation(to: string) {
+        try {
+            const result = await this.service.sendMail({
+                to,
+                subject: 'Uklanjanje ograničenja',
+                html:
+                    `<div style="font-family: sans-serif; padding: 20px; color: #333; line-height: 1.5;">
+                        <h2 style="color: #2c3e50;">Vaš nalog je otvoren za upotrebu</h2>
+                        <p>Administrator igre je uklonio ograničenja sa Vašeg naloga. Dobrodošli nazad!</p>
+                        <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
+                        <p style="font-size: 0.9em; color: #7f8c8d;">Ovo je automatski generisana poruka, molimo Vas da ne odgovarate direktno na ovaj email.</p>
+                        <p>Pozdrav,<br><strong>Battleships</strong></p>
+                    </div>`
+            });
+            console.log(result.accepted);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
     async mailReportFeedback(to: string) {
         try {
             await this.service.sendMail({
