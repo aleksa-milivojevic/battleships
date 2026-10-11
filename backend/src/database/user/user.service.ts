@@ -7,13 +7,15 @@ import * as bcrypt from "bcrypt";
 import * as argon from "argon2";
 import { NestCloudinaryService } from "src/cloudinary/cloudinary.service";
 import { UploadApiResponse } from "cloudinary";
+import { NestMailerService } from "src/mailer/mailer.service";
 
 @Injectable()
 export class UserService {
     constructor(
         @InjectRepository(User)
         private userRepository: Repository<User>,
-        private cloudinaryService: NestCloudinaryService
+        private cloudinaryService: NestCloudinaryService,
+        private mailerService: NestMailerService
         // private reportService: ReportService
     ) {}
 
@@ -269,11 +271,18 @@ export class UserService {
             throw new UnauthorizedException('You have no admin priviledges');
         }
 
+        const target = (await this.findOne(targetId)).user;
+        if (!target) {
+            throw new BadRequestException('Target user not found');
+        }
+
         const result = await this.userRepository.update({ id: targetId }, { banned: true, timeout: 0 });
         console.log('rows affected: ', result.affected);
         if (result.affected !== 1) {
             throw new InternalServerErrorException(`Rows affected: ${result.affected}`);
         }
+
+        this.mailerService.mailBanInformation(target.email);
 
         //  await this.reportService.removeOnes(targetId);
     }
@@ -312,6 +321,8 @@ export class UserService {
         if (result.affected !== 1) {
             throw new InternalServerErrorException(`Rows affected: ${result.affected}`);
         }
+
+        this.mailerService.mailTimeoutInformation(target.email, date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear() + '. ' + date.getHours() + ':' + date.getMinutes());
 
         // await this.reportService.removeOnes(targetId);
     }

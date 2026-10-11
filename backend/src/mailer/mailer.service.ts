@@ -28,7 +28,7 @@ export class NestMailerService {
 
     async mailTimeoutInformation(to: string, until: string) {
         try {
-            await this.service.sendMail({
+            const result = await this.service.sendMail({
                 to,
                 subject: 'Vaš nalog je u privremenom tajmautu',
                 html:
@@ -41,6 +41,7 @@ export class NestMailerService {
                         <p>Pozdrav,<br><strong>Battleships</strong></p>
                     </div>`
             });
+            console.log(result.accepted);
         }
         catch (error) {
             console.error(error);

@@ -4,9 +4,10 @@ import { ReportService } from "./report.service";
 import { ReportController } from "./report.controller";
 import { Report } from "./report.entity";
 import { UserModule } from "../user/user.module";
+import { NestMailerModule } from "src/mailer/mailer.module";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Report]), UserModule],
+    imports: [TypeOrmModule.forFeature([Report]), UserModule, NestMailerModule],
     providers: [ReportService],
     controllers: [ReportController],
     exports: [ReportService]

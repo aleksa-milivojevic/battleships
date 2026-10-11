@@ -4,13 +4,15 @@ import { Report } from "./report.entity";
 import { Not, Repository } from "typeorm";
 import { AddOneDto, FindAllParams, FindAllResponse, ReportedUser, ReportedUsersResponse } from "./report.dto";
 import { UserService } from "../user/user.service";
+import { NestMailerService } from "src/mailer/mailer.service";
 
 @Injectable()
 export class ReportService {
     constructor(
         @InjectRepository(Report)
         private reportRepository: Repository<Report>,
-        private userService: UserService
+        private userService: UserService,
+        private mailerService: NestMailerService
     ) {}
 
     async findAll(params: FindAllParams): Promise<FindAllResponse> {
@@ -87,6 +89,28 @@ export class ReportService {
     }
 
     async removeOnes(id: string): Promise<void> {
+        let srcs = await this.reportRepository.find({
+            select: {
+                source: true
+            },
+            where: {
+                reported: { id }
+            },
+            relations: {
+                source: true,
+                reported: true,
+            }
+        });
+
+        let emails = [...new Set(srcs.map(el => el.source?.email))];
+
+        if (emails.length > 0) {
+            emails.forEach(email => {
+                    if (email) this.mailerService.mailReportFeedback(email);
+                }
+            )
+        }
+        
         const result = await this.reportRepository.delete({ reported: { id: id } });
 
         if (result.affected === 0) {
