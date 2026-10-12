@@ -63,6 +63,7 @@ export class AuthService {
             await this.userService.expire(user.userId);
             db_res.user.timeout = null;
         }
+        if (db_res.user.online) throw new BadRequestException('User is already logged in');
 
         const accessToken = await this.jwtService.signAsync(tokenPayload);
         const refreshToken = await this.jwtService.signAsync(tokenPayload, this.refreshTokenConfig);
