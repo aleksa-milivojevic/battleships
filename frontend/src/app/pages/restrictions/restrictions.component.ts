@@ -141,20 +141,28 @@ export class RestrctionsComponent implements OnInit {
         const user = this.reportedUsers().find(user => user.user.id === target)?.user;
         if (!user) return;
         this.restrictionService.ban(target);
-        user.banned = true;
-        this.restrictedUsers.update(curr => [...curr, user]);
         this.reportedUsers.set(this.reportedUsers().filter(user => user.user.id !== target));
         this.reportList.set([]);
+        this.restrictedUsers.set([]);
+        this.round2.set(1);
+        this.more2.set(true);
+        if (this.reportedOrRestricted()) {
+            this.loadRestrictedUsers();
+        }
     }
 
     onTimeout(target: string, duration: number) {
         const user = this.reportedUsers().find(user => user.user.id === target)?.user;
         if (!user) return;
         this.restrictionService.timeout(target, duration);
-        user.timeout?.setDate((new Date()).getHours() + duration * 24);
-        this.restrictedUsers.update(curr => [...curr, user]);
         this.reportedUsers.update(list => list.filter(user => user.user.id !== target));
         this.reportList.set([]);
+        this.restrictedUsers.set([]);
+        this.round2.set(1);
+        this.more2.set(true);
+        if (this.reportedOrRestricted()) {
+            this.loadRestrictedUsers();
+        }
     }
 
     onUnrestrict(target: string) {
