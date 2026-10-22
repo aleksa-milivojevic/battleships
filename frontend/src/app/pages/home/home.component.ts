@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { StorageService } from '../../services/storage.service';
 import { TranslatePipe } from '@ngx-translate/core';
+import { AudioService } from '../../services/audio.service';
 
 @Component({
   selector: 'app-home',
@@ -12,6 +13,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class HomeComponent {
   private storage = inject(StorageService);
+  private audio = inject(AudioService);
 
   banned = signal(false);
   timeout = signal<number | null>(null);
@@ -33,5 +35,7 @@ export class HomeComponent {
         return copy;
       })
     }
+
+    this.audio.playLobbyMusic();
   }
 }

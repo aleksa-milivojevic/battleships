@@ -12,6 +12,7 @@ import { BotService } from './services/bot.service';
 import { RestrictionService } from './services/sockets/restriction.service';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
+import { AudioService } from './services/audio.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -37,5 +38,6 @@ export const appConfig: ApplicationConfig = {
         suffix: '.json'
       })
     }),
+    AudioService
   ]
 };
