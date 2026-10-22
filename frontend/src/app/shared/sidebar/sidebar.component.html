@@ -31,7 +31,7 @@
         }
     </div>
     <div class="bottom-options">
-        <div class="option" (click)="toggleLanguage()">
+        <div class="option" (click)="toggleSettings()">
             <div class="img-div">
                 <img class="option-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790950427/settings_sipset.png" alt="<option>">
             </div>    
@@ -51,3 +51,22 @@
         </div>
     </div>
 </div>
+
+@if (showSettings()) {
+    <div class="overlay" (click)="toggleSettings()">
+        <div class="settings-div" (click)="$event.stopPropagation()">
+            <div class="settings-option">
+                <label>Language</label>
+                <button (click)="toggleLanguage()">G</button>
+            </div>
+            <div class="settings-option">
+                <label>Music</label>
+                <button (click)="toggleMusic()">G</button>
+            </div>
+            <div class="settings-option">
+                <label>SFX</label>
+                <button (click)="toggleSFX()">G</button>
+            </div>
+        </div>
+    </div>
+}

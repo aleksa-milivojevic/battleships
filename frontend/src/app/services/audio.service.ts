@@ -29,7 +29,7 @@ export class AudioService {
             this.button.play();
     }
 
-    musicAllowed() {
+    private musicAllowed() {
         this.lobbyMusic.play();
         this.gameMusic.play();
         this.allowed = true;

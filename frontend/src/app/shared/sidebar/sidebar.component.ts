@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from "@angular/router";
 import { AuthService } from '../../services/auth.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { AudioService } from '../../services/audio.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -14,8 +15,11 @@ export class SidebarComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
   private translation = inject(TranslateService);
+  private audioService = inject(AudioService);
 
   self = this.authService.user;
+
+  showSettings = signal(false);
 
   onLogout() {
     this.authService.logout().subscribe({
@@ -39,5 +43,17 @@ export class SidebarComponent {
     else {
       this.translation.use('sr');
     }
+  }
+
+  toggleSettings() {
+    this.showSettings.update(o => !o);
+  }
+
+  toggleMusic() {
+    this.audioService.toggleMusic();
+  }
+
+  toggleSFX() {
+    this.audioService.toggleSFX();
   }
 }
