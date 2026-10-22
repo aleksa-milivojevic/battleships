@@ -8,6 +8,7 @@ import { isPlatformBrowser } from "@angular/common";
 import { ChallangeService } from "./sockets/challange.service";
 import { RestrictionService } from "./sockets/restriction.service";
 import { Router } from "@angular/router";
+import { AudioService } from "./audio.service";
 
 interface LoginRequest {
     email: string,
@@ -29,6 +30,7 @@ export class AuthService implements OnDestroy {
     private storage = inject(StorageService);
     private router = inject(Router);
     private restrictionService = inject(RestrictionService);
+    private audioService = inject(AudioService);
     
     private platformId = inject(PLATFORM_ID);
     private isBrowser = isPlatformBrowser(this.platformId);
@@ -139,6 +141,7 @@ export class AuthService implements OnDestroy {
             tap(() => {
                     this.restrictionService.disconnect();
                     this.storage.removeAll();
+                    this.audioService.stopMusic();
                 }
             )
         );

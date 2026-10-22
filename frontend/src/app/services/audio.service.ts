@@ -24,14 +24,14 @@ export class AudioService {
         this.gameMusic.volume = 0;
     }
 
-    plyButtonSound() {
-        if (this.button.readyState === HTMLMediaElement.HAVE_FUTURE_DATA)
-            this.button.play();
+    playButtonSound() {
+        this.button.currentTime = 0;
+        this.button.play().catch(err => console.error(err));
     }
 
     private musicAllowed() {
-        this.lobbyMusic.play();
-        this.gameMusic.play();
+        this.lobbyMusic.play().catch(err => console.error(err));
+        this.gameMusic.play().catch(err => console.error(err));;
         this.allowed = true;
     }
 
@@ -62,5 +62,12 @@ export class AudioService {
         // this.gameMusic.play()
         //     .then(() => console.log('Game music is playing'))
         //     .catch(err => console.error(err));
+    }
+
+    stopMusic() {
+        this.lobbyMusic.pause();
+        this.gameMusic.pause();
+        this.lobbyMusic.currentTime = 0;
+        this.gameMusic.currentTime = 0;
     }
 }

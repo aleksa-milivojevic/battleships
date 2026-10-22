@@ -35,7 +35,5 @@ export class HomeComponent {
         return copy;
       })
     }
-
-    this.audio.playLobbyMusic();
   }
 }
