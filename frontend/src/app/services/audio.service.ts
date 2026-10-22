@@ -7,7 +7,7 @@ export class AudioService {
 
     private button = new Audio("/audio/button-sound.wav");
     private lobbyMusic = new Audio("/audio/lobby-music.wav");
-    private gameMusic = new Audio("/audio/lobby-music.wav");
+    private gameMusic = new Audio("/audio/game-music.wav");
 
     private allowed = false;
 
@@ -69,5 +69,6 @@ export class AudioService {
         this.gameMusic.pause();
         this.lobbyMusic.currentTime = 0;
         this.gameMusic.currentTime = 0;
+        this.allowed = false;
     }
 }

@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 import { StorageService } from "../../services/storage.service";
 import { ChatComponent } from "./chat/chat.component";
 import { TranslatePipe } from "@ngx-translate/core";
+import { AudioService } from "../../services/audio.service";
 
 @Component({
     selector: 'app-game',
@@ -13,10 +14,11 @@ import { TranslatePipe } from "@ngx-translate/core";
     templateUrl: './game.component.html',
     styleUrl: './game.component.scss'
 })
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, OnDestroy {
     private gameService = inject(GameService);
     private router = inject(Router);
     private storage = inject(StorageService);
+    private audio = inject(AudioService);
 
     readonly fieldDim = 10;
     
@@ -82,9 +84,15 @@ export class GameComponent implements OnInit {
                 this.htmlMyMove.set(this.gameService.myMove());
             }
         });
+
+        this.audio.playGameMusic();
     }
 
     ngOnInit(): void {}
+
+    ngOnDestroy(): void {
+        this.audio.playLobbyMusic();
+    }
 
     toggleSquare(i: number, j: number) {
         this.field.update(field => {

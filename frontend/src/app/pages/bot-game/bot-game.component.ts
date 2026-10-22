@@ -1,8 +1,9 @@
-import { Component, OnInit, effect, inject, signal } from "@angular/core";
+import { Component, OnDestroy, OnInit, effect, inject, signal } from "@angular/core";
 import { BotService } from "../../services/bot.service";
 import { StorageService } from "../../services/storage.service";
 import { Router } from "@angular/router";
 import { TranslatePipe } from "@ngx-translate/core";
+import { AudioService } from "../../services/audio.service";
 
 @Component({
     selector: 'app-bot-game',
@@ -11,10 +12,11 @@ import { TranslatePipe } from "@ngx-translate/core";
     templateUrl: './bot-game.component.html',
     styleUrl: './bot-game.component.scss'
 })
-export class BotGameComponent implements OnInit {
+export class BotGameComponent implements OnInit, OnDestroy {
     private bot = inject(BotService);
     private storage = inject(StorageService);
     private router = inject(Router);
+    private audio = inject(AudioService);
     
     setupPhase = signal(true);
     myMove = signal(true);
@@ -88,9 +90,15 @@ export class BotGameComponent implements OnInit {
             this.setupPhase();
             this.storage.setItem('PHASE', this.setupPhase());
         })
+
+        this.audio.playGameMusic();
     }
 
     ngOnInit(): void {}
+
+    ngOnDestroy(): void {
+        this.audio.playLobbyMusic();
+    }
 
     toggleSquare(i: number, j: number) {
         this.field.update(field => {
