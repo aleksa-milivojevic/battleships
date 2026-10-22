@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { BotService } from '../../services/bot.service';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { AudioService } from '../../services/audio.service';
 
 @Component({
   selector: 'app-main',
@@ -26,6 +27,7 @@ export class MainComponent implements OnInit {
   private queueService = inject(QueueService);
   private botService = inject(BotService);
   private router = inject(Router);
+  private audio = inject(AudioService);
 
   self = this.authService.user;
   
@@ -197,5 +199,9 @@ export class MainComponent implements OnInit {
 
   isChallanged(id: string) {
     return this.challanged().findIndex(el => el === id) >= 0;
+  }
+
+  buttonSFX() {
+    this.audio.playButtonSound();
   }
 }

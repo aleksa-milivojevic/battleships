@@ -14,7 +14,7 @@
                         [(ngModel)]="newUsername"
                         [disabled]="!showChNameScreen()"> -->
                         <label class="username">{{ self()?.username }}</label>
-                        <div class="edit-btn">
+                        <div class="edit-btn button-sfx">
                             <img class="edit-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1791479845/2026_10_08_0w4_Kleki_ouwdau.png" alt="<e>" (click)="toggleChNameScreen()">
                         </div>
                     </div>
@@ -30,7 +30,7 @@
                         [(ngModel)]="newEmail"
                         [disabled]="!showChNameScreen()"> -->
                         <label class="email">{{ self()?.email }}</label>
-                        <div class="edit-btn">
+                        <div class="edit-btn button-sfx">
                             <img class="edit-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1791479845/2026_10_08_0w4_Kleki_ouwdau.png" alt="<e>" (click)="toggleChEmailScreen()">
                         </div>
                     </div>
@@ -38,7 +38,7 @@
             </div>
             <div class="pfp">
                 <img [src]="self()?.picture" alt="PFP">
-                <div class="edit-pfp-btn">
+                <div class="edit-pfp-btn button-sfx">
                     <img class="edit-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1791479845/2026_10_08_0w4_Kleki_ouwdau.png" alt="<e>" (click)="toggleUpdatePicture()">
                 </div>
             </div>
@@ -76,8 +76,8 @@
                     <label class="fill"></label>
                 }
                 <div class="overlay-btns">
-                    <button type="button" class="cancel" [disabled]="loading()" (click)="toggleChNameScreen()">{{ 'cancel' | translate }}</button>
-                    <button type="submit" class="confirm" [disabled]="!validUsername() || loading()">{{ 'confirm' | translate }}</button>
+                    <button type="button" class="cancel" [disabled]="loading()" (click)="toggleChNameScreen(); buttonSFX()">{{ 'cancel' | translate }}</button>
+                    <button type="submit" class="confirm" [disabled]="!validUsername() || loading()" (click)="buttonSFX()">{{ 'confirm' | translate }}</button>
                 </div>
             </div>
         </form>
@@ -96,8 +96,8 @@
                     <label class="fill"></label>
                 }
                 <div class="overlay-btns">
-                    <button type="button" class="cancel" [disabled]="loading()" (click)="toggleChEmailScreen()">{{ 'cancel' | translate }}</button>
-                    <button type="submit" class="confirm" [disabled]="!validEmail() || loading()">{{ 'confirm' | translate }}</button>
+                    <button type="button" class="cancel" [disabled]="loading()" (click)="toggleChEmailScreen(); buttonSFX()">{{ 'cancel' | translate }}</button>
+                    <button type="submit" class="confirm" [disabled]="!validEmail() || loading()" (click)="buttonSFX()">{{ 'confirm' | translate }}</button>
                 </div>
             </div>
         </form>
@@ -121,8 +121,8 @@
                     <label class="fill"></label>
                 }
                 <div class="overlay-btns">
-                    <button type="button" class="cancel" [disabled]="loading()" (click)="toggleChPassScreen()">{{ 'cancel' | translate }}</button>
-                    <button type="submit" class="confirm" [disabled]="!validPass() || loading()">{{ 'confirm' | translate }}</button>
+                    <button type="button" class="cancel" [disabled]="loading()" (click)="toggleChPassScreen(); buttonSFX()">{{ 'cancel' | translate }}</button>
+                    <button type="submit" class="confirm" [disabled]="!validPass() || loading()" (click)="buttonSFX()">{{ 'confirm' | translate }}</button>
                 </div>
             </div>
         </form>
@@ -140,8 +140,8 @@
                     <label class="fill"></label>
                 }
                 <div class="overlay-btns">
-                    <button type="button" class="cancel" [disabled]="loading()" (click)="toggleDelScreen()">{{ 'cancel' | translate }}</button>
-                    <button type="submit" class="confirm" [disabled]="!validDel() || loading()">{{ 'confirm' | translate }}</button>
+                    <button type="button" class="cancel" [disabled]="loading()" (click)="toggleDelScreen(); buttonSFX()">{{ 'cancel' | translate }}</button>
+                    <button type="submit" class="confirm" [disabled]="!validDel() || loading()" (click)="buttonSFX()">{{ 'confirm' | translate }}</button>
                 </div>
             </div>
         </form>
@@ -171,8 +171,8 @@
                     @if (errorMessage().length > 0) {<p class="error-message">{{ errorMessage() | translate }}</p>}
                 </div>
                 <div class="button-field">
-                    <button type="button" class="cancel" (click)="toggleUpdatePicture(); errorMessage.set('')">{{ 'cancel' | translate  }}</button>
-                    <button type="submit" [ngClass]="loading() ? 'loading' : 'confirm'" [disabled]="!updatePictureValid()">{{ 'confirm' | translate }}</button>
+                    <button type="button" class="cancel" (click)="toggleUpdatePicture(); errorMessage.set(''); buttonSFX()">{{ 'cancel' | translate  }}</button>
+                    <button type="submit" [ngClass]="loading() ? 'loading' : 'confirm'" [disabled]="!updatePictureValid()" (click)="buttonSFX()">{{ 'confirm' | translate }}</button>
                 </div>
             </div>
         </form>

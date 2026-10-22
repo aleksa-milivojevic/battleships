@@ -7,6 +7,7 @@ import { Router } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { FooterComponent } from "../../shared/footer/footer.component";
 import { TranslatePipe } from "@ngx-translate/core";
+import { AudioService } from "../../services/audio.service";
 
 @Component({
   selector: 'app-main',
@@ -19,6 +20,7 @@ export class ProfileComponent implements OnInit {
     private authService = inject(AuthService);
     private userService = inject(UserService);
     private router = inject(Router);
+    private audio = inject(AudioService);
 
     private readonly emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     private readonly minPassLen = 5;
@@ -243,5 +245,9 @@ export class ProfileComponent implements OnInit {
                         .split('-');
         if (!date) return null;
         return date[2] + '.' + date[1] + '.' + date[0] + ".";
+    }
+
+    buttonSFX() {
+        this.audio.playButtonSound();
     }
 }

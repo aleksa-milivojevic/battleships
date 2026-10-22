@@ -25,7 +25,7 @@ export class App {
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
-    const element = target.closest('button, .hover-sfx');
+    const element = target.closest('button, .button-sfx');
 
     if (!element) return;
 
@@ -39,27 +39,27 @@ export class App {
     this.audio.playButtonSound();
   }
 
-  @HostListener('document:pointerover', ['$event'])
-  onDocumentPointerOver(event: PointerEvent) {
-    const target = event.target as HTMLElement;
-    const element = target.closest('button, .hover-sfx');
+  // @HostListener('document:pointerover', ['$event'])
+  // onDocumentPointerOver(event: PointerEvent) {
+  //   const target = event.target as HTMLElement;
+  //   const element = target.closest('button, .button-sfx');
 
-    if (!element) return;
+  //   if (!element) return;
 
-    if (
-      element instanceof HTMLButtonElement &&
-      element.disabled
-    ) {
-      return;
-    }
+  //   if (
+  //     element instanceof HTMLButtonElement &&
+  //     element.disabled
+  //   ) {
+  //     return;
+  //   }
 
-    if (
-      event.relatedTarget instanceof Node &&
-      element.contains(event.relatedTarget)
-    ) {
-      return;
-    }
+  //   if (
+  //     event.relatedTarget instanceof Node &&
+  //     element.contains(event.relatedTarget)
+  //   ) {
+  //     return;
+  //   }
 
-    this.audio.playButtonSound();
-  }
+  //   this.audio.playButtonSound();
+  // }
 }

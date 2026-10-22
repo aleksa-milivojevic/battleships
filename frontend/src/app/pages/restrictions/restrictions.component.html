@@ -14,7 +14,7 @@
                 @if (!reportedOrRestricted()) {
                     @if (reportedUsers().length > 0) {
                     @for(el of reportedUsers(); track el.user.id) {
-                        <div class="user" (click)="selectUser(el)">
+                        <div class="user button-sfx" (click)="selectUser(el)">
                             <div class="username-score">
                                 <div class="username-div">
                                     <img [src]="el.user.picture" alt="PFP">

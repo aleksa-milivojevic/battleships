@@ -16,8 +16,8 @@
         <div class="dropdown">
             <button class="report-btn" (click)="toggleReportOptions()">{{ 'report' | translate }}</button>
             <div class="report-div" [class.hidden]="!showReportOptions()">
-                <label class="report-option" [class.disabled]="cheatReported()" (click)="onReport()">{{ "cheating" | translate }}</label>
-                <label class="report-option" [class.disabled]="msgReported()" (click)="onReport('messages')">{{ 'vulgar-chat' | translate }}</label>
+                <label class="report-option button-sfx" [class.disabled]="cheatReported()" (click)="onReport()">{{ "cheating" | translate }}</label>
+                <label class="report-option button-sfx" [class.disabled]="msgReported()" (click)="onReport('messages')">{{ 'vulgar-chat' | translate }}</label>
             </div>
         </div>
         
@@ -32,7 +32,7 @@
         <form (ngSubmit)="sendMessage()">
             <div class="input-div">
                     <input type="text" name="message" placeholder="write a message..." [ngModel]="message()" (ngModelChange)="message.set($event)">
-                    <img type="submit" class="send-btn" [class.disabled]="message() === ''" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790712682/send_ejv3u5.png" alt="<send>">
+                    <img type="submit" class="send-btn button-sfx" [class.disabled]="message() === ''" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790712682/send_ejv3u5.png" alt="<send>">
             </div>
         </form>
     </div>
