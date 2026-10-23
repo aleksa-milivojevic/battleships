@@ -13,7 +13,6 @@ import { AudioService } from '../../services/audio.service';
 })
 export class HomeComponent {
   private storage = inject(StorageService);
-  private audio = inject(AudioService);
 
   banned = signal(false);
   timeout = signal<number | null>(null);

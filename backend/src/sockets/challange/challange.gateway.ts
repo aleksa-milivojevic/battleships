@@ -41,6 +41,7 @@ export class ChallangeGateway implements OnGatewayConnection, OnGatewayDisconnec
         this.ctu.delete(client.id);
         this.utc.delete(id!);
         this.interactions.delete(id!);
+        this.userService.setOffline(id);
     }
     
     @SubscribeMessage('id-response')
@@ -56,6 +57,7 @@ export class ChallangeGateway implements OnGatewayConnection, OnGatewayDisconnec
         this.ctu.set(client.id, id);
         
         this.interactions.set(id, []);
+        this.userService.setOnline(id);
     }
 
     @SubscribeMessage('invite')
