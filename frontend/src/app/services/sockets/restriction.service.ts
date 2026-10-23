@@ -20,9 +20,9 @@ export class RestrictionService {
     });
 
     private storage = inject(StorageService);
-    private router = inject(Router);
     // private authService = inject(AuthService);
 
+    // private self = signal<User | null>(null);
     private self = signal<User | null>(null);
 
     banned = signal(false);
@@ -32,7 +32,16 @@ export class RestrictionService {
         effect(() => {
             this.banned();
             console.log('BANNED:', this.banned());
-        })
+        });
+        // effect(() => {
+        //     this.self();
+        //     if (this.self()) {
+        //         this.connect();
+        //     }
+        //     else {
+        //         this.disconnect();
+        //     }
+        // })
     }
 
     connect() {
@@ -41,8 +50,8 @@ export class RestrictionService {
             return;
         }
 
-        this.self.set(this.storage.getItem<User>('SELF'));
-        if (this.self() === undefined) {
+        this.self.set(this.storage.getItem<User>('SELF') ?? this.self());
+        if (!this.self()) {
             console.error('self is undefined');
             return;
         }

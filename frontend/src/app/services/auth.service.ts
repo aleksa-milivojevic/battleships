@@ -48,11 +48,14 @@ export class AuthService implements OnDestroy {
 
     constructor() {
         effect(() => {
-            this._user();
-            if (this._user()) {
+            this.user();
+            if (this.user()) {
                 this.restrictionService.connect();
             }
-        });
+            else {
+                this.restrictionService.disconnect();
+            }
+        })
         effect(() => {
             console.log('EFFECT', this.banned());
             this.banned();
@@ -139,7 +142,6 @@ export class AuthService implements OnDestroy {
             tap(() => this.clearLocal())
         ).pipe(
             tap(() => {
-                    this.restrictionService.disconnect();
                     this.storage.removeAll();
                     this.audioService.stopMusic();
                 }
