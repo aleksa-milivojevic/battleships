@@ -55,17 +55,27 @@
 @if (showSettings()) {
     <div class="overlay" (click)="toggleSettings()">
         <div class="settings-div" (click)="$event.stopPropagation()">
-            <div class="settings-option">
-                <label>Language</label>
-                <button (click)="toggleLanguage()">G</button>
+            <div class="settings-option" (click)="toggleLanguage(); playButtonSFX()">
+                <img class="settings-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1793092808/2026_10_27_0gr_Kleki_gunid4.png" alt="<lang>">
+                <label>SR/EN</label>
             </div>
-            <div class="settings-option">
+            <div class="settings-option" (click)="toggleMusic(); playButtonSFX()">
+                @if (music()) {
+                    <img class="settings-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1793092914/2026_10_27_0h9_Kleki_by1xlz.png" alt="<music>">
+                }
+                @else {
+                    <img class="settings-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1793092820/2026_10_27_0gw_Kleki_izlgg4.png" alt="<music>">
+                }
                 <label>Music</label>
-                <button (click)="toggleMusic()">G</button>
             </div>
-            <div class="settings-option">
+            <div class="settings-option" (click)=" playButtonSFX(); toggleSFX()">
+                @if (sfx()) {
+                    <img class="settings-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1793092824/2026_10_27_0h0_Kleki_wsvbdq.png" alt="<sfx>">
+                }
+                @else {
+                    <img class="settings-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1793092828/2026_10_27_0gz_Kleki_poaocq.png" alt="<sfx>">
+                }
                 <label>SFX</label>
-                <button (click)="toggleSFX()">G</button>
             </div>
         </div>
     </div>

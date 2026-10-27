@@ -21,6 +21,9 @@ export class SidebarComponent {
 
   showSettings = signal(false);
 
+  music = signal(false);
+  sfx = signal(true);
+
   onLogout() {
     this.authService.logout().subscribe({
       next: () => {
@@ -50,10 +53,16 @@ export class SidebarComponent {
   }
 
   toggleMusic() {
+    this.music.update(o => !o);
     this.audioService.toggleMusic();
   }
 
   toggleSFX() {
+    this.sfx.update(o => !o);
     this.audioService.toggleSFX();
+  }
+
+  playButtonSFX() {
+    this.audioService.playButtonSound();
   }
 }
