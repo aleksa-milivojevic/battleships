@@ -1,17 +1,25 @@
-import { Injectable } from "@angular/core";
+import { Injectable, effect, inject, signal } from "@angular/core";
+import { StorageService } from "./storage.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class AudioService {
+    private storage = inject(StorageService);
 
     private button = new Audio("/audio/button-sound.wav");
     private lobbyMusic = new Audio("/audio/lobby-music.wav");
     private gameMusic = new Audio("/audio/game-music.wav");
 
-    private allowed = false;
+    private allowed = signal(false);
+    muted = signal(true);
+    sfx = signal(true);
 
     constructor() {
+        // this.allowed.set(this.storage.getItem('MUSIC_ALLOWED') ?? this.allowed());
+        // this.muted.set(this.storage.getItem('MUSIC_MUTED') ?? this.muted());
+        // this.sfx.set(this.storage.getItem('SFX') ?? this.sfx());
+
         console.log(this.lobbyMusic.volume);
         this.lobbyMusic.loop = true;
         this.gameMusic.loop = true;
@@ -22,6 +30,21 @@ export class AudioService {
 
         this.lobbyMusic.volume = 1;
         this.gameMusic.volume = 0;
+
+        // effect(() => {
+        //     this.allowed();
+        //     this.storage.setItem('MUSIC_ALLOWED', this.allowed());
+        // });
+
+        // effect(() => {
+        //     this.muted();
+        //     this.storage.setItem('MUSIC_MUTED', this.muted());
+        // });
+
+        // effect(() => {
+        //     this.sfx();
+        //     this.storage.setItem('SFX', this.muted());
+        // });
     }
 
     playButtonSound() {
@@ -31,37 +54,35 @@ export class AudioService {
 
     private musicAllowed() {
         this.lobbyMusic.play().catch(err => console.error(err));
-        this.gameMusic.play().catch(err => console.error(err));;
-        this.allowed = true;
+        this.gameMusic.play().catch(err => console.error(err));
+        this.allowed.set(true);
     }
 
     toggleMusic() {
-        if (!this.allowed) this.musicAllowed();
+        this.muted.update(o => !o);
+        if (!this.allowed()) this.musicAllowed();
         else {
             this.lobbyMusic.volume = (this.lobbyMusic.volume) ? 0 : 1;
         }
     }
 
     toggleSFX() {
+        this.sfx.update(o => !o);
         this.button.volume = (this.button.volume) ? 0 : 1;
     }
 
     playLobbyMusic() {
+        if (this.muted()) return;
         this.gameMusic.volume = 0;
         this.lobbyMusic.currentTime = 0;
         this.lobbyMusic.volume = 1;
-        // this.lobbyMusic.play()
-        //     .then(() => console.log('Lobby music is playing'))
-        //     .catch(err => console.error(err));
     }
 
     playGameMusic() {
+        if (this.muted()) return;
         this.lobbyMusic.volume = 0;
         this.gameMusic.currentTime = 0;
         this.gameMusic.volume = 1;
-        // this.gameMusic.play()
-        //     .then(() => console.log('Game music is playing'))
-        //     .catch(err => console.error(err));
     }
 
     stopMusic() {
@@ -69,6 +90,6 @@ export class AudioService {
         this.gameMusic.pause();
         this.lobbyMusic.currentTime = 0;
         this.gameMusic.currentTime = 0;
-        this.allowed = false;
+        this.allowed.set(false);
     }
 }

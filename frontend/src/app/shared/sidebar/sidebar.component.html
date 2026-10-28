@@ -60,7 +60,7 @@
                 <label>SR/EN</label>
             </div>
             <div class="settings-option" (click)="toggleMusic(); playButtonSFX()">
-                @if (music()) {
+                @if (!muted()) {
                     <img class="settings-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1793092914/2026_10_27_0h9_Kleki_by1xlz.png" alt="<music>">
                 }
                 @else {
