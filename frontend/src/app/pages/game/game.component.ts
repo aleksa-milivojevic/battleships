@@ -84,6 +84,12 @@ export class GameComponent implements OnInit, OnDestroy {
                 this.htmlMyMove.set(this.gameService.myMove());
             }
         });
+        effect(() => {
+            this.fieldError();
+            if (this.fieldError()) {
+                this.showReadyScreen.set(false);
+            }
+        })
 
         this.audio.playGameMusic();
     }
