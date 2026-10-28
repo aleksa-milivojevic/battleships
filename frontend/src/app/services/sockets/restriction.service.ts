@@ -4,6 +4,7 @@ import { StorageService } from "../storage.service";
 import { User } from "../user.service";
 import { AuthService } from "../auth.service";
 import { Router } from "@angular/router";
+import { environment } from "../../../environments/environment.development";
 
 interface ChatMessage {
     author: 0 | 1; //0 me, 1 opp
@@ -14,7 +15,7 @@ interface ChatMessage {
     providedIn: 'root'
 })
 export class RestrictionService {
-    private socket: Socket = io('http://localhost:3000/restriction', {
+    private socket: Socket = io(`${environment.apiUrl}/restriction`, {
         withCredentials: true,
         autoConnect: false
     });

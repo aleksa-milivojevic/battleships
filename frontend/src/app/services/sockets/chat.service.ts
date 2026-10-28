@@ -2,6 +2,7 @@ import { Injectable, effect, inject, signal } from "@angular/core";
 import { Socket, io } from "socket.io-client";
 import { StorageService } from "../storage.service";
 import { User } from "../user.service";
+import { environment } from "../../../environments/environment.development";
 
 interface ChatMessage {
     author: 0 | 1; //0 me, 1 opp
@@ -12,7 +13,7 @@ interface ChatMessage {
     providedIn: 'root'
 })
 export class ChatService {
-    private socket: Socket = io('http://localhost:3000/chat', {
+    private socket: Socket = io(`${environment.apiUrl}/chat`, {
         withCredentials: true,
         autoConnect: false
     });

@@ -6,12 +6,14 @@ import { io, Socket } from "socket.io-client";
 import { Router } from "@angular/router";
 import { GameService } from "./game.service";
 import { AuthService } from "../auth.service";
+import { environment } from "../../../environments/environment.development";
 
 @Injectable({
     providedIn: 'root'
 })
 export class ChallangeService {
-    private socket: Socket = io('http://localhost:3000/challange', {
+    private socket: Socket = io(`${environment.apiUrl}/challange`, {
+        path: '/socket.io',
         withCredentials: true,
         autoConnect: false
     });

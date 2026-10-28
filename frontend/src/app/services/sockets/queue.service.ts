@@ -5,12 +5,13 @@ import { User } from "../user.service";
 import { io, Socket } from "socket.io-client";
 import { Router } from "@angular/router";
 import { GameService } from "./game.service";
+import { environment } from "../../../environments/environment.development";
 
 @Injectable({
     providedIn: 'root'
 })
 export class QueueService {
-    private socket: Socket = io('http://localhost:3000/queue', {
+    private socket: Socket = io(`${environment.apiUrl}/queue`, {
         withCredentials: true,
         autoConnect: false
     });

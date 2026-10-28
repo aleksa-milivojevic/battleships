@@ -5,12 +5,12 @@ import { ValidationPipe } from '@nestjs/common';
 import cookieParser from "cookie-parser";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   const configService = app.get(ConfigService);
 
   app.enableCors({
-    origin: "http://localhost:4200",
-    credentials: true
+    origin: ["http://localhost:4200", "http://192.168.0.38:4200"],
+    credentials: true,
   })
 
   const port = configService.get<number>('PORT') || 3000;
@@ -25,7 +25,7 @@ async function bootstrap() {
 
   app.use(cookieParser(process.env.COOKIE_SECRET));
   
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
   
   console.log(`Application running on: http://localhost:${port}/`);
 }
