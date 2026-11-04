@@ -85,5 +85,6 @@
     "new-name": "Novo Ime",
     "new-email": "Novi Email",
     "curr-pass": "Trenutna Šifra",
-    "new-pass": "Nova Šifra"
+    "new-pass": "Nova Šifra",
+    "clear-table": "Očisti Tablu"
 }

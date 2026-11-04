@@ -117,6 +117,10 @@ export class BotGameComponent implements OnInit, OnDestroy {
         this.setupPhase.set(false);
     }
 
+    onClearTable() {
+        this.field.set(Array.from({ length: 10 }, () => Array(10).fill(0)));;
+    }
+
     botMove() {
         this.botAgain.set(false);
         let attack = this.bot.attack();

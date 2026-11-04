@@ -85,5 +85,6 @@
     "new-name": "New Username",
     "new-email": "New Email",
     "curr-pass": "Current Password",
-    "new-pass": "New Password"
+    "new-pass": "New Password",
+    "clear-table": "Clear Table"
 }

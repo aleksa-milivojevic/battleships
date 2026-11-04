@@ -90,13 +90,13 @@
 
 .btns {
     margin: 10px;
-    padding-bottom: 20px;
+    padding-bottom: 5px;
     display: flex;
     flex-direction: column;
     height: 20%;
 }
 
-.ready-btn, .surrender-btn, .back-btn {
+.ready-btn, .clear-btn, .surrender-btn, .back-btn {
     margin-bottom: auto;
     background-color: #006CA5;
     color: white;
@@ -114,6 +114,10 @@
             filter: brightness(70%);
         }
     }
+}
+
+.clear-btn {
+    margin-bottom: 20px;
 }
 
 .surrender-btn {

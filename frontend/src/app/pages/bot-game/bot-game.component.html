@@ -34,6 +34,7 @@
                     @if (!gameOver()) {
                         <button class="ready-btn" (click)="onReadyUp()" [disabled]="gameOver()">{{ 'ready-up' | translate }}</button>
                         <label class="field-err">{{ fieldError() | translate }}</label>
+                        <button class="clear-btn" (click)="onClearTable()" [disabled]="gameOver()">{{ 'clear-table' | translate }}</button>
                         <button class="surrender-btn" (click)="onSurrender()" [disabled]="gameOver()">{{ "surrender" | translate }}</button>
                     }
                     @else {
