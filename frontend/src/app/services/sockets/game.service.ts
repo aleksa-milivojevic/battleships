@@ -306,6 +306,8 @@ export class GameService {
             console.log(data.message);
             this.fieldError.set(data.message);
             this.storage.setItem('FIELD_ERROR', this.fieldError());
+            this.imReady.set(false);
+            this.storage.setItem('IM_READY', false);
         }
         if (data.message.endsWith('Opponent')) {
             console.log(data.message);

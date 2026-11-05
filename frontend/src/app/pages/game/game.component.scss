@@ -218,7 +218,7 @@ app-chat {
     padding: 0;
 }
 
-.ready-btn, .surrender-btn, .back-btn {
+.ready-btn, .clear-btn, .surrender-btn, .back-btn {
     margin-bottom: auto;
     background-color: #006CA5;
     color: white;
@@ -240,7 +240,15 @@ app-chat {
 
 .ready-btn {
     margin-top: 5px;
-    margin-bottom: auto;
+
+    &:disabled {
+        filter: brightness(70%);
+        pointer-events: none;
+    }
+}
+
+.clear-btn {
+    margin-bottom: 15px;
 
     &:disabled {
         filter: brightness(70%);
@@ -276,8 +284,11 @@ app-chat {
 .field-err {
     color: #7A1C27;
     width: 80%;
-    min-height: 30px;
+    min-height: 15px;
     margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 

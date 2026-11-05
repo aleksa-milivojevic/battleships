@@ -85,6 +85,7 @@
             @if (setupPhase()) {
                 <button class="ready-btn" (click)="onReadyUp()" [disabled]="gameOver() || imReady()">{{ 'ready-up' | translate }}</button>
                 <label class="field-err">{{ fieldError() | translate}}</label>
+                <button class="clear-btn" (click)="onClearTable()" [disabled]="gameOver() || imReady()">{{ 'clear-table' | translate }}</button>
             }
             @if (!gameOver()) {
                 <button class="surrender-btn" [class.game]="gamePhase()" (click)="onSurrender()" [disabled]="gameOver()">{{ 'surrender' | translate }}</button>

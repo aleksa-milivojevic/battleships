@@ -117,6 +117,11 @@ export class GameComponent implements OnInit, OnDestroy {
         this.storage.setItem('MY_FIELD', this.field());
     }
 
+    onClearTable() {
+        if (this.imReady() || this.gameOver()) return;
+        this.field.set(Array.from({ length: 10 }, () => Array(10).fill(0)));
+    }
+
     onOppMove() {
         const { result, coords } = this.gameService.lastMove();
         const x = coords[0], y = coords[1];

@@ -118,6 +118,7 @@ export class BotGameComponent implements OnInit, OnDestroy {
     }
 
     onClearTable() {
+        if (this.gameOver()) return;
         this.field.set(Array.from({ length: 10 }, () => Array(10).fill(0)));;
     }
 
