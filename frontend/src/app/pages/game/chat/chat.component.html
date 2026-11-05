@@ -22,6 +22,7 @@
         </div>
         
         <div class="chat-div">
+            <label class="info">{{ 'game-rules' | translate }}</label>
             @for (msg of messages(); track $index) {
                 @if ($index === 0 || messages()[$index - 1].author !== msg.author) {
                     <label [ngClass]="(msg.author) ? 'opp-author' : 'me-author'">{{ (msg.author) ? opp()?.username : self()?.username }}</label>

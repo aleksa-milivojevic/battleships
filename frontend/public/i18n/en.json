@@ -86,5 +86,6 @@
     "new-email": "New Email",
     "curr-pass": "Current Password",
     "new-pass": "New Password",
-    "clear-table": "Clear Table"
+    "clear-table": "Clear Table",
+    "game-rules": "Game rules:\nYour table should contains 10 ships (20 ship icons) in total. There should be 1 ship length of 4, 2 ships length of 3, 3 ships length of 2, 4 ships length of 1. Boats may not touch, meaning every tile surrounding a boat needs to be empty. During a game phase, players take turns guessing positions of enemy ships. If you hit an enemy ship, you get another guess. Winner is the one who sinks all enemy ships first."
 }

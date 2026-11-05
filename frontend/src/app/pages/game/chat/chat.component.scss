@@ -93,6 +93,7 @@
     border: 1px solid rgb(0, 0, 0, 0.3);
     border-radius: 20px;
     box-shadow: inset 0px 0px 10px 2px rgb(0, 0, 0, 0.3);
+    overflow-x: scroll;
 }
 
 .opp-msg {
@@ -248,5 +249,10 @@ input {
 }
 
 .pts {
+    white-space: pre-line;
+}
+
+.info {
+    color: black;
     white-space: pre-line;
 }
