@@ -85,9 +85,10 @@ export class GameComponent implements OnInit, OnDestroy {
             }
         });
         effect(() => {
-            this.fieldError();
-            if (this.fieldError()) {
-                this.showReadyScreen.set(false);
+            const ready = this.imReady();
+            if (ready) {
+                this.showReadyScreen.set(true);
+                this.storage.setItem('READY_SCREEN', true);
             }
         })
 
@@ -111,8 +112,6 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     onReadyUp() {
-        this.showReadyScreen.set(true);
-        this.storage.setItem('READY_SCREEN', true);
         this.gameService.readyUp(this.field());
         this.storage.setItem('MY_FIELD', this.field());
     }

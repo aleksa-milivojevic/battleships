@@ -130,6 +130,13 @@ export class GameService {
             }
         )
 
+        this.socket.on('ready-res',
+            (data) => {
+                console.log('ready-res heard');
+                this.readyResponseHandle(data.res);
+            }
+        )
+
         this.socket.on('attack',
             (data) => {
                 console.log('attack heard');
@@ -214,18 +221,8 @@ export class GameService {
     }
 
     readyUp(field: number[][]) {
-        this.imReady.set(true);
-        this.storage.setItem('IM_READY', true);
         this.socket.emit('ready', { field });
         this.fieldError.set('');
-        this.stopTimer();
-        if (this.oppReady()) {
-            this.setup.set(false);
-            this.storage.setItem('SETUP', false);
-            this.game.set(true);
-            this.storage.setItem('GAME', true);
-            this.resetTimer();
-        }
     }
 
     ready() {
@@ -237,6 +234,25 @@ export class GameService {
             this.game.set(true);
             this.storage.setItem('GAME', true);
             this.resetTimer();
+        }
+    }
+
+    readyResponseHandle(response: string) {
+        if (response === 'Approved') {
+            this.imReady.set(true);
+            this.storage.setItem('IM_READY', true);
+            this.stopTimer();
+            if (this.oppReady()) {
+                this.setup.set(false);
+                this.storage.setItem('SETUP', false);
+                this.game.set(true);
+                this.storage.setItem('GAME', true);
+                this.resetTimer();
+            }
+        }
+        else if (response === 'Invalid') {
+            this.fieldError.set('Field is not valid');
+            this.storage.setItem('FIELD_ERROR', this.fieldError());
         }
     }
 
@@ -302,13 +318,6 @@ export class GameService {
     }
 
     error(data: { message: string }) {
-        if (data.message.startsWith('Field')) {
-            console.log(data.message);
-            this.fieldError.set(data.message);
-            this.storage.setItem('FIELD_ERROR', this.fieldError());
-            this.imReady.set(false);
-            this.storage.setItem('IM_READY', false);
-        }
         if (data.message.endsWith('Opponent')) {
             console.log(data.message);
             this.surrenderMessage.set('u-disc');
