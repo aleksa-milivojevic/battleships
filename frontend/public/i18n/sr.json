@@ -86,5 +86,6 @@
     "new-email": "Novi Email",
     "curr-pass": "Trenutna Šifra",
     "new-pass": "Nova Šifra",
-    "clear-table": "Očisti Tablu"
+    "clear-table": "Očisti Tablu",
+    "game-rules": "Pravila igre:\nVaša tabela treba da sadrži 10 brodova (20 ikonica brodova). Potrebno je da postavite 1 brod dužine 4, 2 broda dužine 3, 3 broda dužine 2 i 4 broda dužine 1. Brodovi se medjusobno ne smeju dodirivati, što znači da sva polja oko jednog broda moraju biti prazna. Tokom igre, igrači na smenu pogadjaju lokacije protivničkih brodova. Ukoliko pogodite polje sa brodom, dobijate jos jedan pokušaj. Pobednik je onaj koji prvi potopi sve protivničke brodove."
 }
