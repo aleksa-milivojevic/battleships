@@ -170,6 +170,7 @@ export class GameService {
                 console.log('reconnect heard');
                 this.waiting.set(false);
                 this.storage.setItem('WAIT', false);
+                this.startTimer();
             }
         )
 
@@ -178,6 +179,7 @@ export class GameService {
                 console.log('wait heard');
                 this.waiting.set(true);
                 this.storage.setItem('WAIT', true);
+                this.stopTimer();
             }
         )
 
