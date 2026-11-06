@@ -5,4 +5,6 @@ export class ClientInfo {
     socket: Socket | null;
     field: number[][];
     connected: boolean;
+    timer: NodeJS.Timeout | null;
+    kicked: boolean;
 }

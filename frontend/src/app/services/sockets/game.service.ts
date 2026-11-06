@@ -161,16 +161,16 @@ export class GameService {
         this.socket.on('disconnection',
             () => {
                 console.log('disconnection heard');
-                this.onDisconnect();
+                this.oppDisconnect();
             }
         )
 
-        this.socket.on('reconnect',
-            () => {
-                console.log('reconnect heard');
-                this.onReconnect();
-            }
-        )
+        // this.socket.on('reconnect',
+        //     () => {
+        //         console.log('reconnect heard');
+        //         this.onReconnect();
+        //     }
+        // )
 
         this.socket.on('exception',
             (data) => {
@@ -191,6 +191,13 @@ export class GameService {
             (data) => {
                 console.log('field heard');
                 this.goField.set(data.field);
+            }
+        )
+
+        this.socket.on('kicked',
+            () => {
+                console.log('kicked heard');
+                this.kicked();
             }
         )
 
@@ -361,29 +368,39 @@ export class GameService {
         this.clear();
     }
 
-    onDisconnect() {
-        if (this.gameOver()) return;
-        this.reconnectTimeout.set(setTimeout(() => this.oppDisconnect(), 5000));
-        this.waiting.set(true);
-        this.storage.setItem('WAIT', true);
-    }
+    // onDisconnect() {
+    //     if (this.gameOver()) return;
+    //     this.reconnectTimeout.set(setTimeout(() => this.oppDisconnect(), 5000));
+    //     this.waiting.set(true);
+    //     this.storage.setItem('WAIT', true);
+    // }
 
-    onReconnect() {
-        clearTimeout(this.reconnectTimeout());
-        this.waiting.set(false);
-        this.storage.setItem('WAIT', false);
-    }
+    // onReconnect() {
+    //     clearTimeout(this.reconnectTimeout());
+    //     this.waiting.set(false);
+    //     this.storage.setItem('WAIT', false);
+    // }
 
     oppDisconnect() {
+        if (this.gameOver()) return;
         this.stopTimer();
-        this.socket.emit('opp-disconnect');
-        this.waiting.set(false);
-        this.storage.setItem('WAIT', false);
+        // this.socket.emit('opp-disconnect');
+        // this.waiting.set(false);
+        // this.storage.setItem('WAIT', false);
         this.gameOver.set(true);
         this.storage.setItem('GAME_OVER', true);
         this.win.set(true);
         this.storage.setItem('WIN', true);
         this.surrenderMessage.set('opp-disc');
+        this.storage.setItem('SURR_MSG', this.surrenderMessage());
+    }
+
+    kicked() {
+        this.gameOver.set(true);
+        this.storage.setItem('GAME_OVER', true);
+        this.win.set(false);
+        this.storage.setItem('WIN', false);
+        this.surrenderMessage.set('kicked');
         this.storage.setItem('SURR_MSG', this.surrenderMessage());
     }
 
