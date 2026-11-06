@@ -165,12 +165,21 @@ export class GameService {
             }
         )
 
-        // this.socket.on('reconnect',
-        //     () => {
-        //         console.log('reconnect heard');
-        //         this.onReconnect();
-        //     }
-        // )
+        this.socket.on('reconnect',
+            () => {
+                console.log('reconnect heard');
+                this.waiting.set(false);
+                this.storage.setItem('WAIT', false);
+            }
+        )
+
+        this.socket.on('wait',
+            () => {
+                console.log('wait heard');
+                this.waiting.set(true);
+                this.storage.setItem('WAIT', true);
+            }
+        )
 
         this.socket.on('exception',
             (data) => {

@@ -50,6 +50,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
         if (!opp?.connected) return;
 
         this.waiting.add(clientInfo.opp);
+        opp.socket?.emit('wait');
 
         clientInfo.timer = setTimeout(() => {
             clientInfo.timer = null;
@@ -86,7 +87,10 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
                 clientInfo.socket?.emit('kicked'); 
             }   
             else {
-                if (this.waiting.has(opp)) this.waiting.delete(opp);
+                if (this.waiting.has(opp)) {
+                    this.waiting.delete(opp);
+                    this.clients.get(opp)?.socket?.emit('reconnect');
+                }
             }
             clientInfo.kicked = false;
         }
