@@ -27,7 +27,7 @@ export const UserGuard: CanActivateFn = (
 
     if (!authService.isAuthenticated()) return router.navigate(['/home']);
 
-    if (!gameService.canLeave()) return router.navigate(['/game']);
+    if (!gameService.canLeave()) return router.navigate(['/pvp']);
 
     if (!botService.canLeave()) return router.navigate(['/bot']);
 
@@ -45,7 +45,7 @@ export const AdminGuard: CanActivateFn = (
 
     if (!authService.isAuthenticated()) return router.navigate(['/home']);
 
-    if (!gameService.canLeave()) return router.navigate(['/game']);
+    if (!gameService.canLeave()) return router.navigate(['/pvp']);
 
     if (!botService.canLeave()) return router.navigate(['/bot']);
 

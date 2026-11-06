@@ -19,9 +19,9 @@ export const routes: Routes = [
     { path: 'main', component: MainComponent, canActivate: [UserGuard]},
     { path: 'leaderboard', component: LeaderboardComponent, canActivate: [UserGuard]},
     { path: 'profile', component: ProfileComponent, canActivate: [UserGuard]},
-    { path: 'challanges', component: ChallangesComponent, canActivate: [UserGuard] },
-    { path: 'game', component: GameComponent, canActivate: [GameGuard] },
+    { path: 'invites', component: ChallangesComponent, canActivate: [UserGuard] },
+    { path: 'pvp', component: GameComponent, canActivate: [GameGuard] },
     { path: 'bot', component: BotGameComponent, canActivate: [BotGameGuard] },
-    { path: 'restrictions', component: RestrctionsComponent, canActivate: [AdminGuard] },
+    { path: 'adminpage', component: RestrctionsComponent, canActivate: [AdminGuard] },
     { path: '**', redirectTo: 'home' }
 ];

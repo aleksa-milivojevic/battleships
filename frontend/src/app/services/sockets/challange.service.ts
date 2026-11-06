@@ -115,7 +115,7 @@ export class ChallangeService {
         this.storage.setItem('FIRST', data.myMove);
         this.eraseInvite(data.source);
         this.gameService.canEnter.set(true);
-        this.router.navigate(['/game']);
+        this.router.navigate(['/pvp']);
         this.gameService.canLeave.set(false);
     }
 

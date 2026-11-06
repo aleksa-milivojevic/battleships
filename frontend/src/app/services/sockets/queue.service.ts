@@ -52,7 +52,7 @@ export class QueueService {
                 this.saveLocal(data);
                 this.disconnect();
                 this.gameService.canEnter.set(true);
-                this.router.navigate(['/game']);
+                this.router.navigate(['/pvp']);
                 this.gameService.canLeave.set(false);
             }
         )
