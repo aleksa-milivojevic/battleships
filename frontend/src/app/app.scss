@@ -1,0 +1,27 @@
+.rotate-device {
+    display: none;
+}
+
+@media screen and (orientation: portrait) {
+    .rotate-device {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: #02367B;
+        color: white;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .img {
+        width: 50%;
+        max-width: 50%;
+    }
+
+    .app-content {
+        display: none;
+    }
+}
