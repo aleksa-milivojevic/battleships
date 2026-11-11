@@ -2,8 +2,10 @@
     <app-sidebar></app-sidebar>
     <div class="containers">
         <div class="container">
-            <div class="desc-div-l">
-                <label class="desc">{{ 'choose-mode' | translate }}</label>
+            <div class="desc-out-div-l">
+                <div class="desc-div-l">
+                    <label class="desc">{{ 'choose-mode' | translate }}</label>
+                </div>
             </div>
             <div class="bot button-sfx" (click)="onBot()">
                 <img src="https://res.cloudinary.com/drjisyvve/image/upload/v1791102868/bot_v0osql.png" alt="<bot>">
@@ -28,8 +30,10 @@
             </div>
         </div>
         <div class="container">
-            <div class="desc-div-r">
-                <label class="desc">{{ 'ur-match-his' | translate }}</label>
+            <div class="desc-out-div-r">
+                <div class="desc-div-r">
+                    <label class="desc">{{ 'ur-match-his' | translate }}</label>
+                </div>
             </div>
             <div class="match-list" (scroll)="onScrollMatches($event)">
                 @for(match of matches(); track match.id) {

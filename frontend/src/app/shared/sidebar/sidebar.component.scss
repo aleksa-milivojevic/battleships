@@ -1,125 +1,403 @@
+// .sidebar {
+//     width: 100%;
+//     min-height: 100%;
+//     margin: 0;
+//     padding: 0;
+//     align-self: flex-start;
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     justify-content: center;
+//     box-shadow: 0px 0px 10px 2px rgb(0, 0, 0, 0.3);
+//     clip-path: inset(0 -15px 0 0);
+// }
+
+// .top-options, .bottom-options {
+//     margin: 0px;
+//     padding: 0px;
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     justify-content: center;
+//     width: 100%;
+// }
+
+// .option {
+//     margin: 2px;
+//     padding: 5px;
+//     padding-right: 10px;
+//     width: 100%;
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//     align-items: center;
+//     background-color: #006CA5;
+
+//     &:hover {
+//         filter: brightness(90%);
+//     }
+// }
+
+// .fill {
+//     margin: 2px;
+//     height: 95px;
+// }
+
+// .img-div {
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     padding: 10px;
+//     border-radius: 50px;
+//     background-color: #006CA5;
+//     transition: all 0.2s ease;
+    
+//     &:hover {
+//         filter: brightness(90%);
+//     }
+// }
+
+// .option-img {
+//     height: 50px;
+//     aspect-ratio: 1 / 1;
+    
+//     &.profile {
+//         border-radius: 50px;
+//     }
+// }
+
+// .option-name {
+//     color: white;
+// }
+
+// .overlay {
+//     position: fixed;
+//     top: 0;
+//     left: 0;
+//     margin: 0;
+//     padding: 0;
+//     z-index: 10;
+//     width: 100vw;
+//     height: 100vh;
+//     background-color: rgba(13, 13, 13, 0.318);
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+// }
+
+// .settings-div {
+//     height: fit-content;
+//     width: 200px;
+//     padding: 10px;
+//     border-radius: 30px;
+//     background-color: #006CA5;
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//     align-items: center;
+//     padding: 20px;
+// }
+
+// .settings-option {
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//     align-items: center;
+//     width: 110px;
+//     height: 110px;
+//     margin: 5px;
+//     border: 0px solid black;
+//     border-radius: 60px;
+//     box-shadow: 0px 0px 10px 2px solid rgb(0, 0, 0, 0.3);
+//     background-color: #006CA5;
+//     color: white;
+//     transition: all 0.2s ease;
+
+//     &:hover {
+//         filter: brightness(90%);
+//     }
+// }
+
+// .settings-img {
+//     height: 60px;
+//     width: 60px;
+//     margin-bottom: 5px;
+// }
+
+
 .sidebar {
+    box-sizing: border-box;
     width: 100%;
-    min-height: 100%;
+    height: 100%;
+    min-height: 100svh;
+
     margin: 0;
     padding: 0;
-    align-self: flex-start;
+
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    box-shadow: 0px 0px 10px 2px rgb(0, 0, 0, 0.3);
+    justify-content: space-between;
+
+    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.3);
     clip-path: inset(0 -15px 0 0);
 }
 
-.top-options, .bottom-options {
-    margin: 0px;
-    padding: 0px;
+.top-options,
+.bottom-options {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    width: 100%;
+}
+
+.top-options {
+    flex: 1;
+    justify-content: flex-start;
+}
+
+.bottom-options {
+    justify-content: flex-end;
+    margin-top: auto;
 }
 
 .option {
-    margin: 2px;
-    padding: 5px;
-    padding-right: 10px;
+    box-sizing: border-box;
     width: 100%;
+
+    margin: 2px 0;
+    padding: 5px;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
     background-color: #006CA5;
+    cursor: pointer;
+
+    transition: filter 0.2s ease;
 
     &:hover {
         filter: brightness(90%);
     }
+
+    &:active {
+        filter: brightness(75%);
+    }
 }
 
 .fill {
-    margin: 2px;
-    height: 95px;
+    flex: 1;
+    min-height: 20px;
 }
 
 .img-div {
+    box-sizing: border-box;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px;
-    border-radius: 50px;
+
+    padding: clamp(5px, 0.8vw, 10px);
+    border-radius: 50%;
+
     background-color: #006CA5;
-    transition: all 0.2s ease;
-    
+    transition: filter 0.2s ease;
+
     &:hover {
         filter: brightness(90%);
     }
 }
 
 .option-img {
-    height: 50px;
+    display: block;
+    width: clamp(25px, 3.5vw, 50px);
     aspect-ratio: 1 / 1;
-    
+    object-fit: contain;
+
     &.profile {
-        border-radius: 50px;
+        border-radius: 50%;
+        object-fit: cover;
     }
 }
 
 .option-name {
     color: white;
+    text-align: center;
+    font-size: clamp(10px, 0.9vw, 15px);
+    overflow-wrap: anywhere;
 }
 
+/* Settings overlay */
 .overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    margin: 0;
-    padding: 0;
+    inset: 0;
     z-index: 10;
-    width: 100vw;
+
+    box-sizing: border-box;
+    width: 100%;
     height: 100vh;
+    height: 100dvh;
+
+    margin: 0;
+    padding: 15px;
+
     background-color: rgba(13, 13, 13, 0.318);
+
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .settings-div {
-    height: fit-content;
-    width: 200px;
-    padding: 10px;
+    box-sizing: border-box;
+
+    width: clamp(180px, 25vw, 240px);
+    max-width: 100%;
+    max-height: 90%;
+
+    padding: clamp(12px, 2vw, 20px);
     border-radius: 30px;
+
     background-color: #006CA5;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+
+    overflow-y: auto;
 }
 
 .settings-option {
+    box-sizing: border-box;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 110px;
-    height: 110px;
+
+    width: clamp(85px, 12vw, 110px);
+    height: clamp(85px, 12vw, 110px);
+    flex-shrink: 0;
+
     margin: 5px;
-    border: 0px solid black;
-    border-radius: 60px;
-    box-shadow: 0px 0px 10px 2px solid rgb(0, 0, 0, 0.3);
+    border: none;
+    border-radius: 50%;
+
+    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.3);
+
     background-color: #006CA5;
     color: white;
-    transition: all 0.2s ease;
+
+    cursor: pointer;
+    transition: filter 0.2s ease;
 
     &:hover {
         filter: brightness(90%);
     }
+
+    &:active {
+        filter: brightness(75%);
+    }
 }
 
 .settings-img {
-    height: 60px;
-    width: 60px;
+    width: clamp(35px, 6vw, 60px);
+    height: clamp(35px, 6vw, 60px);
+    object-fit: contain;
     margin-bottom: 5px;
+}
+
+/* Tablets and smaller screens */
+@media screen and (max-width: 768px) {
+    .option {
+        padding: 4px 2px;
+    }
+
+    .option-img {
+        width: clamp(25px, 5vw, 40px);
+    }
+
+    .option-name {
+        font-size: 11px;
+    }
+}
+
+/* Landscape phones and short screens */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+    .sidebar {
+        min-height: 100%;
+    }
+
+    .option {
+        margin: 1px 0;
+        padding: 2px;
+    }
+
+    .img-div {
+        padding: 3px;
+    }
+
+    .option-img {
+        width: clamp(20px, 5vh, 32px);
+    }
+
+    .option-name {
+        font-size: clamp(9px, 2.5vh, 12px);
+    }
+
+    .fill {
+        min-height: 10px;
+    }
+
+    .settings-div {
+        width: auto;
+        max-width: 90vw;
+        padding: 10px 15px;
+
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .settings-option {
+        width: clamp(65px, 17vh, 85px);
+        height: clamp(65px, 17vh, 85px);
+        margin: 3px;
+    }
+
+    .settings-img {
+        width: clamp(30px, 9vh, 42px);
+        height: clamp(30px, 9vh, 42px);
+    }
+
+    .settings-option label {
+        font-size: 12px;
+    }
+}
+
+/* Very short landscape screens */
+@media screen and (orientation: landscape) and (max-height: 350px) {
+    .option-img {
+        width: 20px;
+    }
+
+    .option-name {
+        font-size: 9px;
+    }
+
+    .settings-option {
+        width: 60px;
+        height: 60px;
+    }
+
+    .settings-img {
+        width: 25px;
+        height: 25px;
+    }
 }
