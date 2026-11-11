@@ -233,7 +233,6 @@
     overflow-wrap: anywhere;
 }
 
-/* Settings overlay */
 .overlay {
     position: fixed;
     inset: 0;
@@ -290,8 +289,6 @@
     border: none;
     border-radius: 50%;
 
-    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.3);
-
     background-color: #006CA5;
     color: white;
 
@@ -314,7 +311,6 @@
     margin-bottom: 5px;
 }
 
-/* Tablets and smaller screens */
 @media screen and (max-width: 768px) {
     .option {
         padding: 4px 2px;
@@ -329,7 +325,6 @@
     }
 }
 
-/* Landscape phones and short screens */
 @media screen and (orientation: landscape) and (max-height: 500px) {
     .sidebar {
         min-height: 100%;
@@ -381,7 +376,6 @@
     }
 }
 
-/* Very short landscape screens */
 @media screen and (orientation: landscape) and (max-height: 350px) {
     .option-img {
         width: 20px;
