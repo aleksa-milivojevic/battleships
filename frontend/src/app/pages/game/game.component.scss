@@ -9,23 +9,43 @@
     margin: 0;
     padding: 0;
     display: flex;
-    width: 80%;
+    width: 100%;
+    height: 100%;
     align-items: center;
     justify-content: center;
-    overflow: clip;
+    overflow: hidden;
+    padding-right: clamp(225px, 20%, 300px);
 }
 
 .background-img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
+.foreground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    margin: 0;
+    padding: 0;
+    padding-right: clamp(225px, 20%, 300px);
+    align-items: center;
+    justify-content: center;
+
+}
 
 .content {
-    min-width: 100vw;
-    min-height: 100vh;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: row;
-    z-index: 0;
+    overflow: hidden;
 }
 
 .container {
@@ -36,6 +56,23 @@
     padding: 5px;
     justify-content: center;
     align-items: center;
+}
+
+.side-bar {
+    z-index: 3;
+    position: fixed;
+    right: 0;
+    top: 0;
+    background-color: #006CA5;
+    width: clamp(225px, 20%, 300px);
+    height: 100%;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    box-shadow: 0px 0px 10px 4px rgb(0, 0, 0, 0.3);
 }
 
 .bottom-text {
@@ -56,7 +93,16 @@
     margin-right: 100px;
 }
 
-.table-div, .tables {
+.table-div {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tables {
     height: 100%;
     width: 100%;
     margin: 0;
@@ -67,9 +113,10 @@
 
 .setup-table {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     width: 525px;
     max-width: 95%;
+    max-height: 80%;
     aspect-ratio: 1/1;
     border: 1px solid rgb(170, 170, 170);
     display: grid;
@@ -93,7 +140,8 @@
     transition: all 0.25s ease;
 
     &:hover {
-        border: 2px solid white;
+        outline: 2px solid white;
+        outline-offset: -2px;
         transform: scale(1.1);
     }
 
@@ -110,7 +158,9 @@
 
 .square-mine {
     width: 100%;
+    min-width: 100%;
     height: 100%;
+    min-height: 100%;
     margin: 0px;
     border: 1px solid rgb(170, 170, 170);
     display: flex;
@@ -127,16 +177,17 @@
 
 .my-table, .opp-table {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     width: 525px;
     max-width: 95%;
+    max-height: 80%;
     aspect-ratio: 1/1;
     border: 1px solid rgb(170, 170, 170);
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(10, 1fr);
-    margin-left: 30px;
-    margin-right: 30px;
+    margin-left: 0px;
+    margin-right: 0px;
     box-shadow: 0px 0px 30px 30px #01588d;
     transition: all 0.7s ease;
 
@@ -195,23 +246,13 @@
     font-size: 28px;
 }
 
-.side-bar {
-    height: 100%;
-    min-height: 100vh;
-    max-height: 100vh;
-    width: 25%;
-    margin: 0px;
-    padding: 0;
-    padding-bottom: 0;
-}
-
 .btns {
     display: flex;
     flex-direction: column;
-    height: 100px;
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 app-chat {
@@ -248,7 +289,7 @@ app-chat {
 }
 
 .clear-btn {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 
     &:disabled {
         filter: brightness(70%);
@@ -283,12 +324,13 @@ app-chat {
 
 .field-err {
     color: #7A1C27;
-    width: 80%;
+    width: 100%;
     min-height: 15px;
-    margin-bottom: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 10px;
+    margin-top: 5px;
 }
 
 
@@ -320,10 +362,12 @@ app-chat {
 
 .ready-screen {
     position: fixed;
-    z-index: 4;
+    top: 0;
+    left: 0;
+    z-index: 5;
     margin: 0;
     padding: 0;
-    width: 80%;
+    width: calc(100% - clamp(225px, 20%, 300px));
     height: 100%;
     backdrop-filter: blur(3px);
     color: white;
@@ -335,7 +379,7 @@ app-chat {
 
 .move-div {
     position: absolute;
-    z-index: 3;
+    z-index: 4;
     top: 12px;
     margin-left: auto;
     margin-right: auto;
@@ -360,4 +404,379 @@ app-chat {
 
 .game-res {
     height: 130px;
+}
+
+.waiting-div {
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .content {
+        min-width: 100%;
+        height: 100%;
+    }
+
+    .background {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        padding-right: clamp(160px, 20%, 225px);
+        box-sizing: border-box;
+    }
+
+    .background-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .foreground {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        padding-right: clamp(160px, 20%, 225px);
+        box-sizing: border-box;
+    }
+
+    .bottom-text {
+        position: fixed;
+        top: 0;
+        right: 0;
+
+        width: clamp(160px, 20%, 225px);
+        height: 100%;
+        max-height: 100%;
+        min-height: 0px;
+
+        padding: 5px 0;
+        box-sizing: border-box;
+
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
+    .bot-info {
+        width: 100%;
+        height: 70%;
+        padding: 10px;
+        box-sizing: border-box;
+        margin: 0;
+    }
+
+    .bot-profile {
+        padding-left: 5px;
+    }
+
+    .pfp {
+        height: 45px;
+        margin-right: 7px;
+    }
+
+    .bot-name {
+        font-size: 18px;
+    }
+
+    .info-div {
+        min-height: 0;
+        padding: 10px;
+        margin-top: 10px;
+    }
+
+    .info {
+        font-size: 11px;
+    }
+
+    .btns {
+        width: 100%;
+        height: 25%;
+        margin: 0;
+        padding: 5px 10px;
+        box-sizing: border-box;
+
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .ready-btn,
+    .clear-btn,
+    .surrender-btn,
+    .back-btn {
+        width: 100px;
+        min-width: 0;
+        padding: 5px;
+        font-size: 11px;
+        margin: 0;
+    }
+
+    .clear-btn {
+        margin-bottom: 0;
+    }
+
+    .surrender-btn.game {
+        margin: auto;
+    }
+
+    .field-err {
+        min-height: 15px;
+        max-height: 20px;
+        margin: 0;
+        font-size: 10px;
+        text-align: center;
+    }
+
+    .table-div {
+        width: 100%;
+        height: 100vh;
+    }
+
+    .setup-table {
+        width: min(525px, calc(100vh - 40px), calc(75vw - 180px));
+        max-width: none;
+        max-height: none;
+        aspect-ratio: 1 / 1;
+        box-shadow: 0 0 20px 15px #01588d;
+    }
+
+    .square {
+        transition: none;
+    }
+
+    .square:hover {
+        outline: none;
+        transform: none;
+    }
+
+    .ship {
+        width: 80%;
+        height: auto;
+    }
+
+    .tables {
+        width: 75%;
+        height: 100vh;
+        justify-content: space-evenly;
+    }
+
+    .my-table,
+    .opp-table {
+        width: min(40vw, calc(100vh - 40px));
+        max-width: none;
+        max-height: none;
+        aspect-ratio: 1 / 1;
+        box-shadow: 0 0 15px 12px #01588d;
+    }
+
+    .my-table.disabled,
+    .opp-table.disabled {
+        transform: scale(0.8);
+    }
+
+    .square-mine,
+    .square {
+        min-width: 0;
+        min-height: 0;
+    }
+
+    .sunk {
+        width: 80%;
+        height: auto;
+    }
+
+    .move-div {
+        left: 10px;
+        top: 10px;
+        padding: 6px 12px;
+        min-height: 0;
+        max-height: none;
+        font-size: 12px;
+        border-radius: 12px;
+    }
+
+    .surr-msg {
+        font-size: 20px;
+    }
+
+    .go-btn {
+        width: 150px;
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-height: 350px) and (orientation: landscape) {
+    .content {
+        height: 100dvh;
+        max-height: 100dvh;
+        overflow: hidden;
+    }
+
+    .side-bar {
+        height: 100dvh;
+        max-height: 100dvh;
+        width: 180px;
+    }
+
+    .container {
+        height: 100%;
+        max-height: 100%;
+    }
+
+    .side-bar,
+    app-chat,
+    .main,
+    .opp-div {
+        min-height: 0;
+        max-height: 100dvh;
+        overflow-y: hidden;
+    }
+
+    .chat-div {
+        min-height: 0;
+        max-height: none;
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .field-err {
+        display: none;
+    }
+
+    .bottom-text {
+        width: 180px;
+    }
+
+    .background,
+    .foreground {
+        padding: 0px;
+        padding-right: 180px;
+        height: 100dvh;
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+
+    .ready-screen {
+        width: calc(100% - 180px);
+    }
+
+    .background-img {
+        position: relative;
+        top: 0;
+        left: 0;
+        height: 100%;
+    }
+
+    .bot-info {
+        padding: 10px;
+        padding-top: 0;
+        padding-top: 0;
+    }
+
+    .pfp {
+        height: 35px;
+    }
+
+    .bot-name {
+        font-size: 14px;
+    }
+
+    .info-div {
+        padding: 7px;
+    }
+
+    .info {
+        font-size: 9px;
+        font-weight: 700;
+        line-height: normal;
+    }
+
+    .btns {
+        padding: 3px 5px;
+        margin: 0;
+        height: 30%;
+    }
+
+    .ready-btn,
+    .clear-btn,
+    .surrender-btn,
+    .back-btn {
+        width: 85px;
+        font-size: 9px;
+        padding: 2px;
+        padding-left: 4px;
+        padding-right: 4px;
+        font-weight: 700;
+    }
+
+    .clear-btn,
+    .ready-btn {
+        margin-bottom: 5px;
+    }
+
+    .field-err {
+        font-size: 9px;
+        font-weight: 700;
+    }
+
+    .setup-table {
+        height: 90%;
+        width: auto;
+        aspect-ratio: 1 / 1;
+        box-shadow: 0 0 12px 10px #01588d;
+    }
+
+    .tables {
+        width: calc(100% - 180px);
+    }
+
+    .my-table,
+    .opp-table {
+        height: 90%;
+        width: auto;
+        aspect-ratio: 1 / 1;
+        box-shadow: 0 0 12px 10px #01588d;
+    }
+
+    .my-table.disabled,
+    .opp-table.disabled {
+        transform: scale(0.85);
+    }
+
+    .move-div {
+        font-size: 12px;
+        padding: 5px 9px;
+    }
+
+    .game-res {
+        height: 80px;
+        width: 100%;
+    }
+
+    .overlay {
+        height: 100%;
+    }
+
+    .surr-msg {
+        margin: 5px;
+        font-size: 16px;
+    }
+
+    .go-btns {
+        margin: 0;
+    }
+
+    .move-div {
+        top: 5px;
+        left: 5px;
+        flex-direction: row;
+    }
+
+    .timer {
+        margin-left: 5px;
+        font-size: 12px;
+    }
 }

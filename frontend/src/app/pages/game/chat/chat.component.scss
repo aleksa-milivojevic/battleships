@@ -13,7 +13,8 @@
 .pts-div {
     width: 100%;
     margin: 0;
-    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -22,12 +23,14 @@
 .pts {
     color: white;
     font-size: 110%;
+    text-align: center;
 }
 
 .opp-div {
     width: 100%;
     color: white;
     padding: 10px;
+    padding-top: 0;
 }
 
 .username-div {
@@ -255,4 +258,106 @@ input {
 .info {
     color: black;
     white-space: pre-line;
+}
+
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .main {
+        height: 100%;
+    }
+    
+    .pts-div {
+        padding: 0;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    
+    .pts {
+        font-size: 10px;
+        align-self: center;
+        text-align: center;
+    }
+
+    .pfp {
+        width: 35px;
+        height: auto;
+        aspect-ratio: 1 / 1;
+    }
+
+    .opp-username {
+        font-size: 12px;
+    }
+
+    .opp-score {
+        font-size: 12px;
+    }
+
+    .trophy {
+        width: 15px;
+        height: auto;
+        margin-left: 2px;
+    }
+
+    .report-btn {
+        font-size: 10px;
+        width: fit-content;
+        padding: 1px 15px;
+        border: 1px solid white;
+        margin-left: 2px;
+
+        &:hover {
+            background-color: #006CA5;
+            color: white;
+        }
+    }
+
+    .report-div {
+        top: 3px;
+        left: 1px;
+        padding: 4px;
+        padding-top: 17px;
+        border: 1px solid white;
+        border-radius: 10px;
+        background-color: #006CA5;
+        width: fit-content;
+    }
+
+    .report-option {
+        font-size: 10px;
+    }
+
+    .main {
+        padding: 0;
+    }
+
+    .dropdown {
+        margin-top: 2px;
+    }
+
+    .chat-div {
+        margin-top: 4px;
+        font-size: 10px;
+        padding: 7px;
+        min-height: 30%;
+        max-height: 30%;
+        border-radius: 15px;
+    }
+
+    input {
+        font-size: 10px;
+        padding: 3px;
+        height: fit-content;
+    }
+
+    .input-div {
+        img {
+            width: 22px;
+            height: 20px;
+            margin-left: 10px;
+        }
+    }
+}
+
+
+@media screen and (max-height: 350px) and (orientation: landscape) {
+
 }

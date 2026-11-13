@@ -5,20 +5,22 @@
                 <div class="background">
                     <img class="background-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790616364/better-background_lhd8ib.png" alt="<background-img>">
                 </div>
-                <div class="move-div">
-                    <label class="setup-title">{{ 'setup-phase' | translate }}</label>
-                    <label class="timer">{{ timer() + 's' }}</label>
-                </div>
-                <div class="setup-table">
-                    @for (row of field(); track $index; let i = $index) {
-                        @for (col of row; track $index; let j = $index) {
-                            <div class="square button-sfx" (click)="toggleSquare(i,j)" [class.disabled]="gameOver()">
-                                @if (field()[i][j] == 1) {
-                                    <img class="ship" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790678917/ship_uamyyw.png" alt="<ship>">
-                                }
-                            </div>
+                <div class="foreground">
+                    <div class="move-div">
+                        <label class="setup-title">{{ 'setup-phase' | translate }}</label>
+                        <label class="timer">{{ timer() + 's' }}</label>
+                    </div>
+                    <div class="setup-table">
+                        @for (row of field(); track $index; let i = $index) {
+                            @for (col of row; track $index; let j = $index) {
+                                <div class="square button-sfx" (click)="toggleSquare(i,j)" [class.disabled]="gameOver()">
+                                    @if (field()[i][j] == 1) {
+                                        <img class="ship" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790678917/ship_uamyyw.png" alt="<ship>">
+                                    }
+                                </div>
+                            }
                         }
-                    }
+                    </div>
                 </div>
             </div>
             @if (showReadyScreen()) {
@@ -32,49 +34,51 @@
                 <div class="background">
                     <img class="background-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790616364/better-background_lhd8ib.png" alt="<background-img>">
                 </div>
-                <div class="move-div">
-                    @if (myMove()) {
-                        <label class="my-move-title">{{ "your-move" | translate }}</label>
-                    }
-                    @else {
-                        <label class="opp-move-title">{{ 'opps-move' | translate }}</label>
-                    }
-                    <label class="timer">{{ timer() + 's' }}</label>
-                </div>
-                <div class="my-table" [class.disabled]="htmlMyMove()">
-                    @for (row of field(); track $index; let i = $index) {
-                        @for (col of row; track $index; let j = $index) {
-                            <div class="square-mine" [class.attacked]="field()[i][j] < 0">
-                                <div class="ship-div">
-                                    @if (field()[i][j] === 0) {
-                                    }
-                                    @else if (field()[i][j] === -1) {
-                                        <img class="sunk" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790700083/sunk_ram34f.png" alt="<ship>">
-                                    }
-                                    @else if (field()[i][j] === 1) {
-                                        <img class="ship" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790678917/ship_uamyyw.png" alt="<ship>">
-                                    }
-                                </div>
-                            </div>
+                <div class="foreground">
+                    <div class="move-div">
+                        @if (myMove()) {
+                            <label class="my-move-title">{{ "your-move" | translate }}</label>
                         }
-                    }
-                </div>
-                <div class="opp-table" [class.disabled]="!htmlMyMove()">
-                    @for (row of oppField(); track $index; let i = $index) {
-                        @for (col of row; track $index; let j = $index) {
-                            <div class="square button-sfx" (click)="onAttack(i,j)" [class.attacked]="oppField()[i][j] < 0" [class.disabled]="gameOver() || !htmlMyMove() || oppField()[i][j] !== 0">
-                                <div class="ship-div">
-                                    @if (oppField()[i][j] === 0) {}
-                                    @else if (oppField()[i][j] === -1) {
-                                        <img class="sunk" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790700083/sunk_ram34f.png" alt="<ship>">
-                                    }
-                                    @else if (oppField()[i][j] === 1) {
-                                        <img class="ship" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790678917/ship_uamyyw.png" alt="<ship>">
-                                    }
-                                </div>
-                            </div>
+                        @else {
+                            <label class="opp-move-title">{{ 'opps-move' | translate }}</label>
                         }
-                    }
+                        <label class="timer">{{ timer() + 's' }}</label>
+                    </div>
+                    <div class="my-table" [class.disabled]="htmlMyMove()">
+                        @for (row of field(); track $index; let i = $index) {
+                            @for (col of row; track $index; let j = $index) {
+                                <div class="square-mine" [class.attacked]="field()[i][j] < 0">
+                                    <div class="ship-div">
+                                        @if (field()[i][j] === 0) {
+                                        }
+                                        @else if (field()[i][j] === -1) {
+                                            <img class="sunk" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790700083/sunk_ram34f.png" alt="<ship>">
+                                        }
+                                        @else if (field()[i][j] === 1) {
+                                            <img class="ship" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790678917/ship_uamyyw.png" alt="<ship>">
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                    <div class="opp-table" [class.disabled]="!htmlMyMove()">
+                        @for (row of oppField(); track $index; let i = $index) {
+                            @for (col of row; track $index; let j = $index) {
+                                <div class="square button-sfx" (click)="onAttack(i,j)" [class.attacked]="oppField()[i][j] < 0" [class.disabled]="gameOver() || !htmlMyMove() || oppField()[i][j] !== 0">
+                                    <div class="ship-div">
+                                        @if (oppField()[i][j] === 0) {}
+                                        @else if (oppField()[i][j] === -1) {
+                                            <img class="sunk" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790700083/sunk_ram34f.png" alt="<ship>">
+                                        }
+                                        @else if (oppField()[i][j] === 1) {
+                                            <img class="ship" src="https://res.cloudinary.com/drjisyvve/image/upload/v1790678917/ship_uamyyw.png" alt="<ship>">
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
                 </div>
             </div>
         }
@@ -97,6 +101,15 @@
     </div>
 </div>
 
+<!-- 
+@if (waiting()) {
+    <div class="overlay">
+        <div class="waiting-div">
+            <h1>{{ 'reconnect-wait' | translate }}</h1>
+        </div>
+    </div>
+} -->
+
 @if (gameOverScreen()) {
     <div class="overlay">
         <div class="title-div">
@@ -111,14 +124,6 @@
         <div class="go-btns">
             <button class="go-btn" (click)="toGameScreen()">{{ 'back-to-game-screen' | translate }}</button>
             <button class="go-btn" (click)="toMainScreen()">{{ 'back-to-main-screen' | translate }}</button>
-        </div>
-    </div>
-}
-
-@if (waiting()) {
-    <div class="overlay">
-        <div class="waiting-div">
-            <h1>{{ 'reconnect-wait' | translate }}</h1>
         </div>
     </div>
 }
