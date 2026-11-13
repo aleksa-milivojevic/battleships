@@ -3,25 +3,54 @@
     cursor: not-allowed;
 }
 
+.table-div {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .background {
     position: fixed;
     z-index: 0;
     margin: 0;
     padding: 0;
     display: flex;
-    width: 80%;
+    width: 100vw;
+    height: 100vh;
     align-items: center;
     justify-content: center;
-    overflow: clip;
+    overflow: hidden;
+    padding-right: clamp(225px, 20%, 300px);
 }
 
 .background-img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.foreground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+    margin: 0;
+    padding: 0;
+    padding-right: clamp(225px, 20%, 300px);
+    align-items: center;
+    justify-content: center;
 }
 
 .content {
     min-width: 100vw;
-    min-height: 100vh;
+    height: 100dvh;
     display: flex;
     flex-direction: row;
 }
@@ -29,7 +58,6 @@
 .container {
     display: flex;
     width: 100%;
-    flex-direction: row;
     margin: 0;
     padding: 0px;
     justify-content: center;
@@ -37,8 +65,12 @@
 }
 
 .bottom-text {
+    z-index: 3;
+    position: fixed;
+    right: 0;
+    top: 0;
     background-color: #006CA5;
-    width: 20%;
+    width: clamp(225px, 20%, 300px);
     height: 100%;
     max-height: 100vh;
     display: flex;
@@ -157,7 +189,7 @@
     max-height: 25px;
 }
 
-.table-div, .tables {
+.tables {
     height: 100%;
     width: 80%;
     margin: 0;
@@ -168,9 +200,10 @@
 
 .setup-table {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     width: 525px;
     max-width: 95%;
+    max-height: 80%;
     aspect-ratio: 1/1;
     border: 1px solid rgb(170, 170, 170);
     display: grid;
@@ -194,7 +227,8 @@
     transition: all 0.25s ease;
 
     &:hover {
-        border: 2px solid white;
+        outline: 2px solid white;
+        outline-offset: -2px;
         transform: scale(1.1);
     }
 
@@ -211,7 +245,9 @@
 
 .square-mine {
     width: 100%;
+    min-width: 100%;
     height: 100%;
+    min-height: 100%;
     margin: 0px;
     border: 1px solid rgb(221, 221, 221);
     display: flex;
@@ -228,9 +264,10 @@
 
 .my-table, .opp-table {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     width: 525px;
     max-width: 95%;
+    max-height: 80%;
     aspect-ratio: 1/1;
     border: 1px solid rgb(170, 170, 170);
     display: grid;
@@ -337,7 +374,7 @@
 .move-div {
     position: fixed;
     z-index: 5;
-    top: 30px;
+    top: clamp(10px, 3%, 30px);
     // left: 35.9%;
     margin-left: auto;
     margin-right: auto;
@@ -350,8 +387,336 @@
     box-shadow: 0px 0px 10px 2px rgb(0, 0, 0, 0.3);
     color: white;
     font-weight: 700;
+    font-size: clamp(12px, 100%, 16px);
+    min-height: 38px;
+    max-height: 42px;
 }
 
 .info {
     white-space: pre-line;
+}
+
+
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .content {
+        min-width: 100%;
+        height: 100dvh;
+    }
+
+    .container {
+        width: 100%;
+        height: 100%;
+    }
+
+    .background {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        padding-right: clamp(160px, 20%, 225px);
+        box-sizing: border-box;
+    }
+
+    .background-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .foreground {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        padding-right: clamp(160px, 20%, 225px);
+        box-sizing: border-box;
+    }
+
+    .bottom-text {
+        position: fixed;
+        top: 0;
+        right: 0;
+
+        width: clamp(160px, 20%, 225px);
+        height: 100%;
+        max-height: 100%;
+        min-height: 0px;
+
+        padding: 5px 0;
+        box-sizing: border-box;
+
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
+    .bot-info {
+        width: 100%;
+        height: 70%;
+        padding: 10px;
+        box-sizing: border-box;
+        margin: 0;
+    }
+
+    .bot-profile {
+        padding-left: 5px;
+    }
+
+    .pfp {
+        height: 45px;
+        margin-right: 7px;
+    }
+
+    .bot-name {
+        font-size: 18px;
+    }
+
+    .info-div {
+        min-height: 0;
+        padding: 10px;
+        margin-top: 10px;
+    }
+
+    .info {
+        font-size: 11px;
+    }
+
+    .btns {
+        width: 100%;
+        height: 25%;
+        margin: 0;
+        padding: 5px 10px;
+        box-sizing: border-box;
+
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .ready-btn,
+    .clear-btn,
+    .surrender-btn,
+    .back-btn {
+        width: 100px;
+        min-width: 0;
+        padding: 5px;
+        font-size: 11px;
+        margin: 0;
+    }
+
+    .clear-btn {
+        margin-bottom: 0;
+    }
+
+    .surrender-btn.game {
+        margin: auto;
+    }
+
+    .field-err {
+        min-height: 15px;
+        max-height: 20px;
+        margin: 0;
+        font-size: 10px;
+        text-align: center;
+    }
+
+    .table-div {
+        width: 100%;
+        height: 100vh;
+    }
+
+    .setup-table {
+        width: min(525px, calc(100vh - 40px), calc(75vw - 180px));
+        max-width: none;
+        max-height: none;
+        aspect-ratio: 1 / 1;
+        box-shadow: 0 0 20px 15px #01588d;
+    }
+
+    .square {
+        transition: none;
+    }
+
+    .square:hover {
+        outline: none;
+        transform: none;
+    }
+
+    .ship {
+        width: 80%;
+        height: auto;
+    }
+
+    .tables {
+        width: 75%;
+        height: 100vh;
+        justify-content: space-evenly;
+    }
+
+    .my-table,
+    .opp-table {
+        width: min(40vw, calc(100vh - 40px));
+        max-width: none;
+        max-height: none;
+        aspect-ratio: 1 / 1;
+        box-shadow: 0 0 15px 12px #01588d;
+    }
+
+    .my-table.disabled,
+    .opp-table.disabled {
+        transform: scale(0.8);
+    }
+
+    .square-mine,
+    .square {
+        min-width: 0;
+        min-height: 0;
+    }
+
+    .sunk {
+        width: 80%;
+        height: auto;
+    }
+
+    .move-div {
+        left: 10px;
+        top: 10px;
+        padding: 6px 12px;
+        min-height: 0;
+        max-height: none;
+        font-size: 12px;
+        border-radius: 12px;
+    }
+
+    .surr-msg {
+        font-size: 20px;
+    }
+
+    .go-btn {
+        width: 150px;
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-height: 350px) and (orientation: landscape) {
+
+    .content {
+        height: 100%;
+    }
+
+    .bottom-text {
+        width: 180px;
+    }
+
+    .background,
+    .foreground {
+        padding: 0px;
+        padding-right: 180px;
+        height: 100dvh;
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+
+    .background-img {
+        position: relative;
+        top: 0;
+        left: 0;
+        height: 100%;
+    }
+
+    .bot-info {
+        padding: 10px;
+        padding-top: 0;
+        padding-top: 0;
+    }
+
+    .pfp {
+        height: 35px;
+    }
+
+    .bot-name {
+        font-size: 14px;
+    }
+
+    .info-div {
+        padding: 7px;
+    }
+
+    .info {
+        font-size: 9px;
+        font-weight: 700;
+        line-height: normal;
+    }
+
+    .btns {
+        padding: 3px 5px;
+        margin: 0;
+        height: 30%;
+    }
+
+    .ready-btn,
+    .clear-btn,
+    .surrender-btn,
+    .back-btn {
+        width: 85px;
+        font-size: 9px;
+        padding: 2px;
+        padding-left: 4px;
+        padding-right: 4px;
+        font-weight: 700;
+    }
+
+    .clear-btn,
+    .ready-btn {
+        margin-bottom: 5px;
+    }
+
+    .field-err {
+        font-size: 9px;
+        font-weight: 700;
+    }
+
+    .setup-table {
+        height: 90%;
+        width: auto;
+        aspect-ratio: 1 / 1;
+        box-shadow: 0 0 12px 10px #01588d;
+    }
+
+    .tables {
+        width: calc(100% - 180px);
+    }
+
+    .my-table,
+    .opp-table {
+        height: 90%;
+        width: auto;
+        aspect-ratio: 1 / 1;
+        box-shadow: 0 0 12px 10px #01588d;
+    }
+
+    .my-table.disabled,
+    .opp-table.disabled {
+        transform: scale(0.85);
+    }
+
+    .move-div {
+        font-size: 12px;
+        padding: 5px 9px;
+    }
+
+    .game-res {
+        height: 80px;
+        width: 100%;
+    }
+
+    .overlay {
+        height: 100%;
+    }
+
+    .surr-msg {
+        margin: 5px;
+        font-size: 16px;
+    }
+
+    .go-btns {
+        margin: 0;
+    }
 }
