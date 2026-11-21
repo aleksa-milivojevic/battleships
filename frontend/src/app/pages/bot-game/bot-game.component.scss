@@ -292,7 +292,7 @@
 }
 
 .ship {
-    width: 49px;
+    width: 80%;
     aspect-ratio: 1 / 1;
 
     &.sunk {
@@ -301,7 +301,8 @@
 }
 
 .sunk {
-    height: 46px;
+    width: 80%;
+    height: auto;
     aspect-ratio: 1 / 1;
 }
 
@@ -570,7 +571,7 @@
     }
 
     .sunk {
-        width: 80%;
+        width: 10px;
         height: auto;
     }
 
