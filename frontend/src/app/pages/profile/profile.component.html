@@ -14,8 +14,8 @@
                         [(ngModel)]="newUsername"
                         [disabled]="!showChNameScreen()"> -->
                         <label class="username">{{ self()?.username }}</label>
-                        <div class="edit-btn button-sfx">
-                            <img class="edit-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1791479845/2026_10_08_0w4_Kleki_ouwdau.png" alt="<e>" (click)="toggleChNameScreen()">
+                        <div class="edit-btn button-sfx" (click)="toggleChNameScreen()">
+                            <img class="edit-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1791479845/2026_10_08_0w4_Kleki_ouwdau.png" alt="<e>">
                         </div>
                     </div>
                 </div>
@@ -30,16 +30,16 @@
                         [(ngModel)]="newEmail"
                         [disabled]="!showChNameScreen()"> -->
                         <label class="email">{{ self()?.email }}</label>
-                        <div class="edit-btn button-sfx">
-                            <img class="edit-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1791479845/2026_10_08_0w4_Kleki_ouwdau.png" alt="<e>" (click)="toggleChEmailScreen()">
+                        <div class="edit-btn button-sfx" (click)="toggleChEmailScreen()">
+                            <img class="edit-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1791479845/2026_10_08_0w4_Kleki_ouwdau.png" alt="<e>">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="pfp">
                 <img [src]="self()?.picture" alt="PFP">
-                <div class="edit-pfp-btn button-sfx">
-                    <img class="edit-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1791479845/2026_10_08_0w4_Kleki_ouwdau.png" alt="<e>" (click)="toggleUpdatePicture()">
+                <div class="edit-pfp-btn button-sfx" (click)="toggleUpdatePicture()">
+                    <img class="edit-img" src="https://res.cloudinary.com/drjisyvve/image/upload/v1791479845/2026_10_08_0w4_Kleki_ouwdau.png" alt="<e>">
                 </div>
             </div>
         </div>
