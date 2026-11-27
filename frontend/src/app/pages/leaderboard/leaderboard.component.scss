@@ -1,14 +1,23 @@
 .content {
-    min-width: 100vw;
-    min-height: 100vh;
-    max-height: 100vh;
     display: flex;
     flex-direction: row;
+
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    max-height: 100dvh;
+
+    margin: 0;
+    padding: 0;
+
+    position: relative;
     z-index: 0;
 }
 
 app-sidebar {
-    width: 15%;
+    display: block;
+    flex: 0 0 clamp(75px, 13vw, 190px);
+    min-width: 0;
 }
 
 .container {
@@ -18,7 +27,8 @@ app-sidebar {
     margin: 0;
     padding: 5px;
     justify-content: center;
-    padding-left: 240px;
+    align-items: center;
+    padding-right: clamp(100px, 10%, 800px)
 }
 
 .list-container {
@@ -29,7 +39,7 @@ app-sidebar {
     background-color: #006CA5;
     display: flex;
     flex-direction: column;
-    width: 55%;
+    width: clamp(500px, 55%, 700px);
     height: 80%;
     max-height: 80%;
     min-width: fit-content;
@@ -94,7 +104,7 @@ app-sidebar {
 }
 
 .rank {
-    margin-right: 20px;
+    margin-right: 18px;
     text-align: center;
     max-width: 45px;
     min-width: 45px;
@@ -131,6 +141,99 @@ app-sidebar {
     padding: 8px;
     padding-left: 20px;
     padding-right: 20px;
-    margin-left: 30px;
-    margin-right: auto;
+    margin-right: 35%;
+}
+
+
+@media screen and (min-width: 1600px) {
+    .desc-div {
+        margin-right: 20%;
+    }
+
+    .pfp {
+        height: 45px;
+        width: auto;
+        aspect-ratio: 1 / 1;
+    }
+}
+
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .list-container {
+        width: 65%;
+    }
+    
+    .desc-div {
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-height: 350px) and (orientation: landscape) {
+    .no-invites {
+        font-size: 13px;
+    }
+
+    .desc-div {
+        font-size: 13px;
+        padding: 5px;
+        padding-left: 18px;
+        padding-right: 18px;
+        margin-right: 56%;
+        margin-left: auto;
+    }
+
+    .list-container {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .user {
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .pfp {
+        height: 35px;
+        width: auto;
+        aspect-ratio: 1 / 1;
+    }
+
+    .username {
+        font-size: 16px;
+        margin-left: 7px;
+    }
+
+    .score {
+        font-size: 18px;
+    }
+
+    .trophy {
+        height: 22px;
+        width: auto;
+        aspect-ratio: 1 / 1;
+    }
+
+    .accept {
+        font-size: 11px;
+        padding: 5px;
+        padding-left: 15px;
+        padding-right: 15px;
+        margin-right: 0px;
+        width: fit-content;
+        font-weight: 700;
+    }
+
+    .rank-img {
+        height: 35px;
+        width: auto;
+        aspect-ratio: 1 / 1;
+        margin-left: 5px;
+        margin-right: 10px;
+    }
+
+    .rank {
+        font-size: 22px;
+        margin-right: 5px;
+    }
 }
