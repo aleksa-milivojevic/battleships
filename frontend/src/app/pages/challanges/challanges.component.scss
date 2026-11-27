@@ -1,8 +1,15 @@
 .content {
-    min-width: 100vw;
-    min-height: 100vh;
     display: flex;
     flex-direction: row;
+
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    margin: 0;
+    padding: 0;
+
+    position: relative;
     z-index: 0;
 }
 
@@ -13,11 +20,14 @@
     margin: 0;
     padding: 5px;
     justify-content: center;
-    padding-left: 240px;
+    align-items: center;
+    padding-right: clamp(100px, 10%, 800px)
 }
 
 app-sidebar {
-    width: 15%;
+    display: block;
+    flex: 0 0 clamp(75px, 13vw, 190px);
+    min-width: 0;
 }
 
 .invite-list {
@@ -28,7 +38,7 @@ app-sidebar {
     background-color: #006CA5;
     display: flex;
     flex-direction: column;
-    width: 55%;
+    width: clamp(500px, 55%, 700px);
     height: 70%;
     max-height: 70%;
     min-width: fit-content;
@@ -125,6 +135,79 @@ app-sidebar {
     padding: 8px;
     padding-left: 20px;
     padding-right: 20px;
-    margin-left: 30px;
-    margin-right: auto;
+    margin-right: 40%;
+}
+
+@media screen and (min-width: 1600px) {
+    .desc-div {
+        margin-right: 25%;
+    }
+}
+
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .invite-list {
+        width: 65%;
+    }
+    
+    .desc-div {
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-height: 350px) and (orientation: landscape) {
+    .no-invites {
+        font-size: 13px;
+    }
+
+    .desc-div {
+        font-size: 13px;
+        padding: 5px;
+        padding-left: 18px;
+        padding-right: 18px;
+        margin-right: 60%;
+        margin-left: auto;
+    }
+
+    .invite-list {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .invite {
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .pfp {
+        height: 35px;
+        width: auto;
+        aspect-ratio: 1 / 1;
+    }
+
+    .username {
+        font-size: 16px;
+        margin-left: 7px;
+    }
+
+    .user-score {
+        font-size: 16px;
+    }
+
+    .trophy {
+        height: 20px;
+        width: auto;
+        aspect-ratio: 1 / 1;
+    }
+
+    .accept {
+        font-size: 11px;
+        padding: 5px;
+        padding-left: 15px;
+        padding-right: 15px;
+        margin-right: 0px;
+        width: fit-content;
+        font-weight: 700;
+    }
 }
