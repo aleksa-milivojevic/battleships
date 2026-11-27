@@ -437,6 +437,10 @@ img {
     label {
         font-size: 12px;
     }
+
+    app-sidebar {
+        flex-basis: clamp(65px, 12vh, 100px);
+    }
     
     .score-div {
         height: 70px;

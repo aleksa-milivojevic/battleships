@@ -148,9 +148,55 @@ app-sidebar {
     .invite-list {
         width: 65%;
     }
+
+    .no-invites {
+        font-size: 13px;
+    }
     
     .desc-div {
         font-size: 15px;
+    }
+
+    app-sidebar {
+        flex-basis: clamp(65px, 12vh, 100px);
+    }
+
+    .invite {
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .pfp {
+        height: 35px;
+        width: auto;
+        aspect-ratio: 1 / 1;
+    }
+
+    .username {
+        font-size: 16px;
+        margin-left: 7px;
+    }
+
+    .user-score {
+        font-size: 16px;
+    }
+
+    .trophy {
+        height: 20px;
+        width: auto;
+        aspect-ratio: 1 / 1;
+    }
+
+    .accept {
+        font-size: 11px;
+        padding: 5px;
+        padding-left: 15px;
+        padding-right: 15px;
+        margin-right: 0px;
+        width: fit-content;
+        font-weight: 700;
     }
 }
 

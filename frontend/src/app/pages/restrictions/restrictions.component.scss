@@ -561,8 +561,9 @@ input {
 /* Telefoni u landscape režimu */
 @media screen and (orientation: landscape) and (max-height: 500px) {
     app-sidebar {
-        flex-basis: 65px;
+        flex-basis: clamp(65px, 12vh, 100px);
     }
+    
 
     .container {
         padding: 4px;
@@ -670,7 +671,7 @@ input {
 /* Veoma niski landscape ekrani */
 @media screen and (orientation: landscape) and (max-height: 350px) {
     app-sidebar {
-        flex-basis: 55px;
+        flex-basis: clamp(65px, 12vh, 100px);
     }
 
     .list-div {
